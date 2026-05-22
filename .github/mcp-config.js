@@ -108,7 +108,7 @@ const config = {
         url: data.url,
         title: data.fields['System.Title'] || 'N/A',
         description: data.fields['System.Description'] || '',
-        acceptanceCriteria: data.fields['Microsoft.VSTS.TCM.AcceptanceCriteria'] || '',
+        acceptanceCriteria: data.fields['Microsoft.VSTS.Common.AcceptanceCriteria'] || '',
         priority: data.fields['Microsoft.VSTS.Common.Priority'] || 0,
         state: data.fields['System.State'] || 'New',
         type: data.fields['System.WorkItemType'] || 'User Story',
