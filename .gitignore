@@ -1,0 +1,34 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+package-lock.json
+yarn.lock
+
+# Temporary
+*.tmp
+.temp/
+.cache/
+
+# Logs
+*.log
+logs/
+
+# Secrets
+*.secret
+secrets/
+.pat
