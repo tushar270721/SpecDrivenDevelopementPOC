@@ -127,6 +127,105 @@ const config = {
   },
 
   /**
+   * Fetch comments for a feature/work item
+   * @param {string} featureId - Feature ID (e.g., "AB#12345")
+   * @returns {array} Array of comments
+   */
+  async getComments(featureId) {
+    try {
+      const workItemId = featureId.split('#')[1];
+      if (!workItemId) {
+        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., AB#12345). Got: ${featureId}`);
+      }
+
+      // Get updates/comments for the work item
+      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${workItemId}/updates?api-version=${this.azureDevOps.apiVersion}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getAuthHeader(),
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Azure DevOps API Error (${response.status}): ${error}`);
+      }
+
+      const data = await response.json();
+
+      // Filter and format comments
+      const comments = data.value
+        .filter(update => update.fields && Object.keys(update.fields).length > 0)
+        .map(update => ({
+          revisedDate: update.revisedDate,
+          revisedBy: update.revisedBy?.displayName || 'Unknown',
+          changedFields: Object.keys(update.fields || {}),
+          changes: Object.entries(update.fields || {})
+            .map(([field, change]) => ({
+              field,
+              oldValue: change.oldValue ? String(change.oldValue) : '',
+              newValue: change.newValue ? String(change.newValue) : '',
+            })),
+        }));
+
+      return comments;
+
+    } catch (error) {
+      console.error(`❌ Error fetching comments for ${featureId}:`, error.message);
+      throw error;
+    }
+  },
+
+  /**
+   * Fetch discussions/work item comments
+   * @param {string} featureId - Feature ID (e.g., "AB#12345")
+   * @returns {array} Array of discussion comments
+   */
+  async getDiscussions(featureId) {
+    try {
+      const workItemId = featureId.split('#')[1];
+      if (!workItemId) {
+        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., AB#12345). Got: ${featureId}`);
+      }
+
+      // Get work item to check for comments field
+      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${workItemId}?$expand=all&api-version=${this.azureDevOps.apiVersion}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getAuthHeader(),
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Azure DevOps API Error (${response.status}): ${error}`);
+      }
+
+      const data = await response.json();
+
+      // Extract comments from relations
+      const discussions = [];
+      if (data.relations) {
+        data.relations
+          .filter(rel => rel.rel === 'AttachedFile' || rel.rel === 'comment')
+          .forEach(rel => {
+            discussions.push({
+              relation: rel.rel,
+              url: rel.url,
+              attributes: rel.attributes || {},
+            });
+          });
+      }
+
+      return discussions;
+
+    } catch (error) {
+      console.error(`❌ Error fetching discussions for ${featureId}:`, error.message);
+      throw error;
+    }
+  },
+
+  /**
    * Validate Azure DevOps connection
    * @returns {object} Health status
    */
