@@ -1,0 +1,21 @@
+{
+  "browsers": "chrome:headless",
+  "concurrency": 5,
+  "src": [
+    "tests/step_definitions/**/*.js",
+    "tests/features/**/*.feature"
+  ],
+  "screenshots": {
+    "path": "artifacts/screenshots",
+    "takeOnFails": true
+  },
+  "videoPath": "artifacts/videos",
+  "fixtureHookTimeout": 60000,
+  "testExecutionTimeout": 180000,
+  "testTimeout": 180000,
+  "assertionTimeout": 5000,
+  "selectorTimeout": 10000,
+  "pageLoadTimeout": 30000,
+  "interactiveMode": false,
+  "stopOnFirstFail": false
+}

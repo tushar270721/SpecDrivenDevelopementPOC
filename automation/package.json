@@ -1,0 +1,38 @@
+{
+  "name": "@qa-sdd/automation-tests",
+  "version": "1.0.0",
+  "description": "QA SDD POC - Automation Test Suite (3-Layer POM with TestCafe + Cucumber)",
+  "main": "config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "testing-framework-run-tests --tags \"~@ignore, ~@visual\"",
+    "test:smoke": "testing-framework-run-tests --tags \"@smoke\"",
+    "test:feature-001": "testing-framework-run-tests --tags \"@feature-001\"",
+    "test:feature-002": "testing-framework-run-tests --tags \"@feature-002\"",
+    "test:feature-003": "testing-framework-run-tests --tags \"@feature-003\"",
+    "test:ci": "testing-framework-run-tests --tags \"~@ignore, ~@visual\" --emulation:width=1920;height=1080",
+    "test:regression": "testing-framework-run-tests",
+    "test:api": "testing-framework-run-tests --tags \"@api\"",
+    "test:integration": "testing-framework-run-tests --tags \"@integration\"",
+    "test:rate-limit": "testing-framework-run-tests --tags \"@rate-limit\"",
+    "lint": "eslint --no-error-on-unmatched-pattern ./**/*.js",
+    "report": "testing-framework-report",
+    "debug": "node --inspect-brk node_modules/@evision/testing-framework-core/runner.js --tags \"@wip\""
+  },
+  "dependencies": {
+    "@evision/testing-framework-core": "7.4.1",
+    "moment": "^2.29.4",
+    "testcafe-blink-diff": "^0.5.5",
+    "uuid": "^9.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "latest",
+    "eslint": "^8.57.1",
+    "eslint-plugin-import": "^2.27.5"
+  },
+  "author": "QA Team",
+  "license": "ISC"
+}
