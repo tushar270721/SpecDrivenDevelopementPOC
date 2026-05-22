@@ -1,0 +1,25 @@
+{
+  "name": "qa-sdd-poc",
+  "version": "1.0.0",
+  "description": "QA SDD (Specification-Driven Development) POC with TestCafe + Cucumber automation framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "cd automation && npm test",
+    "test:azure-connection": "node .github/test-azure-connection.js",
+    "lint": "eslint . --ignore-path .gitignore",
+    "prepare": "cd automation && npm install"
+  },
+  "keywords": [
+    "qa",
+    "automation",
+    "testcafe",
+    "cucumber",
+    "sdd"
+  ],
+  "author": "QA Team",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {}
+}
