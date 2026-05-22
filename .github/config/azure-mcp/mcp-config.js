@@ -11,7 +11,9 @@ const path = require('path');
 
 function loadEnvFile() {
   try {
-    const envPath = path.resolve(__dirname, '../.env');
+    // Look for .env at project root (../../ from .github/config/azure-mcp/)
+    // .github/config/azure-mcp/ -> .github/config/ (../../) -> .github/ (../) -> root (.)
+    const envPath = path.resolve(__dirname, '../../../.env');
     if (fs.existsSync(envPath)) {
       const content = fs.readFileSync(envPath, 'utf8');
       const lines = content.split('\n');
@@ -221,6 +223,64 @@ const config = {
 
     } catch (error) {
       console.error(`❌ Error fetching discussions for ${featureId}:`, error.message);
+      throw error;
+    }
+  },
+
+  /**
+   * Strip HTML tags from text
+   * @param {string} html - HTML string
+   * @returns {string} Plain text
+   */
+  stripHtmlTags(html) {
+    if (!html) return '';
+    return html.replace(/<[^>]*>/g, '').trim();
+  },
+
+  /**
+   * Fetch actual comments/discussions with text content
+   * @param {string} featureId - Feature ID (e.g., "AB#12345")
+   * @returns {array} Array of comment objects with text
+   */
+  async getTextComments(featureId) {
+    try {
+      const workItemId = featureId.split('#')[1];
+      if (!workItemId) {
+        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., AB#12345). Got: ${featureId}`);
+      }
+
+      // Use Azure DevOps Comments API
+      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${workItemId}/comments?api-version=7.0-preview.3`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getAuthHeader(),
+      });
+
+      if (!response.ok) {
+        // Comments API might not be available, return empty
+        if (response.status === 404 || response.status === 400) {
+          return [];
+        }
+        const error = await response.text();
+        throw new Error(`Azure DevOps API Error (${response.status}): ${error}`);
+      }
+
+      const data = await response.json();
+
+      // Format comments - note: field is 'text' not 'content'
+      const comments = data.comments ? data.comments.map(c => ({
+        id: c.id,
+        text: c.text,  // Changed from 'content' to 'text'
+        createdBy: c.createdBy?.displayName || 'Unknown',
+        createdDate: c.createdDate,
+        changedDate: c.changedDate,
+      })) : [];
+
+      return comments;
+
+    } catch (error) {
+      console.error(`❌ Error fetching text comments for ${featureId}:`, error.message);
       throw error;
     }
   },

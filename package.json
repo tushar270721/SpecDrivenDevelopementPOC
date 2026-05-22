@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "cd automation && npm test",
-    "test:azure-connection": "node .github/test-azure-connection.js",
     "lint": "eslint . --ignore-path .gitignore",
     "prepare": "cd automation && npm install"
   },
