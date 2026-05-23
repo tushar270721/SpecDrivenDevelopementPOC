@@ -228,13 +228,38 @@ const config = {
   },
 
   /**
-   * Strip HTML tags from text
+   * Strip HTML tags and decode HTML entities
    * @param {string} html - HTML string
    * @returns {string} Plain text
    */
   stripHtmlTags(html) {
     if (!html) return '';
-    return html.replace(/<[^>]*>/g, '').trim();
+    
+    // Step 1: Remove HTML tags
+    let text = html.replace(/<[^>]*>/g, '');
+    
+    // Step 2: Decode common HTML entities
+    const entities = {
+      '&nbsp;': ' ',
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&apos;': "'",
+      '&#39;': "'",
+      '&rdquo;': '"',
+      '&ldquo;': '"',
+      '&mdash;': '—',
+      '&ndash;': '–',
+      '&bull;': '•',
+    };
+    
+    for (const [entity, char] of Object.entries(entities)) {
+      text = text.replace(new RegExp(entity, 'g'), char);
+    }
+    
+    // Step 3: Trim and clean extra whitespace
+    return text.replace(/\s+/g, ' ').trim();
   },
 
   /**
