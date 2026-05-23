@@ -104,6 +104,12 @@ const config = {
 
       const data = await response.json();
 
+      // CRITICAL: Verify the returned work item ID matches requested ID
+      const returnedId = data.id;
+      if (returnedId.toString() !== workItemId) {
+        throw new Error(`❌ CRITICAL DATA MISMATCH: Requested ${featureId} (ID: ${workItemId}) but Azure returned work item ${returnedId}. This indicates a serious issue with the API or caching.`);
+      }
+
       // Extract key fields
       const feature = {
         id: data.id,
@@ -119,7 +125,18 @@ const config = {
         updatedDate: data.fields['System.ChangedDate'],
       };
 
-      console.log(`✅ Feature fetched successfully: "${feature.title}"`);
+      // Validate critical fields
+      if (!feature.title || feature.title === 'N/A') {
+        throw new Error(`❌ VALIDATION ERROR: Feature ${featureId} has no title. Data may be incomplete.`);
+      }
+
+      // Log successful fetch with verification
+      console.log(`✅ Feature ${featureId} fetched successfully`);
+      console.log(`   ID: ${feature.id}`);
+      console.log(`   Title: ${feature.title}`);
+      console.log(`   Assigned To: ${feature.assignedTo}`);
+      console.log(`   State: ${feature.state}`);
+
       return feature;
 
     } catch (error) {
@@ -169,6 +186,9 @@ const config = {
               newValue: change.newValue ? String(change.newValue) : '',
             })),
         }));
+
+      // Log update history
+      console.log(`📜 Fetched ${comments.length} update(s) in history for ${featureId}`);
 
       return comments;
 
@@ -301,6 +321,14 @@ const config = {
         createdDate: c.createdDate,
         changedDate: c.changedDate,
       })) : [];
+
+      // Log comment fetch with count
+      console.log(`💬 Fetched ${comments.length} comment(s) for ${featureId}`);
+      if (comments.length > 0) {
+        comments.forEach((c, i) => {
+          console.log(`   ${i + 1}. ${c.createdBy} - ${c.text.substring(0, 50)}...`);
+        });
+      }
 
       return comments;
 
