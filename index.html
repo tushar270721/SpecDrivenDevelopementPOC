@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Case Review Portal - Single Row Grid</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background-color: #F6F6F6;
+            color: #000000;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: #007AC3;
+            color: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+        }
+
+        .header h1 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .input-section {
+            padding: 16px 24px;
+            background: #FFFFFF;
+            border-bottom: 1px solid #DADADA;
+        }
+
+        .input-section h2 {
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+            color: #007AC3;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-section textarea {
+            width: 100%;
+            height: 80px;
+            padding: 12px;
+            border: 1px solid #DADADA;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            resize: vertical;
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .input-section textarea:focus {
+            outline: none;
+            border-color: #007AC3;
+            box-shadow: 0 0 0 3px rgba(0, 122, 195, 0.1);
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: 'Fira Sans', sans-serif;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.1px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #007AC3;
+            color: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(0, 122, 195, 0.12);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #005B92;
+            box-shadow: 0 2px 6px rgba(0, 122, 195, 0.16);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            background: #003D61;
+        }
+
+        .btn-secondary {
+            background: #F6F6F6;
+            color: #000000;
+            border: 1px solid #DADADA;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #EDEDED;
+            border-color: #BFBFBF;
+        }
+
+        .btn-success {
+            background: #85BC20;
+            color: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(133, 188, 32, 0.12);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #648D18;
+            box-shadow: 0 2px 6px rgba(133, 188, 32, 0.16);
+        }
+
+        .btn-danger {
+            background: #E5202E;
+            color: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(229, 32, 46, 0.12);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #AC1822;
+            box-shadow: 0 2px 6px rgba(229, 32, 46, 0.16);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.8125rem;
+            height: 28px;
+        }
+
+        .btn-xs {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            height: 24px;
+        }
+
+        .stats-bar {
+            background: #FFFFFF;
+            padding: 16px 24px;
+            border-bottom: 1px solid #DADADA;
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #757575;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .stat-badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 90px;
+        }
+
+        .badge-total {
+            background: #F6F6F6;
+            color: #000000;
+            border: 1px solid #DADADA;
+        }
+
+        .badge-accepted {
+            background: #E7F2D2;
+            color: #425E10;
+        }
+
+        .badge-rejected {
+            background: #FAD2D5;
+            color: #721017;
+        }
+
+        .badge-pending {
+            background: #FFF4E1;
+            color: #8B5000;
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #DADADA;
+            border-radius: 3px;
+            overflow: hidden;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #85BC20;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.75rem;
+            color: #666;
+            min-width: 40px;
+        }
+
+        .controls-section {
+            background: #FFFFFF;
+            padding: 16px 24px;
+            border-bottom: 1px solid #DADADA;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 240px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #DADADA;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-family: 'Fira Sans', sans-serif;
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .search-box input::placeholder {
+            color: #A3A3A3;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #007AC3;
+            box-shadow: 0 0 0 3px rgba(0, 122, 195, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-group select {
+            padding: 10px 12px;
+            border: 1px solid #DADADA;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-family: 'Fira Sans', sans-serif;
+            background: #FFFFFF;
+            color: #000000;
+            cursor: pointer;
+            min-width: 140px;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #007AC3;
+            box-shadow: 0 0 0 3px rgba(0, 122, 195, 0.1);
+        }
+
+        .table-container {
+            background: #FFFFFF;
+            margin: 16px 24px;
+            border: 1px solid #DADADA;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 30px 40px 120px 1fr 100px 80px 120px 180px;
+            gap: 12px;
+            padding: 14px 16px;
+            background: #F6F6F6;
+            border-bottom: 1px solid #DADADA;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #757575;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-body {
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100vh - 400px);
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 30px 40px 120px 1fr 100px 80px 120px 180px;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #DADADA;
+            align-items: center;
+            background: #FFFFFF;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+
+        .table-row:hover {
+            background: #F6F6F6;
+        }
+
+        .table-row.highlighted {
+            background: #E6F2F9;
+            border-left: 3px solid #007AC3;
+            padding-left: 13px;
+        }
+
+        .col-num {
+            text-align: center;
+            font-weight: 600;
+            color: #757575;
+            font-size: 0.875rem;
+        }
+
+        .col-id {
+            font-weight: 600;
+            color: #007AC3;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+
+        .col-title {
+            font-size: 0.875rem;
+            color: #000000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            width: 70px;
+            font-weight: 600;
+        }
+
+        .priority-high {
+            background: #FAD2D5;
+            color: #721017;
+        }
+
+        .priority-medium {
+            background: #FFF4E1;
+            color: #8B5000;
+        }
+
+        .priority-low {
+            background: #E7F2D2;
+            color: #425E10;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            width: 80px;
+        }
+
+        .status-pending {
+            background: #FFF4E1;
+            color: #8B5000;
+        }
+
+        .status-approved {
+            background: #E7F2D2;
+            color: #425E10;
+        }
+
+        .status-rejected {
+            background: #FAD2D5;
+            color: #721017;
+        }
+
+        .status-needs-changes {
+            background: #FFF4E1;
+            color: #8B5000;
+        }
+
+        .checkbox-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .checkbox-cell input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #007AC3;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            background: #F6F6F6;
+            color: #000000;
+            border: 1px solid #DADADA;
+        }
+
+        .category-functional { background: #E6F2F9; color: #003D61; }
+        .category-role-based { background: #CCE4F3; color: #005B92; }
+        .category-edge-cases { background: #E7F2D2; color: #425E10; }
+        .category-integration { background: #E6F2F9; color: #003D61; }
+        .category-performance { background: #FFF4E1; color: #8B5000; }
+        .category-security { background: #FAD2D5; color: #721017; }
+        .category-e2e { background: #E6F2F9; color: #003D61; }
+
+        .actions-cell {
+            display: flex;
+            gap: 8px;
+        }
+
+        .actions-cell .btn-xs {
+            padding: 6px 10px;
+            font-size: 0.75rem;
+        }
+
+        .summary-section {
+            background: #FFFFFF;
+            padding: 16px 24px;
+            border-top: 1px solid #DADADA;
+            border-bottom: 1px solid #DADADA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .summary-text {
+            font-size: 0.875rem;
+            color: #757575;
+        }
+
+        .summary-text strong {
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .bulk-actions {
+            background: #FFFFFF;
+            padding: 16px 24px;
+            border-bottom: 1px solid #DADADA;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .bulk-actions .btn {
+            margin: 0;
+        }
+
+        .empty-state {
+            background: #FFFFFF;
+            padding: 48px 24px;
+            text-align: center;
+            color: #BFBFBF;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 1rem;
+            color: #757575;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: #A3A3A3;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #EDEDED;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #BFBFBF;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9B9B9B;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            border-radius: 6px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+        }
+
+        .modal-header {
+            background: #007AC3;
+            color: #FFFFFF;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #DADADA;
+            position: sticky;
+            top: 0;
+        }
+
+        .modal-header h2 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .detail-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-field label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #757575;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-field input,
+        .detail-field textarea,
+        .detail-field select {
+            padding: 10px 12px;
+            border: 1px solid #DADADA;
+            border-radius: 4px;
+            font-family: 'Fira Sans', sans-serif;
+            font-size: 0.875rem;
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .detail-field textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .detail-field input:focus,
+        .detail-field textarea:focus,
+        .detail-field select:focus {
+            outline: none;
+            border-color: #007AC3;
+            box-shadow: 0 0 0 3px rgba(0, 122, 195, 0.1);
+        }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #DADADA;
+            border-radius: 4px;
+            overflow: hidden;
+            table-layout: fixed;
+        }
+
+        .detail-table th {
+            background: #F6F6F6;
+            padding: 12px;
+            border: 1px solid #DADADA;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-align: left;
+            color: #757575;
+            letter-spacing: 0.5px;
+        }
+
+        .test-steps-table th:first-child {
+            width: 50px;
+            min-width: 50px;
+        }
+
+        .test-steps-table th:nth-child(2) {
+            width: auto;
+        }
+
+        .test-steps-table th:nth-child(3) {
+            width: auto;
+        }
+
+        .test-steps-table td {
+            padding: 10px 12px;
+            border: 1px solid #DADADA;
+            font-size: 0.875rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            background: #FFFFFF;
+        }
+
+        .test-steps-table td:first-child {
+            width: 50px;
+            min-width: 50px;
+            max-width: 50px;
+            background: #F6F6F6;
+        }
+
+        .test-steps-table td:nth-child(2) {
+            width: auto;
+        }
+
+        .test-steps-table td:nth-child(3) {
+            width: auto;
+        }
+
+        .detail-table textarea {
+            width: 100%;
+            min-height: 48px;
+            padding: 10px 12px;
+            border: 1px solid #DADADA;
+            border-radius: 4px;
+            font-family: 'Fira Sans', sans-serif;
+            font-size: 0.875rem;
+            resize: vertical;
+            box-sizing: border-box;
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .step-textarea {
+            width: 100%;
+            min-width: 50px;
+            max-width: 100%;
+        }
+
+        .detail-row-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #DADADA;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #F6F6F6;
+        }
+
+        @media (max-width: 1400px) {
+            .table-header,
+            .table-row {
+                grid-template-columns: 30px 30px 80px 1fr 70px 70px 100px 160px;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .table-header,
+            .table-row {
+                grid-template-columns: 30px 30px 70px 1fr 60px 60px 90px 140px;
+                gap: 8px;
+            }
+            
+            .col-title {
+                font-size: 0.8125rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Test Case Review Portal - AB#735316</h1>
+        <div class="header-actions">
+            <button id="downloadBtn" class="btn btn-primary" disabled>⬇️ Export Markdown</button>
+        </div>
+    </div>
+
+    <div class="input-section">
+        <h2>Paste Test Cases (Markdown)</h2>
+        <textarea id="markdownInput" placeholder="Paste your AB735316-testcases.md content here..."></textarea>
+        <div class="input-actions">
+            <button id="parseBtn" class="btn btn-primary">📋 Parse Test Cases</button>
+            <button id="clearBtn" class="btn btn-secondary">Clear</button>
+        </div>
+    </div>
+
+    <div id="dashboardContent" style="display: none;">
+        <!-- STATS BAR -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-badge badge-total">Total: <span id="statTotal">0</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-badge badge-accepted">✓ Accepted: <span id="statAccepted">0</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-badge badge-rejected">✗ Rejected: <span id="statRejected">0</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-badge badge-pending">⏱ Pending: <span id="statPending">0</span></span>
+            </div>
+            <div class="progress-bar-container">
+                <span class="progress-text">Review Progress:</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+                <span class="progress-text"><span id="progressPercent">0</span>%</span>
+            </div>
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="controls-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search test cases...">
+            </div>
+            <div class="filter-group">
+                <select id="priorityFilter" onchange="applyFilters()">
+                    <option value="">Priority: All</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="statusFilter" onchange="applyFilters()">
+                    <option value="">Status: All</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="categoryFilter" onchange="applyFilters()">
+                    <option value="">Category: All</option>
+                    <option value="Functional">Functional</option>
+                    <option value="Role-Based">Role-Based</option>
+                    <option value="Edge Cases">Edge Cases</option>
+                    <option value="Integration">Integration</option>
+                    <option value="Performance">Performance</option>
+                    <option value="Security">Security</option>
+                    <option value="E2E">E2E</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-container">
+            <div class="table-header">
+                <div><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"></div>
+                <div>#</div>
+                <div>ID</div>
+                <div>Test Case</div>
+                <div>Category</div>
+                <div>Priority</div>
+                <div>Status</div>
+                <div>Actions</div>
+            </div>
+            <div class="table-body" id="tableBody"></div>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary-section">
+            <div class="summary-text">
+                Summary: <strong><span id="sumAccepted">0</span> Accepted</strong> | 
+                <strong><span id="sumRejected">0</span> Rejected</strong> | 
+                <strong><span id="sumPending">0</span> Pending</strong> |
+                <strong><span id="sumChanges">0</span> Needs Changes</strong>
+            </div>
+        </div>
+
+        <!-- BULK ACTIONS -->
+        <div class="bulk-actions">
+            <button id="bulkApproveBtn" class="btn btn-success" disabled>✓ Approve Selected</button>
+            <button id="bulkRejectBtn" class="btn btn-danger" disabled>✗ Reject Selected</button>
+            <button id="pushAzureBtn" class="btn btn-primary">☁ Push to Azure DevOps</button>
+            <button id="resetAllBtn" class="btn btn-secondary">↻ Reset All</button>
+        </div>
+    </div>
+
+    <!-- MODAL FOR TEST CASE DETAILS -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Test Case Details</h2>
+                <button class="modal-close" onclick="closeDetailsModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-field">
+                    <label>Title</label>
+                    <input type="text" id="detailTitle" />
+                </div>
+                <div class="detail-field">
+                    <label>Priority</label>
+                    <select id="detailPriority">
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select>
+                </div>
+                <div class="detail-field">
+                    <label>Category</label>
+                    <input type="text" id="detailCategory" disabled />
+                </div>
+                <div class="detail-field">
+                    <label>Description</label>
+                    <textarea id="detailDescription"></textarea>
+                </div>
+                <div class="detail-field">
+                    <label>Preconditions</label>
+                    <textarea id="detailPreconditions" placeholder="One per line"></textarea>
+                </div>
+                <div class="detail-field">
+                    <label>Test Data</label>
+                    <table class="detail-table">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailTestDataBody"></tbody>
+                    </table>
+                </div>
+                <div class="detail-field">
+                    <label>Test Steps</label>
+                    <table class="detail-table test-steps-table">
+                        <thead>
+                            <tr>
+                                <th>Step</th>
+                                <th>Action</th>
+                                <th>Expected Result</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailTestStepsBody"></tbody>
+                    </table>
+                </div>
+                <div class="detail-field">
+                    <label>Expected Outcome</label>
+                    <textarea id="detailExpectedOutcome" placeholder="One per line"></textarea>
+                </div>
+                <div class="detail-field">
+                    <label>Reviewer Comments</label>
+                    <textarea id="detailReviewerComments"></textarea>
+                </div>
+                <div class="detail-field">
+                    <label>Review Status</label>
+                    <select id="detailReviewStatus">
+                        <option>Pending</option>
+                        <option>Approved</option>
+                        <option>Rejected</option>
+                        <option>Needs Changes</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDetailsModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveDetailsModal()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let testCases = [];
+        let currentEditingId = null;
+        let activeFilters = {
+            priority: '',
+            status: '',
+            category: ''
+        };
+
+        // Event Listeners
+        document.getElementById('parseBtn').addEventListener('click', parseAndLoad);
+        document.getElementById('clearBtn').addEventListener('click', clearAll);
+        document.getElementById('downloadBtn').addEventListener('click', downloadMarkdown);
+        document.getElementById('searchInput').addEventListener('input', renderTable);
+        document.getElementById('bulkApproveBtn').addEventListener('click', () => bulkUpdateSelected('Approved'));
+        document.getElementById('bulkRejectBtn').addEventListener('click', () => bulkUpdateSelected('Rejected'));
+        document.getElementById('resetAllBtn').addEventListener('click', resetAllSelections);
+        document.getElementById('pushAzureBtn').addEventListener('click', pushToAzure);
+
+        function applyFilters() {
+            activeFilters.priority = document.getElementById('priorityFilter').value;
+            activeFilters.status = document.getElementById('statusFilter').value;
+            activeFilters.category = document.getElementById('categoryFilter').value;
+            renderTable();
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'detailsModal') {
+                closeDetailsModal();
+            }
+        });
+
+        function parseAndLoad() {
+            const markdown = document.getElementById('markdownInput').value.trim();
+            if (!markdown) {
+                alert('Please paste markdown content');
+                return;
+            }
+            testCases = parseMarkdown(markdown);
+            if (testCases.length === 0) {
+                alert('No test cases found');
+                return;
+            }
+            document.getElementById('dashboardContent').style.display = 'block';
+            renderTable();
+            updateStats();
+            document.getElementById('downloadBtn').disabled = false;
+        }
+
+        function parseMarkdown(markdown) {
+            const lines = markdown.split('\n');
+            const cases = [];
+            let current = null;
+            let section = null;
+            let content = [];
+            let currentCategory = 'Functional';
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                
+                // Check for category section headers
+                const categoryMatch = line.match(/^# (FUNCTIONAL|ROLE-BASED|EDGE CASE|INTEGRATION|PERFORMANCE|SECURITY|END-TO-END).+TEST CASES/i);
+                if (categoryMatch) {
+                    const categoryType = categoryMatch[1].toUpperCase();
+                    if (categoryType.includes('FUNCTIONAL')) currentCategory = 'Functional';
+                    else if (categoryType.includes('ROLE-BASED')) currentCategory = 'Role-Based';
+                    else if (categoryType.includes('EDGE')) currentCategory = 'Edge Cases';
+                    else if (categoryType.includes('INTEGRATION')) currentCategory = 'Integration';
+                    else if (categoryType.includes('PERFORMANCE')) currentCategory = 'Performance';
+                    else if (categoryType.includes('SECURITY')) currentCategory = 'Security';
+                    else if (categoryType.includes('END-TO-END')) currentCategory = 'E2E';
+                    continue;
+                }
+                
+                const match = line.match(/^# (TC-AB\d+-\d+)/);
+                
+                if (match) {
+                    if (current) {
+                        if (section && content.length > 0) processSectionContent(current, section, content);
+                        cases.push(current);
+                    }
+                    current = {
+                        id: match[1],
+                        title: '',
+                        priority: 'Medium',
+                        automatable: 'Yes',
+                        status: 'Ready',
+                        category: currentCategory,
+                        testCaseCategory: currentCategory,
+                        selected: false,
+                        reviewStatus: 'Pending',
+                        reviewer: '',
+                        reviewDate: '',
+                        qualityScore: 75,
+                        description: '',
+                        preconditions: [],
+                        testData: { headers: ['Field', 'Value'], rows: [] },
+                        testSteps: { headers: ['Step', 'Action', 'Expected Result'], rows: [] },
+                        expectedOutcome: [],
+                        reviewerComments: ''
+                    };
+                    section = null;
+                    content = [];
+                    continue;
+                }
+
+                const sectionMatch = line.match(/^## (.+?)$/);
+                if (sectionMatch) {
+                    if (current && section && content.length > 0) processSectionContent(current, section, content);
+                    section = sectionMatch[1];
+                    content = [];
+                    continue;
+                }
+
+                if (current && section) {
+                    content.push(line);
+                }
+            }
+
+            if (current) {
+                if (section && content.length > 0) processSectionContent(current, section, content);
+                cases.push(current);
+            }
+
+            return cases;
+        }
+
+        function processSectionContent(tc, section, content) {
+            const text = content.join('\n').trim();
+            if (!text) return;
+
+            const lower = section.toLowerCase();
+            if (lower === 'metadata') parseMetadata(tc, text);
+            else if (lower === 'description') tc.description = text;
+            else if (lower === 'preconditions') tc.preconditions = parseList(text);
+            else if (lower === 'test data') tc.testData.rows = parseTable(text);
+            else if (lower === 'test steps') tc.testSteps.rows = parseTable(text);
+            else if (lower === 'expected outcome') tc.expectedOutcome = parseList(text);
+            else if (lower === 'reviewer comments') tc.reviewerComments = text;
+        }
+
+        function parseMetadata(tc, text) {
+            const lines = text.split('\n');
+            for (const line of lines) {
+                const match = line.match(/^\|\s*(.+?)\s*\|\s*(.+?)\s*\|$/);
+                if (!match) continue;
+                const field = match[1].toLowerCase();
+                const value = match[2].trim();
+                if (field === 'title') tc.title = value;
+                else if (field === 'priority') tc.priority = value;
+                else if (field === 'automatable') tc.automatable = value;
+                else if (field === 'status') tc.status = value;
+                else if (field === 'review status') tc.reviewStatus = value;
+                else if (field === 'reviewer') tc.reviewer = value;
+                else if (field === 'review date') tc.reviewDate = value;
+            }
+        }
+
+        function parseTable(text) {
+            const lines = text.split('\n').filter(l => l.trim());
+            if (lines.length < 2) return [];
+            const rows = [];
+            for (let i = 2; i < lines.length; i++) {
+                if (!lines[i].includes('|')) continue;
+                const cells = lines[i].split('|').map(c => c.trim()).filter((c, idx) => idx > 0 && idx < lines[i].split('|').length - 1);
+                if (cells.length > 0) rows.push(cells);
+            }
+            return rows;
+        }
+
+        function parseList(text) {
+            const lines = text.split('\n');
+            const items = [];
+            for (const line of lines) {
+                const trimmed = line.trim();
+                let item = null;
+                if (trimmed.startsWith('*') || trimmed.startsWith('-')) {
+                    item = trimmed.substring(1).trim();
+                } else if (/^\d+\.\s+/.test(trimmed)) {
+                    item = trimmed.replace(/^\d+\.\s+/, '').trim();
+                }
+                if (item) items.push(item);
+            }
+            return items;
+        }
+
+        function getFilteredCases() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            return testCases.filter(tc => {
+                const matchSearch = tc.id.toLowerCase().includes(search) || tc.title.toLowerCase().includes(search);
+                const matchPriority = !activeFilters.priority || tc.priority === activeFilters.priority;
+                const matchStatus = !activeFilters.status || tc.reviewStatus === activeFilters.status;
+                const matchCategory = !activeFilters.category || tc.category === activeFilters.category;
+                return matchSearch && matchPriority && matchStatus && matchCategory;
+            });
+        }
+
+        function renderTable() {
+            const body = document.getElementById('tableBody');
+            const filtered = getFilteredCases();
+
+            if (filtered.length === 0) {
+                body.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📄</div><h3>No Test Cases Found</h3><p>Try adjusting your search or filters.</p></div>';
+                return;
+            }
+
+            body.innerHTML = filtered.map((tc, idx) => {
+                const priorityClass = `priority-${tc.priority.toLowerCase()}`;
+                const statusClass = `status-${tc.reviewStatus.toLowerCase().replace(' ', '-')}`;
+                const categoryClass = `category-${tc.category.toLowerCase().replace(/ /g, '-')}`;
+                
+                return `
+                    <div class="table-row" onclick="openDetailsModal('${tc.id}', event)">
+                        <div class="checkbox-cell" onclick="event.stopPropagation();">
+                            <input type="checkbox" ${tc.selected ? 'checked' : ''} 
+                                   onchange="toggleSelection('${tc.id}')">
+                        </div>
+                        <div class="col-num">${idx + 1}</div>
+                        <div class="col-id">${tc.id}</div>
+                        <div class="col-title" title="${tc.title}">${tc.title}</div>
+                        <div><span class="category-badge ${categoryClass}">${tc.category}</span></div>
+                        <div><span class="priority-badge ${priorityClass}">${tc.priority}</span></div>
+                        <div><span class="status-badge ${statusClass}">${tc.reviewStatus}</span></div>
+                        <div class="actions-cell" onclick="event.stopPropagation();">
+                            <button class="btn btn-xs btn-success" onclick="updateStatus('${tc.id}', 'Approved')">Approve</button>
+                            <button class="btn btn-xs btn-danger" onclick="updateStatus('${tc.id}', 'Rejected')">Reject</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateStatus(tcId, status) {
+            const tc = testCases.find(t => t.id === tcId);
+            if (tc) {
+                tc.reviewStatus = status;
+                tc.reviewDate = new Date().toISOString().split('T')[0];
+                updateStats();
+                renderTable();
+                document.getElementById('downloadBtn').disabled = false;
+            }
+        }
+
+        function bulkUpdateSelected(status) {
+            const selected = testCases.filter(tc => tc.selected);
+            selected.forEach(tc => {
+                tc.reviewStatus = status;
+                tc.reviewDate = new Date().toISOString().split('T')[0];
+                tc.selected = false;
+            });
+            updateStats();
+            renderTable();
+            document.getElementById('downloadBtn').disabled = false;
+        }
+
+        function pushToAzure() {
+            const approved = testCases.filter(tc => tc.reviewStatus === 'Approved');
+            if (approved.length === 0) {
+                alert('No approved test cases to push. Please approve at least one test case first.');
+                return;
+            }
+            const summary = `Ready to push ${approved.length} approved test cases to Azure DevOps\n\nApproved cases:\n${approved.map(tc => `- ${tc.id}: ${tc.title}`).join('\n')}`;
+            alert(summary + '\n\n[Integration with Azure DevOps API would happen here]');
+            console.log('Pushing to Azure DevOps:', approved);
+        }
+
+        function resetAllSelections() {
+            testCases.forEach(tc => tc.selected = false);
+            renderTable();
+        }
+
+        function toggleSelection(tcId) {
+            const tc = testCases.find(t => t.id === tcId);
+            if (tc) {
+                tc.selected = !tc.selected;
+                updateStats();
+            }
+        }
+
+        function toggleSelectAll() {
+            const checkbox = document.getElementById('selectAllCheckbox');
+            const filtered = getFilteredCases();
+            filtered.forEach(tc => tc.selected = checkbox.checked);
+            updateStats();
+            renderTable();
+        }
+
+        function openDetailsModal(tcId, event) {
+            if (event && event.target.closest('.actions-cell')) return;
+            currentEditingId = tcId;
+            const tc = testCases.find(t => t.id === tcId);
+            if (!tc) return;
+
+            document.getElementById('modalTitle').textContent = `${tc.id} - ${tc.title}`;
+            document.getElementById('detailTitle').value = tc.title;
+            document.getElementById('detailPriority').value = tc.priority;
+            document.getElementById('detailCategory').value = tc.category;
+            document.getElementById('detailDescription').value = tc.description;
+            document.getElementById('detailPreconditions').value = tc.preconditions.join('\n');
+            document.getElementById('detailExpectedOutcome').value = tc.expectedOutcome.join('\n');
+            document.getElementById('detailReviewerComments').value = tc.reviewerComments;
+            document.getElementById('detailReviewStatus').value = tc.reviewStatus;
+
+            // Populate test data table
+            const testDataBody = document.getElementById('detailTestDataBody');
+            testDataBody.innerHTML = tc.testData.rows.map((row, idx) => `
+                <tr>
+                    <td><textarea>${row[0] || ''}</textarea></td>
+                    <td><textarea>${row[1] || ''}</textarea></td>
+                </tr>
+            `).join('');
+
+            // Populate test steps table
+            const testStepsBody = document.getElementById('detailTestStepsBody');
+            testStepsBody.innerHTML = tc.testSteps.rows.map((row, idx) => `
+                <tr>
+                    <td><textarea class="step-textarea">${row[0] || ''}</textarea></td>
+                    <td><textarea>${row[1] || ''}</textarea></td>
+                    <td><textarea>${row[2] || ''}</textarea></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('detailsModal').classList.add('active');
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+            currentEditingId = null;
+        }
+
+        function saveDetailsModal() {
+            if (!currentEditingId) return;
+            const tc = testCases.find(t => t.id === currentEditingId);
+            if (!tc) return;
+
+            tc.title = document.getElementById('detailTitle').value;
+            tc.priority = document.getElementById('detailPriority').value;
+            tc.description = document.getElementById('detailDescription').value;
+            tc.preconditions = document.getElementById('detailPreconditions').value.split('\n').filter(p => p.trim());
+            tc.expectedOutcome = document.getElementById('detailExpectedOutcome').value.split('\n').filter(o => o.trim());
+            tc.reviewerComments = document.getElementById('detailReviewerComments').value;
+            tc.reviewStatus = document.getElementById('detailReviewStatus').value;
+
+            // Collect test data from table
+            const testDataRows = [];
+            document.querySelectorAll('#detailTestDataBody tr').forEach(row => {
+                const cells = row.querySelectorAll('textarea');
+                if (cells.length >= 2) {
+                    testDataRows.push([cells[0].value, cells[1].value]);
+                }
+            });
+            tc.testData.rows = testDataRows;
+
+            // Collect test steps from table
+            const testStepsRows = [];
+            document.querySelectorAll('#detailTestStepsBody tr').forEach(row => {
+                const cells = row.querySelectorAll('textarea');
+                if (cells.length >= 3) {
+                    testStepsRows.push([cells[0].value, cells[1].value, cells[2].value]);
+                }
+            });
+            tc.testSteps.rows = testStepsRows;
+
+            updateStats();
+            renderTable();
+            closeDetailsModal();
+            document.getElementById('downloadBtn').disabled = false;
+        }
+
+        function detectCategory(testCase) {
+            const title = testCase.title.toLowerCase();
+            const description = testCase.description.toLowerCase();
+            const fullText = title + ' ' + description;
+
+            if (fullText.includes('role') || fullText.includes('permission') || fullText.includes('access')) return 'Role-Based';
+            if (fullText.includes('edge') || fullText.includes('boundary') || fullText.includes('invalid')) return 'Edge Cases';
+            if (fullText.includes('integration') || fullText.includes('integrate') || fullText.includes('service')) return 'Integration';
+            if (fullText.includes('perform') || fullText.includes('load') || fullText.includes('stress')) return 'Performance';
+            if (fullText.includes('security') || fullText.includes('encrypt') || fullText.includes('auth')) return 'Security';
+            if (fullText.includes('end-to-end') || fullText.includes('e2e') || fullText.includes('workflow')) return 'E2E';
+            return 'Functional';
+        }
+
+        function updateStats() {
+            const total = testCases.length;
+            const accepted = testCases.filter(tc => tc.reviewStatus === 'Approved').length;
+            const rejected = testCases.filter(tc => tc.reviewStatus === 'Rejected').length;
+            const pending = testCases.filter(tc => tc.reviewStatus === 'Pending').length;
+            const needsChanges = testCases.filter(tc => tc.reviewStatus === 'Needs Changes').length;
+            const selected = testCases.filter(tc => tc.selected).length;
+            const reviewed = accepted + rejected + needsChanges;
+            const progress = total > 0 ? Math.round((reviewed / total) * 100) : 0;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statAccepted').textContent = accepted;
+            document.getElementById('statRejected').textContent = rejected;
+            document.getElementById('statPending').textContent = pending;
+
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressPercent').textContent = progress;
+
+            document.getElementById('sumAccepted').textContent = accepted;
+            document.getElementById('sumRejected').textContent = rejected;
+            document.getElementById('sumPending').textContent = pending;
+            document.getElementById('sumChanges').textContent = needsChanges;
+
+            const hasSelected = selected > 0;
+            document.getElementById('bulkApproveBtn').disabled = !hasSelected;
+            document.getElementById('bulkRejectBtn').disabled = !hasSelected;
+            document.getElementById('bulkApproveBtn').textContent = `✓ Approve Selected (${selected})`;
+            document.getElementById('bulkRejectBtn').textContent = `✗ Reject Selected (${selected})`;
+        }
+
+        function downloadMarkdown() {
+            let markdown = '# Test Cases: AB#735316 - API Consumer and Scope Management\n\n---\n\n';
+
+            testCases.forEach((tc) => {
+                markdown += `# ${tc.id}\n\n`;
+                markdown += `## Metadata\n\n| Field | Value |\n| --- | --- |\n`;
+                markdown += `| Test Case ID | ${tc.id} |\n`;
+                markdown += `| Title | ${tc.title} |\n`;
+                markdown += `| Priority | ${tc.priority} |\n`;
+                markdown += `| Automatable | ${tc.automatable} |\n`;
+                markdown += `| Status | ${tc.status} |\n`;
+                markdown += `| Review Status | ${tc.reviewStatus} |\n`;
+                markdown += `| Reviewer | ${tc.reviewer} |\n`;
+                markdown += `| Review Date | ${tc.reviewDate} |\n\n`;
+
+                markdown += `## Description\n\n${tc.description}\n\n`;
+                
+                if (tc.preconditions.length > 0) {
+                    markdown += `## Preconditions\n\n${tc.preconditions.map((p, i) => `${i + 1}. ${p}`).join('\n')}\n\n`;
+                }
+
+                if (tc.testData.rows.length > 0) {
+                    markdown += `## Test Data\n\n| ${tc.testData.headers.join(' | ')} |\n| ${tc.testData.headers.map(() => '---').join(' | ')} |\n`;
+                    tc.testData.rows.forEach(row => {
+                        markdown += `| ${row.join(' | ')} |\n`;
+                    });
+                    markdown += `\n`;
+                }
+
+                if (tc.testSteps.rows.length > 0) {
+                    markdown += `## Test Steps\n\n| ${tc.testSteps.headers.join(' | ')} |\n| ${tc.testSteps.headers.map(() => '---').join(' | ')} |\n`;
+                    tc.testSteps.rows.forEach(row => {
+                        markdown += `| ${row.join(' | ')} |\n`;
+                    });
+                    markdown += `\n`;
+                }
+
+                if (tc.expectedOutcome.length > 0) {
+                    markdown += `## Expected Outcome\n\n${tc.expectedOutcome.map((o, i) => `${i + 1}. ${o}`).join('\n')}\n\n`;
+                }
+
+                markdown += `## Reviewer Comments\n\n${tc.reviewerComments}\n\n`;
+                markdown += `---\n\n`;
+            });
+
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `AB735316-testcases-updated-${new Date().toISOString().split('T')[0]}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function clearAll() {
+            testCases = [];
+            activeFilters.priority = '';
+            activeFilters.status = '';
+            activeFilters.category = '';
+            document.getElementById('markdownInput').value = '';
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('downloadBtn').disabled = true;
+            document.getElementById('priorityFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('categoryFilter').value = '';
+        }
+
+        // Make updateStatus global
+        window.updateStatus = updateStatus;
+    </script>
+</body>
+</html>

@@ -209,8 +209,8 @@ Step 23: Add Automation PR Comments
 ├─ Suggests improvements
 └─ Status: AWAITING_DEV_RESPONSE
 
-Step 24: Developer Addresses Feedback
-├─ Developer fixes test issues
+Step 24: Tester Addresses Feedback
+├─ Tester fixes test issues
 ├─ Pushes changes
 ├─ Loop back to Step 22 until approved
 └─ Status: AUTOMATION_QUALITY_APPROVED
@@ -258,6 +258,7 @@ Step 28: Feature Cycle Complete
 
 ```
 project-root/
+      Requirement from PO - Requirement Analysis Skill 
 │
 ├── 📄 Constitution.md                 ← Centralized (one-time)
 │   ├─ Governing principles
