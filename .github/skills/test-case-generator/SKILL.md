@@ -129,24 +129,23 @@ From Specification:
 #### Test Case Template (Enterprise Format)
 
 ```markdown
-# TC-AB735316-001
+# TC-FE735316-001
 
 ## Metadata
 
 | Field         | Value                                      |
 | ------------- | ------------------------------------------ |
-| Test Case ID  | TC-AB735316-001                            |
-| Title         | [Test Case Title]                          |
+| Test Case ID  | TC-FE735316-001                            |
 | Priority      | High/Medium/Low                            |
 | Automatable   | Yes/No                                     |
 | Status        | Draft                                      |
-| Review Status | Pending/Reviewed/Approved                  |
-| Reviewer      | [QA Lead Name]                             |
-| Review Date   | [YYYY-MM-DD]                               |
+| Review Status | Pending                                    |
+| Reviewer      |                                            |
+| Review Date   |                                            |
 
-## Description
+## Title
 
-[Clear, concise description of what is being tested and why. Include context about which feature component is being validated.]
+[Test Case Title - Persona can <action> <condition> (8-20 words, business-oriented)]
 
 ## Preconditions
 
@@ -164,42 +163,52 @@ From Specification:
 
 ## Test Steps
 
-| Step | Action                              | Expected Result                      |
-| ---- | ----------------------------------- | ------------------------------------ |
-| 1    | [What the tester does]              | [What should happen]                 |
-| 2    | [What the tester does]              | [What should happen]                 |
-| 3    | [What the tester does]              | [What should happen]                 |
-
-## Expected Outcome
-
-* [Success criterion 1]
-* [Success criterion 2]
-* [Success criterion 3]
+| Step | Action                                                 | Expected Result                                                                    |
+| ---- | ------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| 1    | [Persona] [verb] [what they do]                        | [Specific, validation-oriented outcome describing business impact or verification] |
+| 2    | [Persona] [verb] [what they do]                        | [Specific, validation-oriented outcome]                                             |
+| 3    | [Persona] [verb] [what they do]                        | [Specific, validation-oriented outcome]                                             |
 
 ## Reviewer Comments
 
 *To be completed during review.*
 ```
 
-**Note for Non-Automatable Tests:** Add `Reason: [explanation why automation is not feasible]` in Metadata table
+**Note for Non-Automatable Tests:** Add `Reason: [explanation why automation is not feasible]` as a new row in the Metadata table
 
 #### Naming Convention for Test Cases
 
-**Format:** `[Persona/Role] [Business Action] - [Expected Outcome]`
+**Format:** `<Persona> can <action> <under condition>`
+
+**Length:** 8-20 words
+
+**Characteristics:**
+- Starts with persona/user role (e.g., "Customer Integration Manager", "System API Manager", "Read-Only User", "Admin System Administrator", "Support Lead", "System Security Manager", "API Consumer")
+- Includes capability verb "can"
+- Describes the business action clearly
+- Includes conditional context when relevant
+- Uses business-oriented language, not technical jargon
+- No forbidden words: submit, test, validate, check, verify, ensure (as main verbs)
 
 **Examples:**
-- Admin creates a new safeguard class and sees it in the master list
-- PHA User imports XML study with mismatched risk matrix and receives error
-- System processes 1000 concurrent import requests without performance degradation
-- Unauthenticated user attempts to upload XML file and access is denied
-- User with view-only role cannot edit imported study properties
+✅ "Customer Integration Manager can register a new integration client with valid inputs"
+✅ "System API Manager can validate scopes with latency under 5ms"
+✅ "Read-Only User cannot create new integration clients"
+✅ "API Consumer can receive rate limit information in response headers"
+✅ "Support Lead can rotate customer credentials on customer request"
 
-**Rules:**
-- Use present tense
-- Include user/role at the beginning
-- Describe the action and expected outcome
-- No technical jargon
-- Clear business context
+❌ "Test client registration" (no persona, vague action)
+❌ "Verify API response validation" (technical jargon)
+❌ "Submit new integration client request" (forbidden verb)
+
+**Persona List (7 Standard Personas):**
+1. Customer Integration Manager
+2. System API Manager
+3. API Consumer
+4. Read-Only User
+5. Admin System Administrator
+6. Support Lead
+7. System Security Manager
 
 ---
 
@@ -209,22 +218,21 @@ From Specification:
 #### Document Structure:
 
 ```markdown
-# Test Cases: AB#[FEATURE_ID] - [Feature Title]
+# Test Cases: FE#[FEATURE_ID] - [Feature Title]
 
 ---
 
-# [CATEGORY 1: Descriptive Name]
+# FUNCTIONAL TEST CASES
 
 ---
 
-# TC-AB[FEATURE_ID]-001
+# TC-FE[FEATURE_ID]-001
 
 ## Metadata
 
 | Field         | Value                     |
 | ------------- | ------------------------- |
-| Test Case ID  | TC-AB[FEATURE_ID]-001     |
-| Title         | [Test Case Title]         |
+| Test Case ID  | TC-FE[FEATURE_ID]-001     |
 | Priority      | High/Medium/Low           |
 | Automatable   | Yes/No                    |
 | Status        | Draft                     |
@@ -232,9 +240,9 @@ From Specification:
 | Reviewer      |                           |
 | Review Date   |                           |
 
-## Description
+## Title
 
-[Clear narrative of what is being tested and why]
+[Persona] can [action] [condition]
 
 ## Preconditions
 
@@ -250,16 +258,10 @@ From Specification:
 
 ## Test Steps
 
-| Step | Action                              | Expected Result                      |
-| ---- | ----------------------------------- | ------------------------------------ |
-| 1    | [Action description]                | [Expected result]                    |
-| 2    | [Action description]                | [Expected result]                    |
-
-## Expected Outcome
-
-* [Outcome criterion 1]
-* [Outcome criterion 2]
-* [Outcome criterion 3]
+| Step | Action                                          | Expected Result                                  |
+| ---- | ----------------------------------------------- | ------------------------------------------------ |
+| 1    | [Persona] [verb] [details]                      | [Specific, validation-oriented outcome]          |
+| 2    | [Persona] [verb] [details]                      | [Specific, validation-oriented outcome]          |
 
 ## Reviewer Comments
 
@@ -267,60 +269,113 @@ From Specification:
 
 ---
 
-# TC-AB[FEATURE_ID]-002
+# TC-FE[FEATURE_ID]-002
 
 [Repeat metadata template for each test case]
-```
-
-#### Key Format Features:
-- **No checkboxes** in structured format
-- **Individual test case sections** with level-2 headings per category, level-1 heading per test
-- **Metadata table** with consistent fields (ID, Title, Priority, Automatable, Status, Review Status, Reviewer, Review Date)
-- **Preconditions** as numbered list
-- **Test Data** as structured table
-- **Test Steps** as three-column table (Step | Action | Expected Result)
-- **Expected Outcome** as IMPORT
-**Goal:** Prepare test cases for Azure DevOps import with proper formatting
-
-#### Test Case Categorization for Azure DevOps:
-
-**Categories (7 Standard Types):**
-1. **Functional Tests** - Core feature functionality (positive & negative)
-2. **Role-Based & Access Control** - Permission validation and user roles
-3. **Edge Cases & Exploratory** - Boundary conditions and special scenarios
-4. **Integration Tests** - Multi-service and component interactions
-5. **Performance & Concurrency** - Load, latency, and concurrent operations
-6. **Security & Accessibility** - Security hardening and compliance
-7. **End-to-End (E2E)** - Complete user workflows
-
-#### Metadata Mapping for Azure DevOps:
-
-| Skill Field | Azure DevOps Field |
-| --- | --- |
-| Test Case ID | Work Item ID (auto-generated) |
-| Title | Title |
-| Priority | Priority (1=High, 2=Medium, 3=Low) |
-| Status | State (Draft/Active) |
-| Review Status | Custom Field: ReviewStatus |
-| Automatable | Custom Field: Automatable (Yes/No) |
-| Reviewer | Assigned To |
-| Category | Custom Field: TestCategory |
-
-#### Test Steps Format for Azure DevOps:
-- **Action:** Structured step description
-- **Expected Result:** Clear pass/fail criteria
-- Each step in separate row in Test Case Detailsp 1:
-Action: [What the user does]
-Expected Result: [What should happen]
-
-Step 2:
-Action: [What the user does]
-Expected Result: [What should happen]
-```
 
 ---
 
-### PHASE 7: APPLY TESTING BEST PRACTICES
+# ROLE-BASED & ACCESS CONTROL TEST CASES
+
+---
+
+# TC-FE[FEATURE_ID]-023
+
+[Repeat for each category section]
+```
+
+#### File Naming & Test ID Format:
+- **File Name:** `.github/analysis/FE[FEATURE_ID]-testcases.md` (e.g., `FE735316-testcases.md`)
+- **Prefix Convention:** Use `FE#` instead of `AB#` (FE = Feature/Frontend reference)
+- **Test Case IDs:** `TC-FE[FEATURE_ID]-[###]` (e.g., `TC-FE735316-001`, `TC-FE735316-078`)
+- **NO `#` symbol in IDs:** Use `TC-FE735316-001` not `TC-FE#735316-001`
+
+#### Seven Standard Test Categories:
+1. **FUNCTIONAL TEST CASES** (20-25 cases: TC-001 → TC-025)
+   - Positive path (happy path with valid inputs)
+   - Negative scenarios (error handling)
+   - Data validation
+   - Boundary conditions
+
+2. **ROLE-BASED & ACCESS CONTROL TEST CASES** (10-15 cases: TC-026 → TC-040)
+   - Permission enforcement
+   - Multi-tenant isolation
+   - Role-specific workflows
+   - Unauthorized access prevention
+
+3. **EDGE CASES & EXPLORATORY TEST CASES** (12-18 cases: TC-041 → TC-058)
+   - Unicode and special character handling
+   - Large data processing
+   - Concurrent request scenarios
+   - Recovery and retry logic
+
+4. **INTEGRATION TEST CASES** (10-16 cases: TC-059 → TC-074)
+   - Multi-service workflows
+   - Data consistency across services
+   - Audit logging and event tracking
+   - Backend integration scenarios
+
+5. **PERFORMANCE & CONCURRENCY TEST CASES** (6-10 cases: TC-075 → TC-084)
+   - Latency SLA validation
+   - Throughput and load testing
+   - Concurrent client handling
+   - Memory and resource stability
+
+6. **SECURITY & ACCESSIBILITY TEST CASES** (4-8 cases: TC-085 → TC-092)
+   - Signature validation
+   - Secret protection and masking
+   - Timing attack prevention
+   - WCAG accessibility compliance
+
+7. **END-TO-END TEST CASES** (2-4 cases: TC-093 → TC-096)
+   - Complete user workflows
+   - Real-world business scenarios
+   - Multi-step processes
+   - Cross-system workflows
+
+#### Metadata Table Structure (7 Required Fields):
+```
+| Field         | Value                     |
+| ------------- | ------------------------- |
+| Test Case ID  | TC-FE[ID]-[###]          |
+| Priority      | High/Medium/Low          |
+| Automatable   | Yes/No                   |
+| Status        | Draft                    |
+| Review Status | Pending                  |
+| Reviewer      | [Name or blank]          |
+| Review Date   | [YYYY-MM-DD or blank]    |
+```
+
+**Additional Field for Non-Automatable Tests:**
+```
+| Reason        | [Explanation why manual] |
+```
+
+#### Section Structure (Required Order):
+1. Metadata table
+2. Title (as section header, not in metadata)
+3. Preconditions (numbered list)
+4. Test Data (structured table)
+5. Test Steps (Step | Action | Expected Result)
+6. Reviewer Comments (placeholder)
+
+#### Expected Result Guidelines:
+- **Specific and Validation-Oriented:**
+  - ❌ Generic: "Request sent", "Form opens", "Data saved", "Status changed"
+  - ✅ Specific: "The API request is transmitted to the APIm gateway", "The form displays with all required fields"
+
+- **Describe Business Outcomes:**
+  - Example: "The newly created integration client appears in the Integration Clients list with status 'Active'"
+
+- **Include Validation Details:**
+  - Example: "The HMAC-SHA256 signature is calculated correctly using the API secret and request payload"
+
+- **System Behavior Clarity:**
+  - Example: "The APIm returns HTTP 403 Forbidden due to subscription entitlement failure"
+
+---
+
+### PHASE 6: PREPARE FOR AZURE DEVOPS IMPORT
 **Goal:** Ensure test cases follow QA governance guidelines
 
 #### E2E Testing Guidelines (from QA Governance):
@@ -333,138 +388,233 @@ Expected Result: [What should happen]
 ✅ Tests respect test pyramid (fewer E2E, more unit/integration)
 ```
 
+### PHASE 6: APPLY TESTING BEST PRACTICES
+**Goal:** Ensure test cases follow QA governance guidelines
+
 #### Quality Checklist:
 ```
-✅ Test case names follow standard convention
+✅ Test case names follow standard convention: [Persona] can [action] [condition]
 ✅ All acceptance criteria covered by test cases
-✅ No "Unspecified" values in test type/category
-✅ Automatable/Not Automatable is justified
-✅ Integration tests are not bundled E2E tests
-✅ Tests are linked to feature
-✅ Clear pass/fail criteria defined
-✅ Automation tools correctly assigned
+✅ All metadata fields properly filled (7 required fields)
+✅ Automatable/Not Automatable is justified with Reason field if manual
+✅ Integration tests are not bundled as E2E tests
+✅ Tests are linked to correct feature (FE#[ID])
+✅ Clear, specific pass/fail criteria defined (no generic statements)
+✅ Expected Results are validation-oriented and business-focused
+✅ Each test case is independent and executable standalone
+✅ Test pyramid respected (more functional, fewer E2E)
 ```
 
-#### Test Pyramid Balance:
+#### Test Distribution Guidelines:
 ```
-Recommended Distribution:
-- Unit Tests: 50% (Dev responsibility)
-- Integration Tests: 30% (Dev/QA)
-- E2E Tests: 20% (QA responsibility)
+Recommended Distribution (78 test cases):
+- Functional Tests: ~25 (32%)
+- Role-Based & Access Control: ~15 (19%)
+- Edge Cases & Exploratory: ~16 (20%)
+- Integration Tests: ~12 (15%)
+- Performance & Concurrency: ~8 (10%)
+- Security & Accessibility: ~4 (5%)
+- End-to-End Tests: ~2 (3%)
+```
 
-For this feature:
-- Functional/Positive/Negative: 40%
-- Integration: 20%
-- E2E: 20%
-- Security/Performance/Edge Cases: 20%
+#### E2E Testing Guidelines (from QA Governance):
+```
+✅ E2E Tests represent real customer scenarios
+✅ E2E tests follow complete workflow (no shortcuts)
+✅ E2E tests include login/authentication
+✅ Tests are named from user perspective (Persona + Action + Outcome)
+✅ Each test is independent and can run standalone
+✅ Tests respect test pyramid (fewer E2E, more functional/integration)
+```
+
+#### E2E Testing Guidelines (from QA Governance):
+```
+✅ E2E Tests represent real customer scenarios
+✅ E2E tests follow complete workflow (no shortcuts)
+✅ E2E tests include login/authentication
+✅ Tests are named from user perspective (Persona + Action + Outcome)
+✅ Each test is independent and can run standalone
+✅ Tests respect test pyramid (fewer E2E, more functional/integration)
 ```
 
 ---
 
-### PHASE 8: GENERATE TEST CASES DOCUMENT
-**Goal:** Create finalFINAL TEST CASES DOCUMENT
-**Goal:** Create production-ready testcase.md file with all 78+ test cases
-
-#### File Structure:
-
-```
-.github/analysis/AB[FEATURE_ID]-testcases.md
-
-Contents:
-1. Document Header
-   - Feature ID & Title
-   - Total Test Cases count by category
-   
-2. Test Cases Organized by Category
-   - FUNCTIONAL TEST CASES (22 tests: TC-001 → TC-022)
-   - ROLE-BASED & ACCESS CONTROL (12 tests: TC-023 → TC-034)
-   - EDGE CASES & EXPLORATORY (16 tests: TC-035 → TC-050)
-   - INTEGRATION TESTS (14 tests: TC-051 → TC-064)
-   - PERFORMANCE & CONCURRENCY (8 tests: TC-065 → TC-072)
-   - SECURITY & ACCESSIBILITY (4 tests: TC-073 → TC-076)
-   - END-TO-END TESTS (2 tests: TC-077 → TC-078)
-   
-3. Each Test Case Contains:
-   - Metadata table (ID, Title, Priority, Automatable, Status, Review Status, Reviewer, Review Date)
-   - Description section
-   - Preconditions (numbered list)
-   - Test Data (structured table)
-   - Test Steps (table: Step | Action | Expected Result)
-   - Expected Outcome (bullet points)
-   - Reviewer Comments section
-   - For Non-Automatable: Reason field explaining why
-```
-
-#### Test Case Distribution Template:
-```
-| Category | Range | Count | Notes |
-|----------|-------|-------|-------|
-| Functional Tests | TC-001 → TC-022 | 22 | Happy path, negative scenarios, validation |
-| Role-Based & Access | TC-023 → TC-034 | 12 | Permission enforcement, multi-tenant |
-| Edge Cases | TC-035 → TC-050 | 16 | Boundary conditions, special scenarios |
-| Integration | TC-051 → TC-064 | 14 | Multi-service workflows, backend sync |
-| Performance | TC-065 → TC-072 | 8 | Latency SLA, throughput, concurrency |
-| Security & Accessibility | TC-073 → TC-076 | 4 | HMAC validation, WCAG compliance |
-| E2E | TC-077 → TC-078 | 2 | Complete user workflows |
-| **TOTAL** | | **78** | **All test cases with full metadata** |
-
----
-REVIEW AND APPROVAL
+### PHASE 7: REVIEW AND APPROVAL
 **Goal:** Implement enterprise review and approval workflow
 
 #### Review Checklist (for QA Lead):
 
 **Completeness:**
 - [ ] All acceptance criteria covered by test cases?
-- [ ] All 78 test cases complete with full metadata?
+- [ ] All ~78 test cases complete with full metadata?
 - [ ] No critical user scenarios missing?
 - [ ] Test cases organized into 7 categories?
-- [ ] Each test has: Description, Preconditions, Test Data, Steps, Expected Outcome?
+- [ ] Each test has: Metadata, Title, Preconditions, Test Data, Steps, Reviewer Comments?
 
 **Quality:**
 - [ ] Test steps are clear, numbered, and executable?
-- [ ] Expected results are testable (pass/fail)?
-- [ ] No ambiguous or vague test cases?
-- [ ] Automation decisions justified with reasons?
-- [ ] Non-automatable tests have Reason field?
+- [ ] Expected results are specific and testable (pass/fail)?
+- [ ] No ambiguous, vague, or generic test cases?
+- [ ] Automation decisions justified with Reason field if manual?
+- [ ] Non-automatable tests have Reason field in metadata?
 
-**Compliance:**
-- [ ] E2E tests are true end-to-end workflows?
-- [ ] Test pyramid respected (fewer E2E, more functional)?
-- [ ] Linked to correct feature (AB#[ID])?
-- [ ] Priority levels appropriate (High/Medium/Low)?
-- [ ] Metadata table format consistent across all tests?
-
-**Enterprise Format:**
-- [ ] All test IDs follow format: TC-AB[ID]-[###]?
-- [ ] No "#" symbol in test case IDs?
-- [ ] Metadata table has 8 fields (ID, Title, Priority, Automatable, Status, Review Status, Reviewer, Review Date)?
+**Format & Convention:**
+- [ ] Test names follow: "[Persona] can [action] [condition]"?
+- [ ] All test IDs follow format: TC-FE[ID]-[###] (e.g., TC-FE735316-001)?
+- [ ] NO `#` symbol in test case IDs?
+- [ ] Metadata table has 7 fields (ID, Priority, Automatable, Status, Review Status, Reviewer, Review Date)?
 - [ ] Test steps table has 3 columns (Step | Action | Expected Result)?
-- [ ] Expected Outcome as bullet points?
+- [ ] Title as section header (not in metadata)?
 
 **Azure DevOps Readiness:**
 - [ ] All test cases ready for import?
 - [ ] Metadata can be directly mapped to Azure fields?
-- [ ] Relationships to feature established?
+- [ ] Relationships to feature FE#[ID] established?
 - [ ] Ready for next phase (automation/execution)?
 
 #### Review Status Workflow:
 ```
-DRAFT → [QA LeOUTPUT AND DELIVERABLES
-**Goal:** Generate production-ready test cases document
+DRAFT → [QA Lead Review] → REVIEWED → [QA Approval] → APPROVED → Ready for Azure Import
+```
+
+---
+
+### PHASE 8: OUTPUT AND DELIVERABLES
+
+---
+
+### PHASE 8: OUTPUT AND DELIVERABLES
+**Goal:** Generate production-ready testcase.md file
 
 **Output File:**
 ```
-File: .github/analysis/AB[FEATURE_ID]-testcases.md
+File: .github/analysis/FE[FEATURE_ID]-testcases.md
+Example: .github/analysis/FE735316-testcases.md
 Format: Markdown with structured metadata tables
-Contains: All 78+ test cases organized by category
-Status: DRAFT (awaiting QA lead review)
-Size: Approximately 150KB+ (comprehensive enterprise format)
+Contains: All 78+ test cases organized by 7 categories
+Status: DRAFT (awaiting QA lead review and approval)
+Size: Approximately 100-200KB (comprehensive enterprise format)
 ```
 
 **Deliverables:**
 1. ✅ Single testcase.md file with all test cases
 2. ✅ Organized by 7 test categories (Functional, Role-Based, Edge Cases, Integration, Performance, Security, E2E)
+3. ✅ Each test with full metadata: ID, Priority, Automatable, Status, Review Status, Reviewer, Review Date
+4. ✅ Complete documentation: Title, Preconditions, Test Data, Steps, Reviewer Comments
+5. ✅ Non-automatable tests have Reason field in metadata
+6. ✅ Ready for QA review and approval
+7. ✅ Formatted for Azure DevOps import (post-review)
+
+**File Naming Convention:**
+- **Old Format:** `AB[FEATURE_ID]-testcases.md` (deprecated)
+- **New Format:** `FE[FEATURE_ID]-testcases.md` (current standard)
+- **Example:** `FE735316-testcases.md`
+
+---
+
+## Integration with SDD Workflow
+
+**Previous Steps:**
+1. Fetch feature from Azure (fetch-feature-from-azure)
+2. Requirement analysis (requirement-analysis)
+3. Create specification (create-specification-file)
+
+**This Step:** Generate test cases (test-case-generator)
+
+**Next Steps:**
+1. Review & finalize test cases (manual - QA Lead)
+2. Import to Azure DevOps
+3. Create automation tests (automation framework)
+4. Execute tests (CI/CD pipeline)
+
+---
+
+## Best Practices & Guidelines
+
+### Test Case Naming Convention
+✅ **DO:**
+- Use format: "[Persona] can [action] [condition]"
+- Include persona/role in name
+- Be specific and business-oriented
+- Follow 8-20 word guideline
+- Use present tense with capability verb "can"
+- Example: "Customer Integration Manager can register a new integration client with valid inputs"
+
+❌ **DON'T:**
+- Use technical jargon: "Backend validates API response"
+- Use passive voice: "XML file should be validated"
+- Be vague: "Test the import feature"
+- Use forbidden verbs as main action: submit, test, validate, check, verify, ensure
+- Include special characters or abbreviations in name
+
+### Automatable vs. Non-Automatable Guidelines
+
+**Automatable (Yes):**
+- UI workflows with stable element selectors
+- API-based tests and integration workflows
+- Data validation and constraint testing
+- Performance/load/stress tests with automated monitoring
+- Security scanning and automated security tests
+- Positive and negative path testing
+
+**Non-Automatable (No), with Reason field:**
+- Manual security penetration testing and ethical hacking
+- Accessibility testing requiring screen reader verification
+- Visual regression testing requiring human eye review
+- Exploratory testing scenarios (exploratory by nature = manual)
+- Large file handling (>100MB) - resource intensive
+- Browser/OS compatibility edge cases needing manual verification
+- User experience and UI feel assessment
+
+**Example Reason Field:**
+```
+Reason: Large file testing (>1GB) requires manual resource allocation and monitoring
+Reason: Email delivery verification requires access to email system or mailbox
+Reason: Accessibility testing with screen reader requires manual verification
+```
+
+---
+
+## Success Criteria
+
+✅ **Test cases are successful if:**
+- All acceptance criteria covered
+- Each test case is independent and executable
+- Clear, specific pass/fail criteria defined (no generic statements)
+- Naming convention followed: "[Persona] can [action] [condition]"
+- Automation decisions justified
+- No ambiguities or gaps
+- Metadata complete (7 required fields)
+- E2E tests are true end-to-end workflows
+- Test pyramid respected
+- Ready for QA review and approval
+- Formatted for Azure DevOps import
+
+---
+
+## Implementation Notes
+
+- **Single Deliverable:** One testcase.md file containing all test cases (typically 70-80)
+- **File Naming:** Use FE# prefix (not AB#)
+- **Test ID Format:** TC-FE[FEATURE_ID]-[###] (e.g., TC-FE735316-001)
+- **NO `#` in IDs:** Use TC-FE735316-001 (not TC-FE#735316-001)
+- **Consistent Metadata:** All tests have same 7 metadata fields
+- **Non-Automatable Handling:** Document reasons in Reason field of metadata
+- **Status Workflow:** All tests start as Status=Draft, Review Status=Pending
+- **Ready for Next Steps:** After QA approval → Azure DevOps import → Automation implementation → Execution
+
+---
+
+## Notes
+
+- This skill generates test cases in DRAFT mode for QA review
+- Only ONE testcase.md file is created per feature (no additional files)
+- All test cases follow Azure DevOps standard format
+- Expected Results must be specific and validation-oriented (not generic statements)
+- Automation status documented for each test case
+- Test cases can be imported directly to Azure DevOps Test Cases
+- All 7 standard personas should be represented across test cases
+- File prefix FE# indicates feature/frontend reference (standardized from AB# format)
 3. ✅ Each test with full metadata: ID, Title, Priority, Automatable, Status, Review Status, Reviewer, Review Date
 4. ✅ Complete documentation: Description, Preconditions, Test Data, Steps, Expected Outcome, Reviewer Comments
 5. ✅ Ready for QA review and approval
@@ -497,124 +647,3 @@ Status: DRAFT (awaiting QA review)
 - **Security & Accessibility:** 4-6 cases (hardening, compliance)
 - **End-to-End:** 2-3 cases (complete user workflows)
 
-### 4. Coverage Metrics
-- Total test cases count
-- Automatable vs. manual breakdown
-- Priority distribution (High/Medium/Low)
-- Category distribution percentagesass/fail criteria
-- **Automatable** - Yes/No with justification
-- **Tool** - Specific automation tool (if automatable)
-- **Priority** - High/Medium/Low
-- **Status** - Draft/Reviewed/Approved
-
-### 3. Coverage Report
-- Feature acceptance criteria vs. test cases
-- Coverage percentage
-- Gaps identified (if any)
-
-### 4. Automation Summary
-- Count of automatable vs. manual tests
-- Automation tool distribution
-- Timeline estimate for automation
-
----
-
-## Integration with SDD Workflow
-
-**Previous Steps:**
-1. Fetch feature from Azure (fetch-feature-from-azure)
-2. Requirement analysis (requirement-analysis)
-3. Create specification (create-specification-file)
-
-**This Step:** Generate test cases (test-case-generator)
-
-**Next Steps:**
-1. Review & finalize test cases (manual)
-2. Create automation tests (automation framework)
-3. Execute tests (CI/CD pipeline)
-
----
-
-## Best Practices & Guidelines
-
-### Test Case Naming Convention
-✅ **DO:**
-- Use present tense: "User imports XML study..."
-- Include persona/role: "Admin creates...", "PHA User reviews..."
-- Be specific: "XML file with missing nodes is rejected"
-- Follow format: [Persona] [Action] [Expected Outcome]
-
-❌ **DON'T:**
-- Use technical jargon: "Backend validates API response"
-- Use passive voice: "XML file should be validated"
-- Be vague: "Test the import feature"
-- Use abbreviations: "Verify doc import func"
- (happy path, negative cases)
-- API-based tests and integration workflows
-- UI workflows with stable element selectors
-- Data validation and constraint testing
-- Performance/load/stress tests with automated monitoring
-- Security scanning and automated security tests
-
-**Not Automatable (No), with Reason field:**
-- Manual security penetration testing and ethical hacking
-- Accessibility testing requiring screen reader verification
-- Visual regression testing requiring human eye review
-- Exploratory testing scenarios (exploratory by nature = manual)
-- Large file handling (>100MB) - resource intensive
-- Browser/OS compatibility edge cases needing manual verification
-- User experience and UI feel assessment
-- **For each non-automatable test, document the Reason field in metadata**
-
-#### Example Reason Field:
-```
-Reason: Large file testing (>1GB) by test cases
-- Each test case is independent and can execute standalone
-- Clear, testable pass/fail criteria defined
-- Naming convention followed (TC-AB[ID]-[###])
-- Automation decisions justified with Reason field for non-automatable
-- No ambiguities or gaps in preconditions or steps
-- E2E tests are true end-to-end workflows (not integration)
-- Test pyramid respected (more functional, fewer E2E)
-- Complete metadata: Description, Preconditions, Test Data, Steps, Expected Outcome
-- Ready for QA lead review and approval
-- Formatted for Azure DevOps import
-
----
-
-## Implementation Notes
-
-- **Single Deliverable:** One testcase.md file containing all test cases (typically 70-80)
-- **Enterprise Format:** Every test case includes full metadata and structured sections
-- **Typical Distribution:** 70-78 test cases organized into 7 categories
-- **No Test IDs with #:** Use TC-AB735316-001 (not TC-AB#735316-001)
-- **Consistent Metadata:** All tests have same 8 metadata fields
-- **Non-Automatable Handling:** Document reasons in Reason field of metadata
-- **Status Workflow:** All tests start as Status=Draft, Review Status=Pending
-- **Ready for Next Steps:** After QA approval → Azure DevOps import → Automation implementation → Execution
-
----
-
-## Success Criteria
-
-✅ **Test cases are successful if:**
-- All acceptance criteria covered
-- Each test case is independent and executable
-- Clear pass/fail criteria defined
-- Naming convention followed
-- Automation decisions justified
-- No ambiguities or gaps
-- E2E tests are true end-to-end
-- Test pyramid respected
-- Ready for QA review and approval
-
----
-
-## Notes
-
-- This skill generates test cases in DRAFT mode for QA review
-- Only ONE testcase.md file is created (no additional files)
-- All test cases follow Azure DevOps standard format
-- Checkboxes enable QA review workflow
-- Automation status documented for each test case
-- Test cases can be imported directly to Azure DevOps Test Cases
