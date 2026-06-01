@@ -1,4 +1,4 @@
-# SPECIFICATION: AB#735316 - API Consumer and Scope Management
+# SPECIFICATION: FE#735316 - API Consumer and Scope Management
 
 ---
 
@@ -6,7 +6,7 @@
 
 | Property | Value |
 |----------|-------|
-| **Feature ID** | AB#735316 |
+| **Feature ID** | FE#735316 |
 | **Feature Title** | [APIm] 6 API Consumer and Scope Management |
 | **Project** | ART - New SaaS |
 | **State** | Closed |
