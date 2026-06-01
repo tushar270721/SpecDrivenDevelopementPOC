@@ -1,7 +1,8 @@
 /**
- * Backend Server for Test Case Review Portal
+ * Test Case Review Portal - Unified Backend Server
  * 
- * Purpose: Handle requests from index.html and execute Azure DevOps integration
+ * Purpose: Express.js backend server + Azure DevOps integration in one file
+ * Uses mcp-config.js for Azure DevOps configuration
  * 
  * Usage:
  *   npm install express
@@ -13,7 +14,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { execSync } = require('child_process');
+const config = require('./.github/config/azure-mcp/mcp-config.js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,6 +29,107 @@ app.use(express.static(path.resolve(__dirname)));
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running', timestamp: new Date().toISOString() });
 });
+
+/**
+ * Create a work item (test case) in Azure DevOps
+ */
+async function createTestCaseWorkItem(testCase) {
+  try {
+    const url = `${config.azureDevOps.orgUrl}/${encodeURIComponent(config.azureDevOps.project)}/_apis/wit/workitems/${"Test Case"}?api-version=${config.azureDevOps.apiVersion}`;
+
+    const body = [
+      {
+        op: "add",
+        path: "/fields/System.Title",
+        value: testCase.title
+      },
+      {
+        op: "add",
+        path: "/fields/System.Description",
+        value: testCase.description || testCase.title
+      },
+      {
+        op: "add",
+        path: "/fields/Microsoft.VSTS.Common.Priority",
+        value: testCase.priority === 'High' ? 1 : testCase.priority === 'Medium' ? 2 : 3
+      },
+      {
+        op: "add",
+        path: "/fields/System.State",
+        value: "Ready"
+      },
+      {
+        op: "add",
+        path: "/fields/Microsoft.VSTS.TCM.AutomatedTestName",
+        value: testCase.id
+      },
+      {
+        op: "add",
+        path: "/fields/Microsoft.VSTS.TCM.AutomationStatus",
+        value: testCase.automatable === 'Yes' ? 'Automated' : 'Manual'
+      }
+    ];
+
+    // Add custom fields if they exist
+    if (testCase.category) {
+      body.push({
+        op: "add",
+        path: "/fields/System.Tags",
+        value: testCase.category
+      });
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        ...config.getAuthHeader(),
+        'Content-Type': 'application/json-patch+json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to create work item: ${response.status} ${errorText}`);
+    }
+
+    const workItem = await response.json();
+    return workItem;
+  } catch (error) {
+    console.error(`❌ Error creating test case work item: ${error.message}`);
+    throw error;
+  }
+}
+
+/**
+ * Link a work item as a child of another work item
+ */
+async function linkWorkItems(parentId, childId, linkType = 'System.LinkTypes.Hierarchy-Forward') {
+  try {
+    const url = `${config.azureDevOps.orgUrl}/${encodeURIComponent(config.azureDevOps.project)}/_apis/wit/workitems/${parentId}/relations?api-version=${config.azureDevOps.apiVersion}`;
+
+    const body = {
+      rel: linkType,
+      url: `${config.azureDevOps.orgUrl}/${encodeURIComponent(config.azureDevOps.project)}/_apis/wit/workitems/${childId}`
+    };
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: config.getAuthHeader(),
+      body: JSON.stringify(body)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to link work items: ${response.status} ${errorText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`❌ Error linking work items: ${error.message}`);
+    throw error;
+  }
+}
 
 /**
  * Push test cases to Azure DevOps
@@ -64,65 +166,103 @@ app.post('/api/push-test-cases', async (req, res) => {
     console.log(`   User Story: ${userStoryId}`);
     console.log(`   Test Cases: ${testCases.length}\n`);
 
-    // Build command to execute push-test-cases.js
-    const scriptPath = path.resolve(__dirname, '.github/config/azure-mcp/push-test-cases.js');
-    const testCasesJson = JSON.stringify(testCases).replace(/"/g, '\\"');
-    
-    // Execute the script
-    const command = `node "${scriptPath}" --userstory "${userStoryId}" --testcases '${JSON.stringify(testCases)}'`;
-    
-    console.log('🚀 Executing push script...\n');
-    
-    try {
-      // Execute synchronously to capture output
-      const output = execSync(command, {
-        encoding: 'utf8',
-        cwd: __dirname,
-        stdio: 'pipe'
-      });
-
-      console.log('Script Output:\n', output);
-
-      // Read results from file (written by push-test-cases.js)
-      const resultsPath = path.resolve(__dirname, '.github/analysis/push-test-cases-results.json');
-      let results = {};
-      
-      if (fs.existsSync(resultsPath)) {
-        const resultsContent = fs.readFileSync(resultsPath, 'utf8');
-        results = JSON.parse(resultsContent);
-      }
-
-      res.json({
-        success: true,
-        message: `Successfully pushed ${testCases.length} test case(s) to Azure DevOps`,
-        userStoryId,
-        results: results,
-        timestamp: new Date().toISOString()
-      });
-    } catch (execError) {
-      console.error('Execution Error:', execError.message);
-      
-      // Return error but with any partial results
-      const resultsPath = path.resolve(__dirname, '.github/analysis/push-test-cases-results.json');
-      let results = {};
-      
-      if (fs.existsSync(resultsPath)) {
-        try {
-          const resultsContent = fs.readFileSync(resultsPath, 'utf8');
-          results = JSON.parse(resultsContent);
-        } catch (e) {
-          // Ignore JSON parse errors
-        }
-      }
-
-      res.status(500).json({
+    // Parse user story ID
+    const storyIdMatch = userStoryId.match(/#?(\d+)/);
+    if (!storyIdMatch) {
+      return res.status(400).json({
         success: false,
-        error: 'Failed to push test cases',
-        message: execError.message,
-        results: results,
-        timestamp: new Date().toISOString()
+        error: 'Invalid user story ID format',
+        message: `Expected format: FE#735316 or 735316. Got: ${userStoryId}`
       });
     }
+    const parentWorkItemId = parseInt(storyIdMatch[1]);
+
+    const results = {
+      successful: [],
+      failed: [],
+      linked: [],
+      linkFailed: []
+    };
+
+    // Create work item for each test case
+    for (const testCase of testCases) {
+      try {
+        console.log(`📝 Creating work item for ${testCase.id}: ${testCase.title}`);
+        const workItem = await createTestCaseWorkItem(testCase);
+        results.successful.push({
+          testCaseId: testCase.id,
+          workItemId: workItem.id,
+          title: testCase.title
+        });
+        console.log(`✅ Created work item #${workItem.id}\n`);
+
+        // Link to parent user story
+        try {
+          console.log(`🔗 Linking ${testCase.id} to User Story ${parentWorkItemId}`);
+          await linkWorkItems(parentWorkItemId, workItem.id);
+          results.linked.push({
+            testCaseId: testCase.id,
+            parentId: parentWorkItemId,
+            childId: workItem.id
+          });
+          console.log(`✅ Successfully linked\n`);
+        } catch (linkError) {
+          console.error(`⚠️ Warning: Could not link work items: ${linkError.message}\n`);
+          results.linkFailed.push({
+            testCaseId: testCase.id,
+            parentId: parentWorkItemId,
+            childId: workItem.id,
+            error: linkError.message
+          });
+        }
+      } catch (error) {
+        console.error(`❌ Failed to process ${testCase.id}: ${error.message}\n`);
+        results.failed.push({
+          testCaseId: testCase.id,
+          title: testCase.title,
+          error: error.message
+        });
+      }
+    }
+
+    // Print summary
+    console.log('\n' + '='.repeat(60));
+    console.log('📊 PUSH SUMMARY');
+    console.log('='.repeat(60));
+    console.log(`✅ Successful: ${results.successful.length}/${testCases.length}`);
+    console.log(`🔗 Linked: ${results.linked.length}/${testCases.length}`);
+    console.log(`⚠️  Link Warnings: ${results.linkFailed.length}`);
+    console.log(`❌ Failed: ${results.failed.length}/${testCases.length}`);
+
+    if (results.successful.length > 0) {
+      console.log('\n✅ Successfully Created Work Items:');
+      results.successful.forEach(item => {
+        console.log(`   - #${item.workItemId}: ${item.testCaseId} - ${item.title}`);
+      });
+    }
+
+    if (results.failed.length > 0) {
+      console.log('\n❌ Failed Work Items:');
+      results.failed.forEach(item => {
+        console.log(`   - ${item.testCaseId}: ${item.error}`);
+      });
+    }
+
+    // Save results to file
+    const resultsPath = path.resolve(__dirname, '.github/analysis/push-test-cases-results.json');
+    fs.mkdirSync(path.dirname(resultsPath), { recursive: true });
+    fs.writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+    console.log('\n💾 Results saved to: .github/analysis/push-test-cases-results.json\n');
+
+    // Return response
+    res.json({
+      success: results.failed.length === 0,
+      message: `Successfully pushed ${results.successful.length} test case(s) to Azure DevOps`,
+      userStoryId,
+      results: results,
+      timestamp: new Date().toISOString()
+    });
+
   } catch (error) {
     console.error('Request Error:', error);
     res.status(500).json({
