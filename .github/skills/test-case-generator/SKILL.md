@@ -174,6 +174,31 @@ From Specification:
 *To be completed during review.*
 ```
 
+**CRITICAL: UI Parser Compatibility Requirements**
+
+**Markdown Heading Levels (MUST be followed for UI portal integration):**
+- ✅ Test Case ID heading: Use `#` (H1 heading) → `# TC-FE735316-001`
+- ✅ Section headers: Use `##` (H2 heading) → `## Metadata`, `## Title`, `## Test Steps`
+- ❌ INCORRECT: Using `##` for test case ID → `## TC-FE735316-001` (will cause "No test cases found" error)
+
+**Section Order & Structure (MUST be followed in exact sequence):**
+1. `# TC-FE[FEATURE_ID]-###` (H1 heading - test case identifier)
+2. Blank line
+3. `## Metadata` (H2 heading - section header)
+4. Blank line
+5. Metadata table (with 7 fields: ID, Priority, Automatable, Status, Review Status, Reviewer, Review Date)
+6. Blank line
+7. `## Title` (H2 heading)
+8. Title text
+9. `## Preconditions` (H2 heading)
+10. Preconditions list
+11. `## Test Data` (H2 heading)
+12. Test data table
+13. `## Test Steps` (H2 heading)
+14. Test steps table
+15. `## Reviewer Comments` (H2 heading)
+16. Reviewer comments placeholder
+
 **Note for Non-Automatable Tests:** Add `Reason: [explanation why automation is not feasible]` as a new row in the Metadata table
 
 #### Naming Convention for Test Cases
@@ -212,6 +237,115 @@ From Specification:
 
 ---
 
+### CRITICAL: UI PARSER COMPATIBILITY REQUIREMENTS
+
+**Purpose:** Ensure test cases display correctly in the Test Case Review Portal UI
+
+**Markdown Format Specifications (NON-NEGOTIABLE):**
+
+1. **Test Case ID Heading Level:**
+   - ✅ CORRECT: `# TC-FE739390-001` (H1 heading - use single #)
+   - ❌ INCORRECT: `## TC-FE739390-001` (H2 heading - will cause "No test cases found" error)
+   - WHY: UI parser searches for H1 headings to identify test case boundaries
+
+2. **Metadata Section Structure:**
+   - ✅ CORRECT: 
+     ```
+     # TC-FE739390-001
+     
+     ## Metadata
+     
+     | Field | Value |
+     ```
+   - ❌ INCORRECT:
+     ```
+     # TC-FE739390-001
+     
+     | Field | Value |
+     ```
+   - WHY: UI parser requires `## Metadata` header to properly identify and parse metadata table
+
+3. **Section Header Consistency:**
+   - All section headers (Title, Preconditions, Test Data, Test Steps, Reviewer Comments) must use `##` (H2)
+   - Never use `#` for section headers other than test case ID
+   - Never use `###` or higher levels unless explicitly needed
+
+4. **Whitespace & Formatting:**
+   - Blank line after test case ID heading before `## Metadata`
+   - Blank line after each section header before content
+   - Blank line after content before next section header
+   - No extra blank lines (max 1 blank line between sections)
+
+5. **Category Headers:**
+   - Category section headers (e.g., "# FUNCTIONAL TEST CASES") use H1 heading
+   - Separators before and after category sections: `---` (horizontal rule)
+
+**Template Example (Correct Format):**
+```markdown
+# FUNCTIONAL TEST CASES
+
+---
+
+# TC-FE739390-001
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| Test Case ID | TC-FE739390-001 |
+| Priority | High |
+| Automatable | Yes |
+| Status | Draft |
+| Review Status | Pending |
+| Reviewer | |
+| Review Date | |
+
+## Title
+
+PHA Facilitator can create new What-If study with proper worksheet structure
+
+## Preconditions
+
+1. User is logged in...
+
+## Test Data
+
+| Field | Value |
+|-------|-------|
+
+## Test Steps
+
+| Step | Action | Expected Result |
+
+## Reviewer Comments
+
+*To be completed during review.*
+
+---
+
+# TC-FE739390-002
+
+## Metadata
+[continue format...]
+```
+
+**Validation Checklist (Before Creating Document):**
+- [ ] Every test case ID is `# TC-...` (H1 heading)?
+- [ ] Every test case has `## Metadata` section header?
+- [ ] Metadata table immediately follows `## Metadata` with no extra content?
+- [ ] All other section headers use `##` (H2)?
+- [ ] No H3 or H4 headers used within test cases?
+- [ ] Category headers use `#` (H1) with `---` separators?
+- [ ] Proper blank line spacing throughout?
+- [ ] File validated against working reference (FE735316-testcases.md)?
+
+**Reference Implementation:** `.github/analysis/FE735316-testcases.md`
+- Use this file as format template for all future test case generation
+- Compare your generated file structure against this reference
+- If not matching exactly, regenerate with corrected format
+
+---
+
 ### PHASE 5: CREATE TEST CASES DOCUMENT
 **Goal:** Generate comprehensive testcase.md file with all test cases in enterprise format
 
@@ -219,6 +353,12 @@ From Specification:
 
 ```markdown
 # Test Cases: FE#[FEATURE_ID] - [Feature Title]
+
+**Feature:** [Feature Name]  
+**Feature ID:** FE#[FEATURE_ID]  
+**Total Test Cases:** [Number]  
+**Created:** [Date]  
+**Status:** DRAFT - Ready for QA Lead Review  
 
 ---
 
@@ -230,15 +370,15 @@ From Specification:
 
 ## Metadata
 
-| Field         | Value                     |
-| ------------- | ------------------------- |
-| Test Case ID  | TC-FE[FEATURE_ID]-001     |
-| Priority      | High/Medium/Low           |
-| Automatable   | Yes/No                    |
-| Status        | Draft                     |
-| Review Status | Pending                   |
-| Reviewer      |                           |
-| Review Date   |                           |
+| Field | Value |
+|-------|-------|
+| Test Case ID | TC-FE[FEATURE_ID]-001 |
+| Priority | High/Medium/Low |
+| Automatable | Yes/No |
+| Status | Draft |
+| Review Status | Pending |
+| Reviewer | |
+| Review Date | |
 
 ## Title
 
@@ -248,20 +388,19 @@ From Specification:
 
 1. [Precondition 1]
 2. [Precondition 2]
-3. [Precondition 3]
 
 ## Test Data
 
-| Field             | Value          |
-| ----------------- | -------------- |
-| Parameter Name    | Parameter Value|
+| Field | Value |
+|-------|-------|
+| Parameter | Value |
 
 ## Test Steps
 
-| Step | Action                                          | Expected Result                                  |
-| ---- | ----------------------------------------------- | ------------------------------------------------ |
-| 1    | [Persona] [verb] [details]                      | [Specific, validation-oriented outcome]          |
-| 2    | [Persona] [verb] [details]                      | [Specific, validation-oriented outcome]          |
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1 | [Action] | [Expected Result] |
+| 2 | [Action] | [Expected Result] |
 
 ## Reviewer Comments
 
@@ -271,7 +410,9 @@ From Specification:
 
 # TC-FE[FEATURE_ID]-002
 
-[Repeat metadata template for each test case]
+## Metadata
+
+[Repeat for each test case]
 
 ---
 
@@ -279,10 +420,84 @@ From Specification:
 
 ---
 
-# TC-FE[FEATURE_ID]-023
+# TC-FE[FEATURE_ID]-026
 
-[Repeat for each category section]
+[Category continues with same structure]
+
+---
+
+# EDGE CASES & EXPLORATORY TEST CASES
+
+---
+
+# TC-FE[FEATURE_ID]-041
+
+[Category continues with same structure]
+
+---
+
+# INTEGRATION TEST CASES
+
+---
+
+# TC-FE[FEATURE_ID]-056
+
+[Category continues with same structure]
+
+---
+
+# PERFORMANCE & CONCURRENCY TEST CASES
+
+---
+
+# TC-FE[FEATURE_ID]-066
+
+[Category continues with same structure]
+
+---
+
+# SECURITY & ACCESSIBILITY TEST CASES
+
+---
+
+# TC-FE[FEATURE_ID]-071
+
+[Category continues with same structure]
+
+---
+
+# END-TO-END TEST CASES
+
+---
+
+# TC-FE[FEATURE_ID]-074
+
+[Category continues with same structure]
+
+---
+
+## Summary Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Test Cases | [Number] |
+| Functional Tests | [Number] |
+| Role-Based Tests | [Number] |
+| [etc...] | [Number] |
+
+---
+
+**Document Status:** DRAFT - Ready for QA Lead Review  
+**Created:** [Date]  
+**Last Updated:** [Date]
 ```
+
+**CRITICAL: UI Parser Format Requirements (MUST follow):**
+- Test Case ID: Use `# TC-FE[ID]-###` (H1 heading, NOT H2)
+- Section Headers: Use `## [Section Name]` (H2 heading)
+- Metadata: Always include `## Metadata` section header before metadata table
+- Category Headers: Use `# [CATEGORY NAME]` (H1 heading) with `---` separators
+- Spacing: Blank line after each heading before content
 
 #### File Naming & Test ID Format:
 - **File Name:** `.github/analysis/FE[FEATURE_ID]-testcases.md` (e.g., `FE735316-testcases.md`)
@@ -327,11 +542,14 @@ From Specification:
    - Timing attack prevention
    - WCAG accessibility compliance
 
-7. **END-TO-END TEST CASES** (2-4 cases: TC-093 → TC-096)
-   - Complete user workflows
-   - Real-world business scenarios
-   - Multi-step processes
-   - Cross-system workflows
+7. **END-TO-END TEST CASES** (8-15 cases: TC-065+ depending on category distribution)
+   - Complete user workflows (start to finish)
+   - Real-world business scenarios with multiple user roles
+   - Multi-step processes spanning multiple system components
+   - Cross-system workflows and integrations
+   - End-to-end data flow from input to output
+   - Complex business logic across multiple modules
+   - Success and failure paths in real scenarios
 
 #### Metadata Table Structure (7 Required Fields):
 ```
@@ -407,34 +625,77 @@ From Specification:
 
 #### Test Distribution Guidelines:
 ```
-Recommended Distribution (78 test cases):
-- Functional Tests: ~25 (32%)
-- Role-Based & Access Control: ~15 (19%)
-- Edge Cases & Exploratory: ~16 (20%)
-- Integration Tests: ~12 (15%)
-- Performance & Concurrency: ~8 (10%)
-- Security & Accessibility: ~4 (5%)
-- End-to-End Tests: ~2 (3%)
+Recommended Distribution (85-95 test cases):
+- Functional Tests: ~25 (26%)
+- Role-Based & Access Control: ~12 (13%)
+- Edge Cases & Exploratory: ~15 (16%)
+- Integration Tests: ~15 (16%)
+- Performance & Concurrency: ~8 (8%)
+- Security & Accessibility: ~5 (5%)
+- End-to-End Tests: ~10-12 (11-13%)
+
+NOTE: E2E test count should be increased when:
+- Feature has complex multi-step user journeys
+- Multiple user roles interact within feature
+- Feature integrates multiple system components
+- Business value heavily depends on complete workflow success
 ```
 
 #### E2E Testing Guidelines (from QA Governance):
 ```
-✅ E2E Tests represent real customer scenarios
-✅ E2E tests follow complete workflow (no shortcuts)
-✅ E2E tests include login/authentication
-✅ Tests are named from user perspective (Persona + Action + Outcome)
-✅ Each test is independent and can run standalone
-✅ Tests respect test pyramid (fewer E2E, more functional/integration)
+✅ E2E Tests represent real customer scenarios and business processes
+✅ E2E tests follow complete workflow from start to finish (no shortcuts)
+✅ E2E tests include authentication and authorization (full user journey)
+✅ Tests validate end-to-end data flow and state changes
+✅ Tests span multiple system modules and components
+✅ Tests verify cross-system integrations and dependencies
+✅ Tests are named from user perspective (Persona + Complete Workflow)
+✅ Each test is independent and can run in isolation
+✅ Each test represents a valuable business outcome
+✅ Tests cover both happy path and critical failure scenarios
+✅ Tests include optional multi-user scenarios where applicable
 ```
 
-#### E2E Testing Guidelines (from QA Governance):
+#### E2E Test Scenario Categories (Generate 8-15 tests covering these patterns):
+
+**1. Complete Happy Path Workflows (3-4 tests)**
+- User logs in → Creates entity → Fills data → Submits → Receives confirmation
+- Example: "Customer Integration Manager completes full integration client onboarding from registration to approval"
+
+**2. Multi-Role Workflows (2-3 tests)**
+- Role A initiates → Role B reviews → Role C approves → Returns to Role A
+- Example: "Study Owner creates What-If study, Reviewer approves, Recommendation linked to action plan"
+
+**3. Complex Business Process Workflows (2-3 tests)**
+- Feature integrated with 3+ system components
+- Example: "Import XML study triggers canonical matching, risk validation, audit logging, and review workflow sequentially"
+
+**4. Critical Failure & Recovery (1-2 tests)**
+- Happy path interrupted by critical failure → Recovery action → Completion
+- Example: "User attempts batch import, encounters risk matrix mismatch, corrects XML, re-imports successfully"
+
+**5. Cross-System Data Flow (1-2 tests)**
+- Data created in Feature A → Flows to Feature B → Visible in Feature C → Updates Feature D
+- Example: "Recommendation created in What-If study → Appears in Recommendation List → Used to create action item"
+
+**6. Optional Multi-User Scenario (0-1 tests)**
+- Multiple concurrent users interacting with feature
+- Example: "Two facilitators collaboratively edit study, Team Lead reviews, Manager approves, System integrates changes"
+
+#### E2E Test Naming Convention:
 ```
-✅ E2E Tests represent real customer scenarios
-✅ E2E tests follow complete workflow (no shortcuts)
-✅ E2E tests include login/authentication
-✅ Tests are named from user perspective (Persona + Action + Outcome)
-✅ Each test is independent and can run standalone
-✅ Tests respect test pyramid (fewer E2E, more functional/integration)
+[Persona(s)] can complete [complete business process] from [start state] to [end state] [including outcome]
+
+Examples (Good):
+✅ "PHA Facilitator can complete entire What-If study workflow from creation to reviewer approval"
+✅ "Study Owner and Reviewer collaborate to import XML study with risk validation and final approval"
+✅ "Integration Manager completes full integration client registration, configuration, and production activation"
+✅ "Multiple team members conduct collaborative PHA study session with session recording and artifact generation"
+
+Examples (Poor - too narrow or not E2E):
+❌ "Create study" (not E2E, just one step)
+❌ "Review study" (not complete workflow)
+❌ "Import XML" (not E2E - missing validation, approval, integration)
 ```
 
 ---
@@ -585,14 +846,39 @@ Reason: Accessibility testing with screen reader requires manual verification
 - Automation decisions justified
 - No ambiguities or gaps
 - Metadata complete (7 required fields)
-- E2E tests are true end-to-end workflows
-- Test pyramid respected
+- E2E tests are true end-to-end workflows spanning multiple system components
+- E2E tests represent high-value business outcomes (8-15 per feature)
+- Test pyramid respected with appropriate E2E coverage
 - Ready for QA review and approval
 - Formatted for Azure DevOps import
 
 ---
 
 ## Implementation Notes
+
+**UI Parser Compatibility (CRITICAL - MUST FOLLOW):**
+- Test Case ID must use `#` (H1 heading): `# TC-FE735316-001` ← Correct
+- Test Case ID must NOT use `##` (H2 heading): `## TC-FE735316-001` ← Will fail in UI
+- Metadata section must have header: `## Metadata` before the metadata table
+- All section headers must use `##` (H2): `## Title`, `## Preconditions`, `## Test Steps`
+- Category headers must use `#` (H1): `# FUNCTIONAL TEST CASES`
+- Proper blank line spacing between sections (exactly 1 blank line)
+- VALIDATE against FE735316-testcases.md reference file before final delivery
+
+**Why This Matters:**
+- UI Parser searches for H1 headings (`#`) to identify test case boundaries
+- If test case IDs use H2 (`##`), parser cannot find test cases → "No test cases found" error
+- If `## Metadata` header is missing, parser cannot extract metadata table
+- This is why first FE739390 generation failed in UI
+
+**Quality Checks Before File Creation:**
+- [ ] Every test case ID uses `#` not `##`
+- [ ] Every test case has `## Metadata` section header
+- [ ] Metadata table has exactly 7 fields (ID, Priority, Automatable, Status, Review Status, Reviewer, Review Date)
+- [ ] All other section headers use `##`
+- [ ] Category headers use `#` with `---` separators
+- [ ] Test file structure matches FE735316-testcases.md format exactly
+- [ ] File opens in UI portal without "No test cases found" error
 
 - **Single Deliverable:** One testcase.md file containing all test cases (typically 70-80)
 - **File Naming:** Use FE# prefix (not AB#)
@@ -633,5 +919,5 @@ Reason: Accessibility testing with screen reader requires manual verification
 - **Integration Tests:** 12-16 cases (multi-service workflows)
 - **Performance & Concurrency:** 6-10 cases (latency, throughput SLA)
 - **Security & Accessibility:** 4-6 cases (hardening, compliance)
-- **End-to-End:** 2-3 cases (complete user workflows)
+- **End-to-End:** 8-15 cases (complete business workflows spanning multiple components and user roles)
 
