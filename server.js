@@ -1,8 +1,8 @@
 /**
- * Test Case Review Portal - Unified Backend Server
+ * Test Case Review Portal - Express Backend Server
  * 
- * Purpose: Express.js backend server + Azure DevOps integration in one file
- * Uses mcp-config.js for Azure DevOps configuration
+ * Purpose: Minimal HTTP server for serving static portal + API routing
+ * Uses mcp-config.js for all Azure DevOps business logic
  * 
  * Usage:
  *   npm install express
@@ -29,107 +29,6 @@ app.use(express.static(path.resolve(__dirname)));
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running', timestamp: new Date().toISOString() });
 });
-
-/**
- * Create a work item (test case) in Azure DevOps
- */
-async function createTestCaseWorkItem(testCase) {
-  try {
-    const url = `${config.azureDevOps.orgUrl}/${encodeURIComponent(config.azureDevOps.project)}/_apis/wit/workitems/${"Test Case"}?api-version=${config.azureDevOps.apiVersion}`;
-
-    const body = [
-      {
-        op: "add",
-        path: "/fields/System.Title",
-        value: testCase.title
-      },
-      {
-        op: "add",
-        path: "/fields/System.Description",
-        value: testCase.description || testCase.title
-      },
-      {
-        op: "add",
-        path: "/fields/Microsoft.VSTS.Common.Priority",
-        value: testCase.priority === 'High' ? 1 : testCase.priority === 'Medium' ? 2 : 3
-      },
-      {
-        op: "add",
-        path: "/fields/System.State",
-        value: "Ready"
-      },
-      {
-        op: "add",
-        path: "/fields/Microsoft.VSTS.TCM.AutomatedTestName",
-        value: testCase.id
-      },
-      {
-        op: "add",
-        path: "/fields/Microsoft.VSTS.TCM.AutomationStatus",
-        value: testCase.automatable === 'Yes' ? 'Automated' : 'Manual'
-      }
-    ];
-
-    // Add custom fields if they exist
-    if (testCase.category) {
-      body.push({
-        op: "add",
-        path: "/fields/System.Tags",
-        value: testCase.category
-      });
-    }
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        ...config.getAuthHeader(),
-        'Content-Type': 'application/json-patch+json'
-      },
-      body: JSON.stringify(body)
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to create work item: ${response.status} ${errorText}`);
-    }
-
-    const workItem = await response.json();
-    return workItem;
-  } catch (error) {
-    console.error(`❌ Error creating test case work item: ${error.message}`);
-    throw error;
-  }
-}
-
-/**
- * Link a work item as a child of another work item
- */
-async function linkWorkItems(parentId, childId, linkType = 'System.LinkTypes.Hierarchy-Forward') {
-  try {
-    const url = `${config.azureDevOps.orgUrl}/${encodeURIComponent(config.azureDevOps.project)}/_apis/wit/workitems/${parentId}/relations?api-version=${config.azureDevOps.apiVersion}`;
-
-    const body = {
-      rel: linkType,
-      url: `${config.azureDevOps.orgUrl}/${encodeURIComponent(config.azureDevOps.project)}/_apis/wit/workitems/${childId}`
-    };
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: config.getAuthHeader(),
-      body: JSON.stringify(body)
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to link work items: ${response.status} ${errorText}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error(`❌ Error linking work items: ${error.message}`);
-    throw error;
-  }
-}
 
 /**
  * Push test cases to Azure DevOps
@@ -188,7 +87,7 @@ app.post('/api/push-test-cases', async (req, res) => {
     for (const testCase of testCases) {
       try {
         console.log(`📝 Creating work item for ${testCase.id}: ${testCase.title}`);
-        const workItem = await createTestCaseWorkItem(testCase);
+        const workItem = await config.createTestCaseWorkItem(testCase);
         results.successful.push({
           testCaseId: testCase.id,
           workItemId: workItem.id,
@@ -199,7 +98,7 @@ app.post('/api/push-test-cases', async (req, res) => {
         // Link to parent user story
         try {
           console.log(`🔗 Linking ${testCase.id} to User Story ${parentWorkItemId}`);
-          await linkWorkItems(parentWorkItemId, workItem.id);
+          await config.linkWorkItems(parentWorkItemId, workItem.id);
           results.linked.push({
             testCaseId: testCase.id,
             parentId: parentWorkItemId,

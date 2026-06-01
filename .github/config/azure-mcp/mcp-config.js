@@ -373,6 +373,113 @@ const config = {
       };
     }
   },
+
+  /**
+   * Create a work item (test case) in Azure DevOps
+   * @param {object} testCase - Test case object with id, title, priority, category, automatable
+   * @returns {object} Created work item
+   */
+  async createTestCaseWorkItem(testCase) {
+    try {
+      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${"Test Case"}?api-version=${this.azureDevOps.apiVersion}`;
+
+      const body = [
+        {
+          op: "add",
+          path: "/fields/System.Title",
+          value: testCase.title
+        },
+        {
+          op: "add",
+          path: "/fields/System.Description",
+          value: testCase.description || testCase.title
+        },
+        {
+          op: "add",
+          path: "/fields/Microsoft.VSTS.Common.Priority",
+          value: testCase.priority === 'High' ? 1 : testCase.priority === 'Medium' ? 2 : 3
+        },
+        {
+          op: "add",
+          path: "/fields/System.State",
+          value: "Ready"
+        },
+        {
+          op: "add",
+          path: "/fields/Microsoft.VSTS.TCM.AutomatedTestName",
+          value: testCase.id
+        },
+        {
+          op: "add",
+          path: "/fields/Microsoft.VSTS.TCM.AutomationStatus",
+          value: testCase.automatable === 'Yes' ? 'Automated' : 'Manual'
+        }
+      ];
+
+      // Add custom fields if they exist
+      if (testCase.category) {
+        body.push({
+          op: "add",
+          path: "/fields/System.Tags",
+          value: testCase.category
+        });
+      }
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          ...this.getAuthHeader(),
+          'Content-Type': 'application/json-patch+json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to create work item: ${response.status} ${errorText}`);
+      }
+
+      const workItem = await response.json();
+      return workItem;
+    } catch (error) {
+      console.error(`❌ Error creating test case work item: ${error.message}`);
+      throw error;
+    }
+  },
+
+  /**
+   * Link a work item as a child of another work item
+   * @param {number} parentId - Parent work item ID (user story)
+   * @param {number} childId - Child work item ID (test case)
+   * @param {string} linkType - Link type (default: System.LinkTypes.Hierarchy-Forward)
+   * @returns {object} Link relationship
+   */
+  async linkWorkItems(parentId, childId, linkType = 'System.LinkTypes.Hierarchy-Forward') {
+    try {
+      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${parentId}/relations?api-version=${this.azureDevOps.apiVersion}`;
+
+      const body = {
+        rel: linkType,
+        url: `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${childId}`
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: this.getAuthHeader(),
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to link work items: ${response.status} ${errorText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(`❌ Error linking work items: ${error.message}`);
+      throw error;
+    }
+  },
 };
 
 module.exports = config;
