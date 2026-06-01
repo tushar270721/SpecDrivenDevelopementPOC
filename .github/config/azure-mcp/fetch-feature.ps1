@@ -6,9 +6,9 @@ Fetch feature details from Azure DevOps
 .DESCRIPTION
 Fetches and displays complete feature details from Azure DevOps using the fetch-feature script
 .PARAMETER FeatureId
-The feature ID in format AB#12345
+The feature ID in format FE#12345
 .EXAMPLE
-fetch-feature AB#768765
+fetch-feature FE#768765
 #>
 
 param(

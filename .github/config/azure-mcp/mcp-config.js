@@ -62,11 +62,11 @@ const config = {
   /**
    * Fetch feature/work item from Azure DevOps
    * 
-   * @param {string} featureId - Feature ID (e.g., "AB#12345")
+   * @param {string} featureId - Feature ID (e.g., "FE#12345")
    * @returns {object} Feature details
    * 
    * Example:
-   *   const feature = await config.fetchFeature('AB#12345');
+   *   const feature = await config.fetchFeature('FE#12345');
    *   // Returns:
    *   // {
    *   //   id: 12345,
@@ -80,10 +80,10 @@ const config = {
    */
   async fetchFeature(featureId) {
     try {
-      // Parse feature ID (AB#12345 -> 12345)
+      // Parse feature ID (FE#12345 -> 12345)
       const workItemId = featureId.split('#')[1];
       if (!workItemId) {
-        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., AB#12345). Got: ${featureId}`);
+        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., FE#12345). Got: ${featureId}`);
       }
 
       // Build API URL
@@ -147,14 +147,14 @@ const config = {
 
   /**
    * Fetch comments for a feature/work item
-   * @param {string} featureId - Feature ID (e.g., "AB#12345")
+   * @param {string} featureId - Feature ID (e.g., "FE#12345")
    * @returns {array} Array of comments
    */
   async getComments(featureId) {
     try {
       const workItemId = featureId.split('#')[1];
       if (!workItemId) {
-        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., AB#12345). Got: ${featureId}`);
+        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., FE#12345). Got: ${featureId}`);
       }
 
       // Get updates/comments for the work item
@@ -200,14 +200,14 @@ const config = {
 
   /**
    * Fetch discussions/work item comments
-   * @param {string} featureId - Feature ID (e.g., "AB#12345")
+   * @param {string} featureId - Feature ID (e.g., "FE#12345")
    * @returns {array} Array of discussion comments
    */
   async getDiscussions(featureId) {
     try {
       const workItemId = featureId.split('#')[1];
       if (!workItemId) {
-        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., AB#12345). Got: ${featureId}`);
+        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., FE#12345). Got: ${featureId}`);
       }
 
       // Get work item to check for comments field
@@ -284,14 +284,14 @@ const config = {
 
   /**
    * Fetch actual comments/discussions with text content
-   * @param {string} featureId - Feature ID (e.g., "AB#12345")
+   * @param {string} featureId - Feature ID (e.g., "FE#12345")
    * @returns {array} Array of comment objects with text
    */
   async getTextComments(featureId) {
     try {
       const workItemId = featureId.split('#')[1];
       if (!workItemId) {
-        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., AB#12345). Got: ${featureId}`);
+        throw new Error(`Invalid feature ID format. Expected: PROJECT#NUMBER (e.g., FE#12345). Got: ${featureId}`);
       }
 
       // Use Azure DevOps Comments API

@@ -5,23 +5,23 @@
  * 
  * Usage:
  *   node .github/config/azure-mcp/fetch-feature.js 12345       (feature ID only)
- *   node .github/config/azure-mcp/fetch-feature.js AB#12345     (full format)
+ *   node .github/config/azure-mcp/fetch-feature.js FE#12345     (full format)
  */
 
 const config = require('./mcp-config.js');
 
 /**
  * Fetch and display feature details
- * @param {string} featureId - Feature ID (accepts "12345" or "AB#12345")
+ * @param {string} featureId - Feature ID (accepts "12345" or "FE#12345")
  */
 async function fetchAndDisplayFeature(featureId) {
   try {
-    // Normalize feature ID: accept both "816692" and "AB#816692"
+    // Normalize feature ID: accept both "816692" and "FE#816692"
     let normalizedId = featureId.trim();
     
-    // If it's just a number, prepend "AB#"
+    // If it's just a number, prepend "FE#"
     if (normalizedId.match(/^\d+$/)) {
-      normalizedId = `AB#${normalizedId}`;
+      normalizedId = `FE#${normalizedId}`;
     }
     
     console.log(`\n🔄 Fetching feature ${normalizedId}...\n`);
@@ -29,7 +29,7 @@ async function fetchAndDisplayFeature(featureId) {
     // Validate input format
     if (!normalizedId || !normalizedId.match(/^[A-Z]+#\d+$/)) {
       throw new Error(
-        `Invalid feature ID format. Expected: 816692 or AB#816692, Got: ${featureId}`
+        `Invalid feature ID format. Expected: 816692 or FE#816692, Got: ${featureId}`
       );
     }
     
@@ -99,10 +99,10 @@ if (!featureId) {
   console.error('\n❌ ERROR: Feature ID is required\n');
   console.log('Usage:');
   console.log('  node .github/config/azure-mcp/fetch-feature.js 12345        (ID only)');
-  console.log('  node .github/config/azure-mcp/fetch-feature.js AB#12345     (full format)\n');
+  console.log('  node .github/config/azure-mcp/fetch-feature.js FE#12345     (full format)\n');
   console.log('Examples:');
   console.log('  node .github/config/azure-mcp/fetch-feature.js 816692');
-  console.log('  node .github/config/azure-mcp/fetch-feature.js AB#816692');
+  console.log('  node .github/config/azure-mcp/fetch-feature.js FE#816692');
   console.log('  node .github/config/azure-mcp/fetch-feature.js 771742\n');
   process.exit(1);
 }
