@@ -1056,7 +1056,7 @@
                     continue;
                 }
                 
-                const match = line.match(/^# (TC-AB\d+-\d+)/);
+                const match = line.match(/^# (TC-FE\d+-\d+)/);
                 
                 if (match) {
                     if (current) {
@@ -1115,7 +1115,7 @@
 
             const lower = section.toLowerCase();
             if (lower === 'metadata') parseMetadata(tc, text);
-            else if (lower === 'description') tc.description = text;
+            else if (lower === 'title') tc.title = text;
             else if (lower === 'preconditions') tc.preconditions = parseList(text);
             else if (lower === 'test data') tc.testData.rows = parseTable(text);
             else if (lower === 'test steps') tc.testSteps.rows = parseTable(text);
@@ -1130,7 +1130,7 @@
                 if (!match) continue;
                 const field = match[1].toLowerCase();
                 const value = match[2].trim();
-                if (field === 'title') tc.title = value;
+                if (field === 'test case id') tc.id = value;
                 else if (field === 'priority') tc.priority = value;
                 else if (field === 'automatable') tc.automatable = value;
                 else if (field === 'status') tc.status = value;
@@ -1402,7 +1402,6 @@
                 markdown += `# ${tc.id}\n\n`;
                 markdown += `## Metadata\n\n| Field | Value |\n| --- | --- |\n`;
                 markdown += `| Test Case ID | ${tc.id} |\n`;
-                markdown += `| Title | ${tc.title} |\n`;
                 markdown += `| Priority | ${tc.priority} |\n`;
                 markdown += `| Automatable | ${tc.automatable} |\n`;
                 markdown += `| Status | ${tc.status} |\n`;
@@ -1410,7 +1409,7 @@
                 markdown += `| Reviewer | ${tc.reviewer} |\n`;
                 markdown += `| Review Date | ${tc.reviewDate} |\n\n`;
 
-                markdown += `## Description\n\n${tc.description}\n\n`;
+                markdown += `## Title\n\n${tc.title}\n\n`;
                 
                 if (tc.preconditions.length > 0) {
                     markdown += `## Preconditions\n\n${tc.preconditions.map((p, i) => `${i + 1}. ${p}`).join('\n')}\n\n`;
