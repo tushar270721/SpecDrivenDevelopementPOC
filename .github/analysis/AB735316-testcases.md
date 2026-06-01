@@ -482,13 +482,13 @@ System API Manager can validate credential scopes before processing requests.
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | System API Manager prepares API request with valid credentials | The API request includes all required headers: Authorization (bearer token), X-Signature (HMAC-SHA256), Content-Type (application/json), and User-Agent |
-| 2    | System API Manager sets target endpoint to /api/v1/incident/list | Endpoint configured |
+| 2    | System API Manager sets target endpoint to /api/v1/incident/list | The endpoint is configured and set as the target for the API request |
 | 3    | System API Manager generates valid signature for client | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
-| 4    | System API Manager sends request to APIm layer | Request submitted |
-| 5    | System API Manager checks credential scope | Scope validation performed |
-| 6    | System API Manager identifies scope mismatch | api-directory vs api-incident |
-| 7    | System API Manager verifies request NOT forwarded to backend | Backend not contacted |
-| 8    | System API Manager verifies 403 error response | 403 Forbidden returned |
+| 4    | System API Manager sends request to APIm layer | The API request with the configured endpoint is transmitted to the APIm gateway |
+| 5    | System API Manager checks credential scope | The APIm layer retrieves and checks the client's assigned scopes (api-directory only) |
+| 6    | System API Manager identifies scope mismatch | The APIm identifies that the client has scope 'api-directory' but the request requires scope 'api-incident', resulting in a scope mismatch |
+| 7    | System API Manager verifies request NOT forwarded to backend | Due to the scope mismatch, the request is NOT forwarded to the backend service; the rejection occurs at the APIm layer |
+| 8    | System API Manager verifies 403 error response | The APIm returns HTTP 403 Forbidden to the client due to insufficient scope |
 | 9    | System API Manager verifies error message | Message: "Insufficient scope: api-directory. Required: api-incident" |
 
 
@@ -535,15 +535,15 @@ System API Manager can include API product metadata in forwarded requests.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager prepare valid API request | Request prepared |
-| 2    | Customer Integration Manager send request to APIm | Request received by APIm |
-| 3    | Customer Integration Manager aPIm validates credentials | Validation passes |
-| 4    | Customer Integration Manager aPIm validates scope | Scope check passes |
-| 5    | Customer Integration Manager aPIm forwards request to backend | Request forwarded |
-| 6    | Customer Integration Manager capture forwarded request headers | Headers intercepted |
-| 7    | Customer Integration Manager verify X-API-Product header present | Header included in request |
-| 8    | Customer Integration Manager verify header value | Value = "Directory APIs" |
-| 9    | Customer Integration Manager verify backend received header | Backend acknowledges |
+| 1    | Customer Integration Manager prepare valid API request | A valid API request is prepared with all required headers and payload for the Directory API endpoint |
+| 2    | Customer Integration Manager send request to APIm | The API request is transmitted to the APIm gateway |
+| 3    | Customer Integration Manager aPIm validates credentials | The APIm layer validates the client's API Key and HMAC-SHA256 signature, and validation succeeds |
+| 4    | Customer Integration Manager aPIm validates scope | The APIm layer verifies that the client has the required 'api-directory' scope, and the scope check passes |
+| 5    | Customer Integration Manager aPIm forwards request to backend | After all validations succeed, the APIm forwards the request to the backend service with customer context headers |
+| 6    | Customer Integration Manager capture forwarded request headers | The forwarded request headers are captured and inspected, including the X-API-Product header |
+| 7    | Customer Integration Manager verify X-API-Product header present | The X-API-Product header is present in the forwarded request |
+| 8    | Customer Integration Manager verify header value | The X-API-Product header value is confirmed as 'Directory APIs' |
+| 9    | Customer Integration Manager verify backend received header | The backend service receives the X-API-Product header and acknowledges successful receipt by processing the request with the correct product context |
 
 
 ## Reviewer Comments
@@ -589,15 +589,15 @@ System API Manager can include subscription tier in forwarded requests.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager authenticate as Premium tier customer | Customer context set |
-| 2    | Customer Integration Manager prepare API request with credentials | Request prepared |
-| 3    | Customer Integration Manager send request to APIm | Request received |
-| 4    | Customer Integration Manager aPIm validates credentials | Validation passes |
-| 5    | Customer Integration Manager aPIm retrieves subscription tier | Tier = Premium retrieved |
-| 6    | Customer Integration Manager aPIm includes tier in forwarded request | Header added |
-| 7    | Customer Integration Manager forward request to backend | Request sent to backend |
-| 8    | Customer Integration Manager capture forwarded request headers | Headers inspected |
-| 9    | Customer Integration Manager verify X-Subscription-Tier header | Header present and correct |
+| 1    | Customer Integration Manager authenticate as Premium tier customer | The customer is authenticated as a Premium tier user, and the customer context is set in the system |
+| 2    | Customer Integration Manager prepare API request with credentials | An API request is prepared with valid API Key and calculated HMAC-SHA256 signature |
+| 3    | Customer Integration Manager send request to APIm | The prepared API request is successfully transmitted to the APIm gateway |
+| 4    | Customer Integration Manager aPIm validates credentials | The APIm layer validates the credentials, and validation succeeds |
+| 5    | Customer Integration Manager aPIm retrieves subscription tier | The APIm retrieves the customer's subscription tier from the database and finds it to be 'Premium' |
+| 6    | Customer Integration Manager aPIm includes tier in forwarded request | The APIm adds the X-Subscription-Tier header with value 'Premium' to the forwarded request |
+| 7    | Customer Integration Manager forward request to backend | The APIm forwards the request with the X-Subscription-Tier header to the backend service |
+| 8    | Customer Integration Manager capture forwarded request headers | The forwarded request headers are captured and inspected for the X-Subscription-Tier header |
+| 9    | Customer Integration Manager verify X-Subscription-Tier header | The X-Subscription-Tier header is present in the forwarded request with value 'Premium', confirming the subscription tier is properly communicated to the backend |
 
 
 ## Reviewer Comments
@@ -813,15 +813,15 @@ Customer Integration Manager can revoke specific credential sets for a client.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager navigate to client credentials section | Credentials list displayed |
-| 2    | Customer Integration Manager locate specific credential | credential_id_001 visible |
+| 1    | Customer Integration Manager navigate to client credentials section | The credentials management section loads displaying a list of all active credential sets for the client with options to revoke or rotate each credential |
+| 2    | Customer Integration Manager locate specific credential | The specific credential 'credential_id_001' is visible in the credentials list with a revoke button next to it |
 | 3    | Customer Integration Manager click revoke button next to credential | A confirmation dialog appears requesting final confirmation to permanently revoke the selected credential set with a warning about impact |
-| 4    | Customer Integration Manager verify confirmation dialog | Dialog asks for confirmation |
-| 5    | Customer Integration Manager click "Confirm Revoke" | Revocation submitted |
+| 4    | Customer Integration Manager verify confirmation dialog | The confirmation dialog displays clearly asking the user to confirm the revocation action and warning about impact on active integrations |
+| 5    | Customer Integration Manager click "Confirm Revoke" | The revocation request is submitted to the backend and processed |
 | 6    | Customer Integration Manager verify success message | "The system confirms the credential has been permanently revoked, removes it from the active credentials list, logs the revocation event, and future requests using that credential receive 401 Unauthorized" |
-| 7    | Customer Integration Manager verify credential status changed | Status = revoked shown |
-| 8    | Customer Integration Manager attempt API call with revoked key | Request rejected (401) |
-| 9    | Customer Integration Manager attempt API call with other key | Request accepted (200 OK) |
+| 7    | Customer Integration Manager verify credential status changed | The revoked credential is updated to status 'revoked' in the system and is removed from the active credentials list |
+| 8    | Customer Integration Manager attempt API call with revoked key | An API request using the revoked credential is submitted and returns HTTP 401 Unauthorized |
+| 9    | Customer Integration Manager attempt API call with other key | An API request using the remaining active credential 'credential_id_002' returns HTTP 200 OK with successful response |
 
 
 ## Reviewer Comments
@@ -867,15 +867,15 @@ API Consumer can enforce subscription entitlement validation on API requests.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager verify customer subscription | Subscription = Directory APIs only |
-| 2    | System API Manager prepare API request to incident endpoint | Request prepared |
-| 3    | System API Manager include valid credentials and signature | Request signed |
-| 4    | System API Manager send request to APIm | Request received |
-| 5    | System API Manager aPIm validates credentials | Validation passes |
-| 6    | System API Manager aPIm validates scope | Scope validation passes |
-| 7    | System API Manager aPIm checks subscription entitlement | Entitlement check fails |
-| 8    | System API Manager request rejected | 403 Forbidden returned |
-| 9    | System API Manager verify error message | Message indicates "Product not in subscription" |
+| 1    | System API Manager verify customer subscription | The customer's subscription is verified and confirmed to include only 'Directory APIs' |
+| 2    | System API Manager prepare API request to incident endpoint | An API request is prepared targeting the 'Incident & Impacts Export API' endpoint |
+| 3    | System API Manager include valid credentials and signature | Valid API credentials (Key and HMAC-SHA256 signature) are included in the request headers |
+| 4    | System API Manager send request to APIm | The API request is transmitted to the APIm gateway |
+| 5    | System API Manager aPIm validates credentials | The APIm layer validates the credentials, and validation succeeds |
+| 6    | System API Manager aPIm validates scope | The APIm layer validates that the client has the required scope, and scope validation passes |
+| 7    | System API Manager aPIm checks subscription entitlement | The APIm layer checks the customer's subscription products and finds that 'Incident & Impacts Export API' is NOT included in the customer's subscription, failing the entitlement check |
+| 8    | System API Manager request rejected | The request is rejected by the APIm and returns HTTP 403 Forbidden due to subscription entitlement failure |
+| 9    | System API Manager verify error message | The error response message indicates "Product not in subscription" or similar text informing the customer that they don't have access to this API product |
 
 
 ## Reviewer Comments
@@ -921,18 +921,18 @@ System API Manager can reject requests with invalid API key formats.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager send request with too short key (3 chars) | Request sent |
-| 2    | System API Manager aPIm validates key format | Validation fails |
-| 3    | System API Manager verify rejection | 400 Bad Request returned |
-| 4    | System API Manager verify error message | "Invalid API key format" |
-| 5    | System API Manager send request with empty key | Request sent |
-| 6    | System API Manager aPIm validates key format | Validation fails |
-| 7    | System API Manager verify rejection | 400 Bad Request returned |
-| 8    | System API Manager send request with special characters | Request sent |
-| 9    | System API Manager aPIm validates key format | Validation fails |
-| 10    | System API Manager verify rejection | 400 Bad Request returned |
-| 11    | System API Manager send request with spaces in key | Request sent |
-| 12    | System API Manager aPIm validates key format | Validation fails |
+| 1    | System API Manager send request with too short key (3 chars) | An API request is sent with an API key that is only 3 characters long, which fails format validation |
+| 2    | System API Manager aPIm validates key format | The APIm layer validates the API key format and finds it does not meet the required format specifications (fails validation) |
+| 3    | System API Manager verify rejection | The request is rejected and returns HTTP 400 Bad Request |
+| 4    | System API Manager verify error message | The error response includes message "Invalid API key format" or similar text describing the format violation |
+| 5    | System API Manager send request with empty key | An API request is sent without an API key in the Authorization header |
+| 6    | System API Manager aPIm validates key format | The APIm layer validates the API key and finds that it is missing or empty (fails validation) |
+| 7    | System API Manager verify rejection | The request is rejected and returns HTTP 400 Bad Request |
+| 8    | System API Manager send request with special characters | An API request is sent with an API key containing special characters like @#$%^&*() |
+| 9    | System API Manager aPIm validates key format | The APIm layer validates the API key and finds that it contains invalid characters (fails validation) |
+| 10    | System API Manager verify rejection | The request is rejected and returns HTTP 400 Bad Request |
+| 11    | System API Manager send request with spaces in key | An API request is sent with an API key containing spaces |
+| 12    | System API Manager aPIm validates key format | The APIm layer validates the API key and finds that it contains invalid whitespace characters (fails validation) |
 
 
 ## Reviewer Comments
@@ -978,18 +978,18 @@ System API Manager can validate HMAC-SHA256 signatures on API requests.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager prepare request body | Body = {"action": "list_users"} |
+| 1    | Customer Integration Manager prepare request body | The request body is prepared and set to {"action": "list_users"} |
 | 2    | Customer Integration Manager calculate HMAC-SHA256 with secret | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
-| 3    | Customer Integration Manager include signature in X-Signature header | Header added |
-| 4    | Customer Integration Manager send request with valid signature | Request submitted |
-| 5    | Customer Integration Manager aPIm calculates signature | Signature recalculated |
-| 6    | Customer Integration Manager aPIm compares signatures (constant-time) | Signatures match |
-| 7    | Customer Integration Manager request accepted | 200 OK returned |
-| 8    | Customer Integration Manager modify request body | Body altered after signing |
-| 9    | Customer Integration Manager send request with modified body | Request submitted |
-| 10    | Customer Integration Manager aPIm recalculates signature | Signature recalculated |
-| 11    | Customer Integration Manager aPIm compares signatures | Signatures do NOT match |
-| 12    | Customer Integration Manager request rejected | 401 Unauthorized returned |
+| 3    | Customer Integration Manager include signature in X-Signature header | The calculated HMAC-SHA256 signature is included in the X-Signature header of the request |
+| 4    | Customer Integration Manager send request with valid signature | The API request with the valid signature is transmitted to the APIm gateway |
+| 5    | Customer Integration Manager aPIm calculates signature | The APIm layer recalculates the HMAC-SHA256 signature using the same secret and request payload |
+| 6    | Customer Integration Manager aPIm compares signatures (constant-time) | The APIm performs a constant-time comparison between the submitted signature and the calculated signature, and they match |
+| 7    | Customer Integration Manager request accepted | The request is accepted and returns HTTP 200 OK with the successful response |
+| 8    | Customer Integration Manager modify request body | The request body is modified after the signature was calculated (body altered) |
+| 9    | Customer Integration Manager send request with modified body | The API request with the original signature but modified body is transmitted to the APIm |
+| 10    | Customer Integration Manager aPIm recalculates signature | The APIm layer recalculates the HMAC-SHA256 signature using the modified body and secret |
+| 11    | Customer Integration Manager aPIm compares signatures | The APIm performs constant-time comparison and finds that the submitted signature and recalculated signature DO NOT match |
+| 12    | Customer Integration Manager request rejected | The request is rejected and returns HTTP 401 Unauthorized due to signature mismatch |
 
 
 ## Reviewer Comments
@@ -1034,18 +1034,18 @@ Customer Integration Manager can prevent duplicate client names within their acc
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer navigate to client creation form | Form loads |
-| 2    | API Consumer enter name: "Workday-Integration" | The Client Name field displays the entered value 'Workday Integration' and is editable for modifications |
-| 3    | API Consumer enter description | Description entered |
-| 4    | API Consumer select scopes | Scopes selected |
-| 5    | API Consumer click "Create" button | Validation triggered |
-| 6    | API Consumer system checks for duplicate name | Name check performed |
-| 7    | API Consumer system finds existing client | Match found in database |
-| 8    | API Consumer request rejected | Creation blocked |
-| 9    | API Consumer verify error message | "Client name already exists" |
-| 10    | API Consumer try with different case: "workday-integration" | Attempt submitted |
-| 11    | API Consumer system performs case-insensitive check | Case-insensitive match |
-| 12    | API Consumer request rejected | Creation blocked (case-insensitive) |
+| 1    | API Consumer navigate to client creation form | The integration client creation form loads displaying all required input fields (Client Name, Description, Scope Selection) |
+| 2    | API Consumer enter name: "Workday-Integration" | The Client Name field displays the entered value 'Workday-Integration' and is editable for modifications |
+| 3    | API Consumer enter description | The Description field is populated with the provided text |
+| 4    | API Consumer select scopes | The required API scopes are selected from the available scope checkboxes |
+| 5    | API Consumer click "Create" button | The create request is submitted and backend validation is triggered |
+| 6    | API Consumer system checks for duplicate name | The backend system checks the customer's account for any existing clients with the name 'Workday-Integration' |
+| 7    | API Consumer system finds existing client | The backend finds an existing integration client with the matching name in the customer's account |
+| 8    | API Consumer request rejected | The client creation request is rejected and blocked by the system |
+| 9    | API Consumer verify error message | The error response displays "Client name already exists" indicating the duplicate name violation |
+| 10    | API Consumer try with different case: "workday-integration" | The user attempts to create a client with the same name in different case (lowercase) |
+| 11    | API Consumer system performs case-insensitive check | The backend performs a case-insensitive name comparison and finds a match with the existing client name |
+| 12    | API Consumer request rejected | The client creation request is rejected due to the case-insensitive duplicate name violation |
 
 
 ## Reviewer Comments
@@ -1267,11 +1267,11 @@ Read-Only User cannot create new integration clients.
 | 3    | System API Manager locate "New Client" button | The button is either visible in the UI or hidden from the UI based on the user's permission level and role |
 | 4    | System API Manager verify button state | The button is either disabled (greyed out and unclickable) or completely hidden from the UI based on role-based access control restrictions |
 | 5    | System API Manager attempt to click button | The button click produces no action, no error message is displayed to the user, and the unauthorized operation is silently prevented or tooltip shown |
-| 6    | System API Manager attempt direct API call to create | POST /clients submitted |
-| 7    | System API Manager aPIm checks user permissions | Permission check fails |
-| 8    | System API Manager verify API response | 403 Forbidden returned |
-| 9    | System API Manager verify error message | "Insufficient permissions" |
-| 10    | System API Manager verify no client created | Client count unchanged |
+| 6    | System API Manager attempt direct API call to create | A POST request to /clients endpoint is submitted attempting to create a new integration client |
+| 7    | System API Manager aPIm checks user permissions | The APIm layer checks the user's role-based access control permissions and finds that read-only users do not have permission to create clients |
+| 8    | System API Manager verify API response | The API returns HTTP 403 Forbidden status code |
+| 9    | System API Manager verify error message | The error response includes message "Insufficient permissions" indicating the user lacks the required permission |
+| 10    | System API Manager verify no client created | The Integration Clients list is verified to remain unchanged with no new client added |
 
 
 ## Reviewer Comments
@@ -1316,16 +1316,16 @@ Read-Only User cannot modify client scopes.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer login as read-only user | User logged in |
-| 2    | API Consumer navigate to client details | Client The client details page loads displaying the client name, description, assigned scopes, credential history, creation timestamp, and available action buttons (Edit, Add Scope, Rotate Credentials, Revoke) |
+| 1    | API Consumer login as read-only user | The read-only user is successfully authenticated and logged into the system with read-only permissions |
+| 2    | API Consumer navigate to client details | The client details page loads displaying the client name, description, assigned scopes, credential history, creation timestamp, and available action buttons (Edit, Add Scope, Rotate Credentials, Revoke) |
 | 3    | API Consumer locate "Add Scope" button | The button is either visible in the UI or hidden from the UI based on the user's permission level and role |
-| 4    | API Consumer verify button is disabled | The button is visually disabled (greyed out with reduced opacity) and is not clickable or actionable out |
+| 4    | API Consumer verify button is disabled | The button is visually disabled (greyed out with reduced opacity) and is not clickable or actionable |
 | 5    | API Consumer attempt to click "Add Scope" | The button click produces no action, no error message is displayed to the user, and the unauthorized operation is silently prevented |
-| 6    | API Consumer attempt direct API call to add scope | PUT /clients/{id}/scopes |
-| 7    | API Consumer aPIm checks permissions | Permission check fails |
-| 8    | API Consumer verify API response | 403 Forbidden returned |
-| 9    | API Consumer verify scope list unchanged | Scope list remains [api-directory] |
-| 10    | API Consumer verify audit log | Unauthorized attempt logged |
+| 6    | API Consumer attempt direct API call to add scope | A PUT request to /clients/{id}/scopes is submitted to add the 'api-incident' scope |
+| 7    | API Consumer aPIm checks permissions | The APIm layer checks the user's role-based access control permissions and finds the user lacks permission to modify scopes |
+| 8    | API Consumer verify API response | The API returns HTTP 403 Forbidden status code |
+| 9    | API Consumer verify scope list unchanged | The client's scope list remains [api-directory] with no new scopes added |
+| 10    | API Consumer verify audit log | The unauthorized modification attempt is logged in the system audit trail |
 
 
 ## Reviewer Comments
@@ -1533,14 +1533,14 @@ Support Lead cannot rotate customer credentials.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer login as support lead | Support user logged in |
-| 2    | API Consumer navigate to customer's client | Client details open |
-| 3    | API Consumer locate "Rotate Credentials" button | The button is either visible in the UI or hidden from the UI based on the user's permission level and role |
+| 1    | API Consumer login as support lead | The support lead user is successfully authenticated and logged into the system with support-level permissions |
+| 2    | API Consumer navigate to customer's client | The customer's client details page loads displaying client information, scopes, and action buttons based on the support lead's limited permissions |
+| 3    | API Consumer locate "Rotate Credentials" button | The button is either visible in the UI or hidden from the UI based on the support lead's permission level and role |
 | 4    | API Consumer verify button is disabled | The button is either disabled (greyed out and unclickable) or completely hidden from the UI based on role-based access control restrictions |
-| 5    | API Consumer attempt direct API call to rotate | Request sent |
-| 6    | API Consumer aPIm checks permissions | Permission check fails |
-| 7    | API Consumer verify API response | 403 Forbidden returned |
-| 8    | API Consumer verify credentials unchanged | Old credentials still active |
+| 5    | API Consumer attempt direct API call to rotate | A POST request to /clients/{id}/rotate-credentials endpoint is submitted attempting to generate new credentials |
+| 6    | API Consumer aPIm checks permissions | The APIm layer checks the support lead's role-based access control permissions and finds the user lacks permission to rotate credentials |
+| 7    | API Consumer verify API response | The API returns HTTP 403 Forbidden status code |
+| 8    | API Consumer verify credentials unchanged | The integration client's credentials remain unchanged with the old credentials still active and usable |
 
 
 ## Reviewer Comments
@@ -1585,18 +1585,18 @@ API Consumer requires valid cryptographic signature with API key.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer prepare API request with body | Request prepared |
-| 2    | API Consumer include valid API key in request | Key included |
-| 3    | API Consumer omit X-Signature header | No signature included |
-| 4    | API Consumer send request | Request submitted |
-| 5    | API Consumer aPIm validates request | Validation performed |
-| 6    | API Consumer aPIm checks for signature header | Header check fails |
-| 7    | API Consumer verify response code | 401 Unauthorized returned |
-| 8    | API Consumer verify error message | "Missing required signature" |
-| 9    | API Consumer prepare request with key and signature | Request prepared with both |
-| 10    | API Consumer send request with signature | Request submitted |
-| 11    | API Consumer aPIm validates request | Validation succeeds |
-| 12    | API Consumer verify response code | 200 OK returned |
+| 1    | API Consumer prepare API request with body | An API request is prepared with the body {"action": "list"} |
+| 2    | API Consumer include valid API key in request | A valid API key 'key_valid_xxxxx' is included in the request Authorization header |
+| 3    | API Consumer omit X-Signature header | The required X-Signature header is intentionally omitted from the request |
+| 4    | API Consumer send request | The API request without a signature header is transmitted to the APIm gateway |
+| 5    | API Consumer aPIm validates request | The APIm layer begins validation of the incoming request |
+| 6    | API Consumer aPIm checks for signature header | The APIm checks for the required X-Signature header and finds it is missing from the request |
+| 7    | API Consumer verify response code | The API returns HTTP 401 Unauthorized status code |
+| 8    | API Consumer verify error message | The error response includes message "Missing required signature" indicating the signature header is required |
+| 9    | API Consumer prepare request with key and signature | An API request is prepared including both the valid API key and a calculated X-Signature header |
+| 10    | API Consumer send request with signature | The API request with both key and signature is transmitted to the APIm gateway |
+| 11    | API Consumer aPIm validates request | The APIm layer validates the request with both credentials present, and validation succeeds |
+| 12    | API Consumer verify response code | The API returns HTTP 200 OK status code with the successful response data |
 
 
 ## Reviewer Comments
@@ -1643,16 +1643,16 @@ System Security Manager can enforce multi-tenant isolation.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer login as Customer A | Customer A logged in |
-| 2    | API Consumer attempt to access Customer B's client via direct URL | Attempted |
-| 3    | API Consumer uRL manipulation (change customer_id) | /clients?customer_id=222 |
-| 4    | API Consumer send request to view Customer B's client | Request submitted |
-| 5    | API Consumer aPIm checks customer context | Context verification |
-| 6    | API Consumer aPIm validates ownership | Ownership check fails |
-| 7    | API Consumer verify response code | 403 Forbidden returned |
-| 8    | API Consumer verify error message | "Not authorized to access this resource" |
-| 9    | API Consumer attempt API call to modify Customer B's client | PUT request |
-| 10    | API Consumer verify request rejected | 403 Forbidden returned |
+| 1    | API Consumer login as Customer A | Customer A is successfully authenticated and logged into the system with their customer_id=111 context |
+| 2    | API Consumer attempt to access Customer B's client via direct URL | An attempt is made to access Customer B's resources by manipulating the request parameters |
+| 3    | API Consumer uRL manipulation (change customer_id) | A direct URL is constructed with /clients?customer_id=222 attempting to change the customer context to Customer B |
+| 4    | API Consumer send request to view Customer B's client | The request to /clients/client_id_xyz?customer_id=222 is submitted to the APIm gateway |
+| 5    | API Consumer aPIm checks customer context | The APIm layer verifies the customer context from the authenticated session and finds customer_id=111 |
+| 6    | API Consumer aPIm validates ownership | The APIm compares the customer context (customer_id=111) with the requested resource owner (customer_id=222) and finds they don't match, failing the ownership check |
+| 7    | API Consumer verify response code | The API returns HTTP 403 Forbidden status code |
+| 8    | API Consumer verify error message | The error response includes message "Not authorized to access this resource" indicating the customer doesn't own the resource |
+| 9    | API Consumer attempt API call to modify Customer B's client | A PUT request to modify Customer B's client is submitted |
+| 10    | API Consumer verify request rejected | The request is rejected and returns HTTP 403 Forbidden due to multi-tenant isolation enforcement |
 
 
 ## Reviewer Comments
@@ -1697,17 +1697,17 @@ System Security Manager can validate token scope for customer access.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System Security Manager login as Customer A | Token generated for Customer A |
-| 2    | System Security Manager decode token (JWT) | Token claims visible |
-| 3    | System Security Manager verify customer_id in token | customer_id = 111 |
-| 4    | System Security Manager attempt to use Customer A token for Customer B API call | Attempted |
-| 5    | System Security Manager send request to /api/v1/clients with Customer A token | Request submitted |
-| 6    | System Security Manager add header: X-Customer-ID = customer_id_222 | Header manipulated |
-| 7    | System Security Manager send request | Request submitted |
-| 8    | System Security Manager aPIm validates token scope | Scope check performed |
-| 9    | System Security Manager aPIm compares token customer_id with header | Mismatch detected |
-| 10    | System Security Manager verify response code | 403 Forbidden returned |
-| 11    | System Security Manager verify error message | "Not authorized for this customer" |
+| 1    | System Security Manager login as Customer A | An authentication token is generated for Customer A with claims including customer_id=111 |
+| 2    | System Security Manager decode token (JWT) | The JWT token is decoded and the claims are visible, showing the token structure and embedded customer context |
+| 3    | System Security Manager verify customer_id in token | The customer_id claim in the JWT token is verified to be customer_id=111 |
+| 4    | System Security Manager attempt to use Customer A token for Customer B API call | An attempt is made to use Customer A's authentication token to access Customer B's resources |
+| 5    | System Security Manager send request to /api/v1/clients with Customer A token | An API request to /api/v1/clients is submitted with Customer A's authentication token |
+| 6    | System Security Manager add header: X-Customer-ID = customer_id_222 | The request header is manipulated to include X-Customer-ID=customer_id_222, attempting to override the customer context |
+| 7    | System Security Manager send request | The modified request with mismatched customer context is transmitted to the APIm gateway |
+| 8    | System Security Manager aPIm validates token scope | The APIm layer validates the token scope and customer context from the token claims |
+| 9    | System Security Manager aPIm compares token customer_id with header | The APIm compares the token's customer_id (111) with the X-Customer-ID header value (222) and detects a mismatch |
+| 10    | System Security Manager verify response code | The API returns HTTP 403 Forbidden status code |
+| 11    | System Security Manager verify error message | The error response includes message "Not authorized for this customer" indicating the customer context mismatch |
 
 
 ## Reviewer Comments
@@ -1753,16 +1753,16 @@ System API Manager can reject API requests with expired credentials.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager verify API key is past expiration | Expiration date confirmed |
-| 2    | Customer Integration Manager prepare API request with expired key | Request prepared |
-| 3    | Customer Integration Manager include expired key in request | Key included |
+| 1    | Customer Integration Manager verify API key is past expiration | The API key expiration date is verified in the database to be more than 90 days in the past, confirming the key is past the 90-day expiration threshold |
+| 2    | Customer Integration Manager prepare API request with expired key | An API request is prepared to be sent with the expired key |
+| 3    | Customer Integration Manager include expired key in request | The expired API key is included in the request Authorization header |
 | 4    | Customer Integration Manager generate signature | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
-| 5    | Customer Integration Manager send request with expired key | Request submitted |
-| 6    | Customer Integration Manager aPIm validates credentials | Validation performed |
-| 7    | Customer Integration Manager aPIm checks key expiration date | Expiration check fails |
-| 8    | Customer Integration Manager verify response code | 401 Unauthorized returned |
-| 9    | Customer Integration Manager verify error message | "API key expired. Please rotate credentials" |
-| 10    | Customer Integration Manager verify request not forwarded | Backend not contacted |
+| 5    | Customer Integration Manager send request with expired key | The API request with the expired key and signature is transmitted to the APIm gateway |
+| 6    | Customer Integration Manager aPIm validates credentials | The APIm layer performs credential validation on the expired API key |
+| 7    | Customer Integration Manager aPIm checks key expiration date | The APIm checks the API key's creation date and expiration threshold (90 days) and finds the key is expired (fails the expiration check) |
+| 8    | Customer Integration Manager verify response code | The API returns HTTP 401 Unauthorized status code |
+| 9    | Customer Integration Manager verify error message | The error response includes message "API key expired. Please rotate credentials" informing the client to generate new credentials |
+| 10    | Customer Integration Manager verify request not forwarded | The request is not forwarded to the backend service; the rejection occurs at the APIm layer due to expired credentials |
 
 
 ## Reviewer Comments
@@ -1922,14 +1922,14 @@ System API Manager can reject requests with missing API key.
 | 1    | API Consumer prepare API request | An API request is prepared with all standard headers except the API key will be intentionally omitted |
 | 2    | API Consumer leave API key field empty | The API Key header field or body parameter is left empty/blank or intentionally omitted |
 | 3    | API Consumer include valid signature | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
-| 4    | API Consumer send request | Request submitted |
+| 4    | API Consumer send request | The API request with omitted API Key is transmitted to the APIm gateway |
 | 5    | API Consumer aPIm validates request format | The APIm layer validates the overall request format and structure |
 | 6    | API Consumer aPIm checks for API key | The APIm layer checks for the presence of the required API Key header/parameter and finds it missing, failing validation |
 | 7    | API Consumer verify response code | The APIm layer rejects the request and returns HTTP 400 Bad Request status code |
 | 8    | API Consumer verify error message | "API key is required" |
 | 9    | API Consumer prepare request without key header | A new request is prepared with the API Key header completely omitted (not even present in headers) |
 | 10    | API Consumer send request | The API request is sent to the APIm gateway without an API Key header |
-| 11    | API Consumer verify response code | 400 Bad Request returned |
+| 11    | API Consumer verify response code | The APIm layer rejects the request and returns HTTP 400 Bad Request status code |
 
 
 ## Reviewer Comments
@@ -2082,15 +2082,15 @@ System API Manager can enforce maximum length constraints on client names.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager navigate to client creation form | Form loaded |
-| 2    | System API Manager generate 500-character string | String prepared |
-| 3    | System API Manager attempt to enter string in name field | Possible: UI cuts off or API rejects |
-| 4    | System API Manager submit client creation form | Form submitted |
-| 5    | System API Manager verify validation error | Error message shown |
+| 1    | System API Manager navigate to client creation form | The client creation form loads displaying the Client Name input field and other required fields |
+| 2    | System API Manager generate 500-character string | A test string containing 500 characters is generated for testing length validation |
+| 3    | System API Manager attempt to enter string in name field | The 500-character string is attempted to be entered into the Client Name field; depending on implementation, either the UI truncates input or the field rejects excess characters |
+| 4    | System API Manager submit client creation form | The form submission is attempted with the name field containing or attempting to contain the 500-character string |
+| 5    | System API Manager verify validation error | A validation error is displayed by the system indicating the name exceeds the maximum length |
 | 6    | System API Manager verify error message | "Client name cannot exceed 100 characters" |
-| 7    | System API Manager verify client not created | Creation blocked |
-| 8    | System API Manager enter 100-character name (valid) | Valid name entered |
-| 9    | System API Manager submit form | Form submitted |
+| 7    | System API Manager verify client not created | The client is not created and does not appear in the clients list; the database shows no new client entry |
+| 8    | System API Manager enter 100-character name (valid) | A valid client name containing exactly 100 characters is entered into the Client Name field |
+| 9    | System API Manager submit form | The form is submitted with the valid 100-character name |
 | 10    | System API Manager verify client created | A new integration client is successfully created with a unique identifier, assigned to the customer, stored in the database, and appears immediately in the clients list |
 
 
@@ -2136,17 +2136,17 @@ Customer Integration Manager can create integration clients with Unicode charact
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager navigate to client creation form | Form loaded |
-| 2    | Customer Integration Manager enter Unicode name: "Интеграция 😊 العربية" | Name entered |
-| 3    | Customer Integration Manager submit client creation | Form submitted |
-| 4    | Customer Integration Manager verify client created | A new integration client is successfully created with a unique identifier, assigned to the customer, stored in the database, and appears immediately in the clients list |
-| 5    | Customer Integration Manager retrieve client details | Details page loaded |
-| 6    | Customer Integration Manager verify name displayed correctly | "Интеграция 😊 العربية" shown |
-| 7    | Customer Integration Manager verify no encoding errors | Characters render properly |
-| 8    | Customer Integration Manager create client with Name 2 | "中文 クライアント عميل" entered |
-| 9    | Customer Integration Manager submit form | Form submitted |
-| 10    | Customer Integration Manager verify second client created | Second client created |
-| 11    | Customer Integration Manager verify name displays correctly | "中文 クライアント عميل" shown |
+| 1    | Customer Integration Manager navigate to client creation form | The client creation form loads displaying the Client Name input field with Unicode input support |
+| 2    | Customer Integration Manager enter Unicode name: "Интеграция 😊 العربية" | The Unicode string containing Russian text, an emoji, and Arabic text is entered and displayed correctly in the Client Name field |
+| 3    | Customer Integration Manager submit client creation | The form is submitted with the Unicode client name |
+| 4    | Customer Integration Manager verify client created | A new integration client is successfully created with a unique identifier, assigned to the customer, stored in the database with UTF-8 encoding, and appears immediately in the clients list |
+| 5    | Customer Integration Manager retrieve client details | The client details page loads displaying the client information |
+| 6    | Customer Integration Manager verify name displayed correctly | The client name "Интеграция 😊 العربية" is displayed correctly on the details page with all Unicode characters properly rendered |
+| 7    | Customer Integration Manager verify no encoding errors | All characters render properly without encoding errors, mojibake, or character substitution; special characters and emoji display as intended |
+| 8    | Customer Integration Manager create client with Name 2 | The second Unicode string "中文 クライアント عميل" containing Chinese, Japanese, and Arabic text is entered into the Client Name field |
+| 9    | Customer Integration Manager submit form | The form is submitted with the second Unicode client name |
+| 10    | Customer Integration Manager verify second client created | A second integration client is successfully created with the Chinese/Japanese/Arabic name, stored in the database with UTF-8 encoding, and appears in the clients list |
+| 11    | Customer Integration Manager verify name displays correctly | The client name "中文 クライアント عميل" is displayed correctly on the details page with all Unicode characters properly rendered |
 
 
 ## Reviewer Comments
@@ -2190,14 +2190,14 @@ System API Manager can handle scope formats with version numbers and pre-release
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager navigate to client creation | Form loaded |
-| 2    | System API Manager look for scope "api-directory.v2-beta" in dropdown | Scope listed |
-| 3    | System API Manager select scope "api-directory.v2-beta" | Scope selected |
-| 4    | System API Manager create client with this scope | Client created |
-| 5    | System API Manager verify scope assigned correctly | Scope shows api-directory.v2-beta |
-| 6    | System API Manager make API request with this scope | Request prepared |
-| 7    | System API Manager include scope in validation | Scope sent to endpoint |
-| 8    | System API Manager verify scope parsing | The API Product scope 'api/directory/v1beta1' is correctly parsed, with version/beta information extracted and validated |
+| 1    | System API Manager navigate to client creation | The client creation form loads displaying all available scopes in a dropdown or selection list |
+| 2    | System API Manager look for scope "api-directory.v2-beta" in dropdown | The scope "api-directory.v2-beta" is present and listed in the available scopes dropdown |
+| 3    | System API Manager select scope "api-directory.v2-beta" | The scope "api-directory.v2-beta" is selected from the dropdown and is marked as selected in the form |
+| 4    | System API Manager create client with this scope | The client creation form is submitted with the "api-directory.v2-beta" scope selected and assigned to the new client |
+| 5    | System API Manager verify scope assigned correctly | The created client details page displays the assigned scope as "api-directory.v2-beta" with version information correctly shown |
+| 6    | System API Manager make API request with this scope | An API request is prepared using credentials from the client with the "api-directory.v2-beta" scope |
+| 7    | System API Manager include scope in validation | The scope "api-directory.v2-beta" is included in the API request validation process |
+| 8    | System API Manager verify scope parsing | The API Product scope 'api-directory.v2-beta' is correctly parsed, with version/beta information extracted and validated |
 | 9    | System API Manager verify request routed correctly | The APIm correctly routes the request to the appropriate backend service (Directory API v1beta1) based on scope parsing |
 | 10    | System API Manager verify scope validation passes | The scope validation check confirms the client has the 'api/directory/v1beta1' scope and authorization succeeds |
 
@@ -2468,18 +2468,18 @@ System Security Manager can reject requests with timestamps far in the future.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System Security Manager note current UTC time | Current time recorded |
-| 2    | System Security Manager prepare API request | Request prepared |
-| 3    | System Security Manager set request timestamp 5 minutes ahead | Future timestamp set |
-| 4    | System Security Manager generate signature with timestamp | Signature includes timestamp |
-| 5    | System Security Manager send request with future timestamp | Request submitted |
-| 6    | System Security Manager aPIm extracts timestamp from request | Timestamp extracted |
-| 7    | System Security Manager aPIm compares with current time | Future skew detected |
-| 8    | System Security Manager aPIm checks against tolerance (2 min) | Exceeds tolerance |
-| 9    | System Security Manager verify response code | 400 Bad Request returned |
-| 10    | System Security Manager verify error message | "Request timestamp is too far in the future" |
-| 11    | System Security Manager send request with current timestamp | Request with valid time |
-| 12    | System Security Manager verify request accepted | 200 OK returned |
+| 1    | System Security Manager note current UTC time | The current UTC time is recorded and noted (e.g., 12:00:00 UTC) |
+| 2    | System Security Manager prepare API request | An API request is prepared with standard headers and payload |
+| 3    | System Security Manager set request timestamp 5 minutes ahead | The request timestamp is set to 5 minutes in the future (12:05:00 UTC when current time is 12:00:00 UTC) |
+| 4    | System Security Manager generate signature with timestamp | The HMAC-SHA256 signature is calculated and includes the future timestamp in the request |
+| 5    | System Security Manager send request with future timestamp | The API request with the future timestamp is transmitted to the APIm gateway |
+| 6    | System Security Manager aPIm extracts timestamp from request | The APIm layer extracts the request timestamp from the request headers |
+| 7    | System Security Manager aPIm compares with current time | The APIm compares the request timestamp (12:05:00) with the current server time (12:00:00) and detects the timestamp is in the future |
+| 8    | System Security Manager aPIm checks against tolerance (2 min) | The timestamp difference (5 minutes) exceeds the configured tolerance threshold (2 minutes), causing validation to fail |
+| 9    | System Security Manager verify response code | The APIm returns HTTP 400 Bad Request status code |
+| 10    | System Security Manager verify error message | The error response includes message "Request timestamp is too far in the future" |
+| 11    | System Security Manager send request with current timestamp | A new API request is prepared with the current timestamp (12:00:00 UTC) within the tolerance window |
+| 12    | System Security Manager verify request accepted | The APIm accepts the request and returns HTTP 200 OK |
 
 
 ## Reviewer Comments
@@ -2525,17 +2525,17 @@ System Security Manager can reject old timestamps to prevent replay attacks.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System Security Manager capture valid API request from yesterday | Request recorded |
-| 2    | System Security Manager wait until next day | Time advances 24 hours |
-| 3    | System Security Manager attempt to replay old request | Old request resent |
-| 4    | System Security Manager old request has valid signature | Signature still valid |
-| 5    | System Security Manager send old request to APIm | Request submitted |
-| 6    | System Security Manager aPIm extracts timestamp | Timestamp extracted (yesterday) |
-| 7    | System Security Manager aPIm compares with current time | Old timestamp detected |
-| 8    | System Security Manager aPIm checks against validation window | Outside 5-minute window |
-| 9    | System Security Manager verify response code | 401 Unauthorized returned |
-| 10    | System Security Manager verify error message | "Request timestamp expired" |
-| 11    | System Security Manager verify request not processed | Backend not contacted |
+| 1    | System Security Manager capture valid API request from yesterday | A valid API request from yesterday at 12:00:00 UTC is captured and recorded for replay testing |
+| 2    | System Security Manager wait until next day | The system time advances by 24 hours until the next day |
+| 3    | System Security Manager attempt to replay old request | The captured API request from yesterday is resent to the system |
+| 4    | System Security Manager old request has valid signature | The signature on the old request is verified to still be mathematically valid |
+| 5    | System Security Manager send old request to APIm | The old API request with its original signature is transmitted to the APIm gateway |
+| 6    | System Security Manager aPIm extracts timestamp | The APIm layer extracts the timestamp from the old request (yesterday 12:00:00 UTC) |
+| 7    | System Security Manager aPIm compares with current time | The APIm compares the request timestamp (yesterday 12:00:00) with the current server time (today 12:00:00), detecting a 24-hour time difference |
+| 8    | System Security Manager aPIm checks against validation window | The timestamp is verified to be outside the configured 5-minute validation window, causing timestamp validation to fail |
+| 9    | System Security Manager verify response code | The APIm returns HTTP 401 Unauthorized status code |
+| 10    | System Security Manager verify error message | The error response includes message "Request timestamp expired" indicating the request is too old to be valid |
+| 11    | System Security Manager verify request not processed | The request is not forwarded to the backend service; the rejection occurs at the APIm layer |
 
 
 ## Reviewer Comments
@@ -2580,16 +2580,16 @@ System API Manager can maintain consistency during credential rotation with in-f
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager start 5 API requests with old key | Requests in flight |
-| 2    | System API Manager requests start processing at APIm | Processing initiated |
-| 3    | System API Manager trigger credential rotation | Rotation request submitted |
-| 4    | System API Manager new credentials generated | New key issued |
-| 5    | System API Manager old credentials marked revoked | Status updated |
-| 6    | System API Manager in-flight requests continue processing | Old requests complete |
-| 7    | System API Manager verify in-flight requests succeed | All 5 complete with 200 OK |
-| 8    | System API Manager verify no data loss | All responses received |
-| 9    | System API Manager attempt new requests with old key | Rejected (401) |
-| 10    | System API Manager attempt new requests with new key | Accepted (200 OK) |
+| 1    | System API Manager start 5 API requests with old key | Five concurrent API requests are initiated and submitted to the system using the old credentials (key_old_xxxxx) |
+| 2    | System API Manager requests start processing at APIm | The five requests start processing at the APIm layer and begin validation |
+| 3    | System API Manager trigger credential rotation | A credential rotation request is submitted to generate new credentials for the integration client |
+| 4    | System API Manager new credentials generated | The system generates new credentials (key_new_yyyyy) and creates a new API key and secret |
+| 5    | System API Manager old credentials marked revoked | The old credentials (key_old_xxxxx) are marked as 'revoked' status in the database |
+| 6    | System API Manager in-flight requests continue processing | The five in-flight requests that started before rotation continue processing using the old credentials |
+| 7    | System API Manager verify in-flight requests succeed | All 5 in-flight requests complete successfully and each returns HTTP 200 OK with the expected response data |
+| 8    | System API Manager verify no data loss | All responses from the 5 requests are received completely with no lost or corrupted data |
+| 9    | System API Manager attempt new requests with old key | New API requests attempted using the old revoked credentials (key_old_xxxxx) are rejected |
+| 10    | System API Manager attempt new requests with new key | New API requests using the new credentials (key_new_yyyyy) are accepted and return HTTP 200 OK |
 
 
 ## Reviewer Comments
@@ -2634,16 +2634,16 @@ API Consumer can receive large API responses streamed without timeout or corrupt
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer prepare request for large data | Request prepared |
-| 2    | API Consumer send request to APIm | Request submitted |
-| 3    | API Consumer backend generates 10MB response | Response generated |
-| 4    | API Consumer aPIm streams response | Streaming initiated |
-| 5    | API Consumer monitor response delivery | Data flowing |
-| 6    | API Consumer verify no timeout occurs | Response completes |
-| 7    | API Consumer verify complete response received | 10MB received |
-| 8    | API Consumer verify response integrity | Data uncorrupted |
-| 9    | API Consumer verify JSON parsing succeeds | Valid JSON structure |
-| 10    | API Consumer calculate checksum | Integrity verified |
+| 1    | API Consumer prepare request for large data | An API request is prepared to retrieve a large data export (10 MB) |
+| 2    | API Consumer send request to APIm | The API request is submitted to the APIm gateway |
+| 3    | API Consumer backend generates 10MB response | The backend service generates a 10 MB JSON response containing the requested data |
+| 4    | API Consumer aPIm streams response | The APIm layer initiates streaming the 10 MB response back to the client |
+| 5    | API Consumer monitor response delivery | The response data is monitored to verify it is flowing continuously without interruption |
+| 6    | API Consumer verify no timeout occurs | The response completes within the configured timeout window without timing out |
+| 7    | API Consumer verify complete response received | The complete 10 MB response is received by the client without truncation |
+| 8    | API Consumer verify response integrity | The response data integrity is verified and no data corruption has occurred during transmission |
+| 9    | API Consumer verify JSON parsing succeeds | The received JSON response is parsed successfully with valid JSON structure throughout |
+| 10    | API Consumer calculate checksum | A checksum or hash of the received data is calculated and compared to verify data integrity |
 
 
 ## Reviewer Comments
@@ -2687,16 +2687,16 @@ API Consumer can complete in-flight requests successfully even if account is sus
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer start long-running API request | Request submitted |
-| 2    | API Consumer request processing begins | Processing in progress |
-| 3    | API Consumer admin suspends customer account | Suspension action triggered |
-| 4    | API Consumer account status = suspended | Status updated |
-| 5    | API Consumer in-flight request completes | Request continues to completion |
-| 6    | API Consumer verify in-flight request succeeds | 200 OK response received |
-| 7    | API Consumer data from in-flight request received | Response data complete |
-| 8    | API Consumer attempt new request after suspension | Request submitted |
-| 9    | API Consumer verify new request rejected | 403 Forbidden returned |
-| 10    | API Consumer verify error message | "Account is suspended" |
+| 1    | API Consumer start long-running API request | A long-running API request with 2-5 second processing time is submitted |
+| 2    | API Consumer request processing begins | The request begins processing and validation at the APIm layer |
+| 3    | API Consumer admin suspends customer account | An admin action is triggered to suspend the customer account during the in-flight request |
+| 4    | API Consumer account status = suspended | The customer account status is updated to 'suspended' in the database |
+| 5    | API Consumer in-flight request completes | The request that was already in-flight continues processing and completes successfully |
+| 6    | API Consumer verify in-flight request succeeds | The in-flight request returns HTTP 200 OK response with the complete result |
+| 7    | API Consumer data from in-flight request received | The response data from the in-flight request is received completely and without loss |
+| 8    | API Consumer attempt new request after suspension | A new API request is attempted after the account suspension |
+| 9    | API Consumer verify new request rejected | The new request is rejected and returns HTTP 403 Forbidden status code |
+| 10    | API Consumer verify error message | The error response includes message "Account is suspended" indicating the account is no longer active |
 
 
 ## Reviewer Comments
@@ -2740,16 +2740,16 @@ System API Manager can generate credentials without problematic Unicode whitespa
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager generate integration client | Client created |
-| 2    | System API Manager extract API key | Key captured |
-| 3    | System API Manager extract API secret | Secret captured |
-| 4    | System API Manager scan for tab characters (U+0009) | No tabs found |
-| 5    | System API Manager scan for nbsp (U+00A0) | No nbsp found |
-| 6    | System API Manager scan for zero-width space (U+200B) | No zero-width space found |
-| 7    | System API Manager verify only ASCII characters | ASCII-only confirmed |
-| 8    | System API Manager verify alphanumeric + dash/underscore | Expected chars only |
-| 9    | System API Manager create 10 more clients | Multiple credentials tested |
-| 10    | System API Manager scan all 10 credentials | All pass whitespace check |
+| 1    | System API Manager generate integration client | A new integration client is created through the client creation API |
+| 2    | System API Manager extract API key | The generated API key is extracted from the response |
+| 3    | System API Manager extract API secret | The generated API secret is extracted from the response |
+| 4    | System API Manager scan for tab characters (U+0009) | The API key and secret are scanned for tab characters (U+0009) and none are found |
+| 5    | System API Manager scan for nbsp (U+00A0) | The API key and secret are scanned for non-breaking space characters (U+00A0) and none are found |
+| 6    | System API Manager scan for zero-width space (U+200B) | The API key and secret are scanned for zero-width space characters (U+200B) and none are found |
+| 7    | System API Manager verify only ASCII characters | The API key and secret are verified to contain only ASCII characters (no Unicode whitespace) |
+| 8    | System API Manager verify alphanumeric + dash/underscore | The credentials are verified to contain only alphanumeric characters (a-zA-Z0-9), hyphens (-), and underscores (_) |
+| 9    | System API Manager create 10 more clients | 10 additional integration clients are created to generate and test multiple credential sets |
+| 10    | System API Manager scan all 10 credentials | All 10 sets of generated credentials are scanned and verified to pass the whitespace check (no problematic characters) |
 
 
 ## Reviewer Comments
@@ -2800,20 +2800,20 @@ Customer Integration Manager can complete full Workday middleware onboarding wor
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager new customer completes signup | Customer account created |
+| 1    | Customer Integration Manager new customer completes signup | A new customer account is successfully created with access to the API management portal |
 | 2    | Customer Integration Manager customer navigates to Integration | The Integrations page loads displaying available integration options, onboarding wizards for each integration, and currently active integrations for the customer |
-| 3    | Customer Integration Manager customer selects "Workday" | Workday onboarding starts |
-| 4    | Customer Integration Manager customer creates integration client | Client "Workday Integration" created |
-| 5    | Customer Integration Manager customer selects scopes | api-directory, api-incident selected |
-| 6    | Customer Integration Manager credentials displayed once | API key/secret shown |
-| 7    | Customer Integration Manager customer copies credentials | Credentials copied |
-| 8    | Customer Integration Manager customer accesses Workday config | Workday UI loads |
-| 9    | Customer Integration Manager customer enters API key in Workday | Key entered in config |
-| 10    | Customer Integration Manager customer enters API secret | Secret entered |
-| 11    | Customer Integration Manager customer tests connection | Test request sent |
-| 12    | Customer Integration Manager connection verified successful | "Connection verified" shown |
-| 13    | Customer Integration Manager customer completes onboarding | Onboarding flow finishes |
-| 14    | Customer Integration Manager integration shows as active | Status shows "Active" |
+| 3    | Customer Integration Manager customer selects "Workday" | Workday onboarding wizard is started and displays setup instructions |
+| 4    | Customer Integration Manager customer creates integration client | An integration client named "Workday Integration" is successfully created and appears in the clients list |
+| 5    | Customer Integration Manager customer selects scopes | The scopes 'api-directory' and 'api-incident' are selected and added to the client |
+| 6    | Customer Integration Manager credentials displayed once | The generated API key and secret are displayed on the screen (shown only once for security) |
+| 7    | Customer Integration Manager customer copies credentials | The API key and secret are copied by the customer for use in Workday configuration |
+| 8    | Customer Integration Manager customer accesses Workday config | The Workday middleware configuration interface loads displaying fields for entering API credentials |
+| 9    | Customer Integration Manager customer enters API key in Workday | The API key is entered into the Workday configuration and saved |
+| 10    | Customer Integration Manager customer enters API secret | The API secret is entered into the Workday configuration and saved |
+| 11    | Customer Integration Manager customer tests connection | A test API request is sent from the Workday middleware to the APIm using the provided credentials |
+| 12    | Customer Integration Manager connection verified successful | The system responds with "Connection verified" or similar success message, confirming the credentials work |
+| 13    | Customer Integration Manager customer completes onboarding | The onboarding flow is completed and the setup wizard is finished |
+| 14    | Customer Integration Manager integration shows as active | The Workday integration status shows as "Active" in the customer's integration list |
 
 
 ## Reviewer Comments
@@ -3182,17 +3182,20 @@ System Security Manager can log all integration client events to central audit s
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System Security Manager create integration client | Client created |
-| 2    | System Security Manager query central audit system | Events found |
-| 3    | System Security Manager verify CLIENT_CREATED event logged | Event present with timestamp |
-| 4    | System Security Manager add scope to client | Scope added |
-| 5    | System Security Manager query central audit system | SCOPE_ADDED event found |
-| 6    | System Security Manager remove scope from client | Scope removed |
-| 7    | System Security Manager query central audit system | SCOPE_REMOVED event found |
-| 8    | System Security Manager rotate client credentials | Credentials rotated |
-| 9    | System Security Manager query central audit system | CREDENTIAL_ROTATED event found |
-| 10    | System Security Manager verify all events have timestamps | Timestamps present |
-| 11    | System Security Manager verify actor/user identified | User/admin ID logged |
+| 1    | System Security Manager create integration client | An integration client named "Workday Integration" is successfully created through the client creation API or UI |
+| 2    | System Security Manager query central audit system | The central audit log system is queried for events related to the newly created client |
+| 3    | System Security Manager verify CLIENT_CREATED event logged | A CLIENT_CREATED event is found in the audit log with timestamp, client ID, and creation details |
+| 4    | System Security Manager add scope to client | The 'api-directory' scope is successfully added to the integration client |
+| 5    | System Security Manager query central audit system | The central audit log system is queried for scope-related events |
+| 6    | System Security Manager verify SCOPE_ADDED event logged | A SCOPE_ADDED event is found in the audit log recording the addition of 'api-directory' scope with timestamp and actor information |
+| 7    | System Security Manager remove scope from client | The 'api-directory' scope is successfully removed from the integration client |
+| 8    | System Security Manager query central audit system | The central audit log system is queried for the scope removal event |
+| 9    | System Security Manager verify SCOPE_REMOVED event logged | A SCOPE_REMOVED event is found in the audit log recording the removal of 'api-directory' scope with timestamp and actor information |
+| 10    | System Security Manager rotate client credentials | The client credentials are successfully rotated, generating new API key and secret |
+| 11    | System Security Manager query central audit system | The central audit log system is queried for credential rotation events |
+| 12    | System Security Manager verify CREDENTIAL_ROTATED event logged | A CREDENTIAL_ROTATED event is found in the audit log with timestamp and details of the rotation action |
+| 13    | System Security Manager verify all events have timestamps | All audit log events include precise timestamps in ISO 8601 format |
+| 14    | System Security Manager verify actor/user identified | All audit log events include the actor/user ID or admin username who performed each action |
 
 
 ## Reviewer Comments
@@ -3241,15 +3244,16 @@ Customer Integration Manager can receive email notification on credential rotati
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager rotate integration client credentials | Rotation initiated |
-| 2    | Customer Integration Manager verify new credentials generated | New key/secret issued |
-| 3    | Customer Integration Manager monitor email inbox | Email received |
-| 4    | Customer Integration Manager verify email from system | From: system@example.com |
-| 5    | Customer Integration Manager verify email subject | Subject includes "Credentials Rotated" |
-| 6    | Customer Integration Manager verify email content | Details about rotation included |
-| 7    | Customer Integration Manager verify timestamp in email | Timestamp matches rotation time |
-| 8    | Customer Integration Manager verify no secrets in email | API secret not included in email |
-| 9    | Customer Integration Manager verify action items | Email includes next steps |
+| 1    | Customer Integration Manager rotate integration client credentials | Credential rotation is initiated through the client management interface or API |
+| 2    | Customer Integration Manager verify new credentials generated | New API key and secret are successfully generated and issued for the client |
+| 3    | Customer Integration Manager monitor email inbox | The customer email inbox is monitored for incoming email notifications |
+| 4    | Customer Integration Manager verify email received | An email is received from the system with credential rotation notification |
+| 5    | Customer Integration Manager verify email from system | The email is confirmed to be from system@example.com (official notification sender) |
+| 6    | Customer Integration Manager verify email subject | The email subject line includes "Credentials Rotated" or similar rotation-related text |
+| 7    | Customer Integration Manager verify email content | The email content includes details about the credential rotation event |
+| 8    | Customer Integration Manager verify timestamp in email | The email includes a timestamp that matches the credential rotation time |
+| 9    | Customer Integration Manager verify no secrets in email | The email does NOT contain the API key or secret for security (credentials are only shown once during generation) |
+| 10    | Customer Integration Manager verify action items | The email includes clear next steps or action items (e.g., "Update your middleware configuration with new credentials") |
 
 
 ## Reviewer Comments
@@ -3297,16 +3301,17 @@ Customer Integration Manager can receive onboarding email with setup instruction
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager create new integration client | Client created |
-| 2    | Customer Integration Manager monitor email inbox | Email received |
-| 3    | Customer Integration Manager verify email source | From: system@example.com |
-| 4    | Customer Integration Manager verify email subject | Subject: "Integration Client Created" |
-| 5    | Customer Integration Manager verify client name in email | Client name mentioned |
-| 6    | Customer Integration Manager verify setup instructions included | Step-by-step instructions |
-| 7    | Customer Integration Manager verify documentation link | Link to developer docs |
-| 8    | Customer Integration Manager verify support contact included | Support email/phone provided |
-| 9    | Customer Integration Manager verify no secrets exposed | Credentials not in email |
-| 10    | Customer Integration Manager verify clear call-to-action | Next steps clearly outlined |
+| 1    | Customer Integration Manager create new integration client | A new integration client is successfully created through the API or management portal |
+| 2    | Customer Integration Manager monitor email inbox | The customer email inbox is monitored for incoming email notifications |
+| 3    | Customer Integration Manager verify email received | An email is received from the system with onboarding instructions |
+| 4    | Customer Integration Manager verify email source | The email is confirmed to be from system@example.com (official notification sender) |
+| 5    | Customer Integration Manager verify email subject | The email subject line states "Integration Client Created" or similar onboarding-related text |
+| 6    | Customer Integration Manager verify client name in email | The created client name (e.g., "My Integration") is mentioned in the email content |
+| 7    | Customer Integration Manager verify setup instructions included | The email includes step-by-step setup instructions for configuring the integration |
+| 8    | Customer Integration Manager verify documentation link | The email includes a link to the API developer documentation and integration guides |
+| 9    | Customer Integration Manager verify support contact included | The email provides support contact information (email, phone, or support portal link) |
+| 10    | Customer Integration Manager verify no secrets exposed | The email does NOT contain the API key or secret; credentials are only shown once during client creation |
+| 11    | Customer Integration Manager verify clear call-to-action | The email clearly outlines next steps and includes a prominent call-to-action button or link (e.g., "Get Started") |
 
 
 ## Reviewer Comments
@@ -3351,15 +3356,15 @@ Admin System Administrator can view integration client metrics on dashboard.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Admin System Administrator login as admin user | Admin logged in |
-| 2    | Admin System Administrator navigate to dashboard | The admin dashboard loads displaying all integration clients across all customer tenants, system metrics, and relevant management options |
-| 3    | Admin System Administrator locate client metrics section | Metrics visible |
-| 4    | Admin System Administrator verify total clients count | Number displayed |
-| 5    | Admin System Administrator verify active clients count | Number displayed |
-| 6    | Admin System Administrator verify requests last 24h | Count displayed |
-| 7    | Admin System Administrator verify metrics are current | Metrics recently updated |
-| 8    | Admin System Administrator verify no sensitive data exposed | Only aggregated metrics |
-| 9    | Admin System Administrator click on metrics for detail | Drill-down works |
+| 1    | Admin System Administrator login as admin user | The admin user is successfully authenticated and logged into the system with full administrative permissions |
+| 2    | Admin System Administrator navigate to dashboard | The admin dashboard page loads displaying all integration clients across all customer tenants, system metrics, and relevant management options |
+| 3    | Admin System Administrator locate client metrics section | The dashboard client metrics section is visible and accessible with data displayed in card or widget format |
+| 4    | Admin System Administrator verify total clients count | The total number of integration clients across all customers is displayed (e.g., "Total Clients: 1,247") |
+| 5    | Admin System Administrator verify active clients count | The number of currently active integration clients is displayed (e.g., "Active Clients: 1,105") |
+| 6    | Admin System Administrator verify requests last 24h | The total number of API requests received in the last 24 hours is displayed (e.g., "Requests (24h): 542,891") |
+| 7    | Admin System Administrator verify metrics are current | The metrics are verified to be recently updated with timestamps showing when they were last refreshed (e.g., "Updated: 2 minutes ago") |
+| 8    | Admin System Administrator verify no sensitive data exposed | The dashboard displays only aggregated metrics and no sensitive data such as API keys, customer secrets, or individual customer credentials |
+| 9    | Admin System Administrator click on metrics for detail | Clicking on individual metrics provides drill-down functionality showing additional details or historical trends |
 
 
 ## Reviewer Comments
@@ -3406,13 +3411,13 @@ System API Manager can send accurate customer tier usage metrics to billing syst
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | System API Manager free tier customer makes 500 requests | All API requests are successfully processed by the backend without throttling, rate limiting, or rejection due to tier restrictions |
 | 2    | System API Manager premium tier customer makes 5000 requests | All API requests are successfully processed by the backend without throttling, rate limiting, or rejection due to tier restrictions |
-| 3    | System API Manager query billing system metrics | Metrics recorded |
-| 4    | System API Manager verify Free tier usage logged | 500 requests recorded |
-| 5    | System API Manager verify Premium tier usage logged | 5000 requests recorded |
-| 6    | System API Manager verify tier correctly identified | Tier labels correct |
-| 7    | System API Manager verify timestamp logged | Time recorded |
-| 8    | System API Manager generate billing report | Report generated |
-| 9    | System API Manager verify usage accuracy in report | Metrics match actual usage |
+| 3    | System API Manager query billing system metrics | The billing system is queried to retrieve recorded usage metrics for the customers |
+| 4    | System API Manager verify Free tier usage logged | The Free tier customer's usage of 500 requests is recorded in the billing system |
+| 5    | System API Manager verify Premium tier usage logged | The Premium tier customer's usage of 5000 requests is recorded in the billing system |
+| 6    | System API Manager verify tier correctly identified | The customer tier is correctly identified and logged as "Free" and "Premium" respectively |
+| 7    | System API Manager verify timestamp logged | Each usage record includes a timestamp indicating when the requests occurred |
+| 8    | System API Manager generate billing report | A billing report is generated from the collected usage metrics |
+| 9    | System API Manager verify usage accuracy in report | The billing report shows accurate usage metrics (Free: 500 requests, Premium: 5000 requests) matching the actual API usage |
 
 
 ## Reviewer Comments
@@ -3457,16 +3462,16 @@ Support Lead can rotate customer credentials on customer request.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Support Lead support user logs in | Support user logged in |
-| 2    | Support Lead search for customer | Customer found |
-| 3    | Support Lead locate customer's client | Client visible |
-| 4    | Support Lead click "Reset Credentials" (support view) | Confirmation shown |
-| 5    | Support Lead support enters reason for reset | Reason recorded |
-| 6    | Support Lead confirm credential reset | Reset initiated |
-| 7    | Support Lead verify new credentials generated | New key/secret issued |
-| 8    | Support Lead support provides new credentials | Credentials available for customer |
-| 9    | Support Lead verify old credentials revoked | Old credentials no longer work |
-| 10    | Support Lead verify audit log entry | Reset logged by support user |
+| 1    | Support Lead support user logs in | The support lead user is successfully authenticated and logged into the support portal with appropriate permissions |
+| 2    | Support Lead search for customer | The customer is located in the system using search functionality (by company name, customer ID, or email) |
+| 3    | Support Lead locate customer's client | The target integration client belonging to the customer is visible in the client list |
+| 4    | Support Lead click "Reset Credentials" (support view) | A confirmation dialog is displayed asking for confirmation to proceed with credential reset |
+| 5    | Support Lead support enters reason for reset | The support user enters a reason or notes for the credential reset (recorded for audit purposes) |
+| 6    | Support Lead confirm credential reset | The credential reset action is confirmed and initiated in the backend |
+| 7    | Support Lead verify new credentials generated | New API key and secret are successfully generated for the integration client |
+| 8    | Support Lead support provides new credentials | The new credentials are presented to the support user to provide to the customer |
+| 9    | Support Lead verify old credentials revoked | The old credentials are marked as revoked and no longer function for API requests |
+| 10    | Support Lead verify audit log entry | The credential reset action is logged in the audit trail with the support user ID, timestamp, and reason |
 
 
 ## Reviewer Comments
@@ -3510,15 +3515,15 @@ System API Manager can provide health and performance metrics to monitoring syst
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager call /metrics endpoint | Metrics endpoint responds |
-| 2    | System API Manager verify response format | Prometheus format used |
-| 3    | System API Manager verify active_clients metric | Metric present |
-| 4    | System API Manager verify failed_requests metric | Metric present |
-| 5    | System API Manager verify avg_latency metric | Metric present |
-| 6    | System API Manager verify metric values are current | Recently updated values |
-| 7    | System API Manager monitoring system scrapes metrics | Scrape succeeds |
-| 8    | System API Manager metrics stored in monitoring system | Data persisted |
-| 9    | System API Manager historical trends available | Time-series data available |
+| 1    | System API Manager call /metrics endpoint | The metrics endpoint (/metrics) responds with HTTP 200 OK |
+| 2    | System API Manager verify response format | The response is in Prometheus metrics format (text-based, TYPE and HELP directives) |
+| 3    | System API Manager verify active_clients metric | The 'active_clients' metric is present in the response with current value |
+| 4    | System API Manager verify failed_requests metric | The 'failed_requests' metric is present showing count of failed API requests |
+| 5    | System API Manager verify avg_latency metric | The 'avg_latency' metric is present showing average request latency in milliseconds |
+| 6    | System API Manager verify metric values are current | All metric values are verified to be recently updated (within the last refresh interval) |
+| 7    | System API Manager monitoring system scrapes metrics | The monitoring system successfully scrapes metrics from the /metrics endpoint using an HTTP GET request |
+| 8    | System API Manager metrics stored in monitoring system | The collected metrics are successfully stored in the time-series database of the monitoring system |
+| 9    | System API Manager historical trends available | Historical metric data is available in the monitoring system showing trends over time |
 
 
 ## Reviewer Comments
@@ -3567,15 +3572,15 @@ System API Manager can maintain API request latency SLA below 200ms at p99.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager configure JMeter for 100 req/sec | Load test configured |
-| 2    | System API Manager run load test for 10 minutes | Test executing |
+| 1    | System API Manager configure JMeter for 100 req/sec | Load test is configured with 100 requests per second load generation |
+| 2    | System API Manager run load test for 10 minutes | Load test is executed for 10 minutes duration |
 | 3    | System API Manager generate 60000 requests | All API requests are successfully processed by the backend without throttling, rate limiting, or rejection due to tier restrictions |
-| 4    | System API Manager collect latency metrics | Latency data captured |
-| 5    | System API Manager calculate p50 latency | Median latency computed |
-| 6    | System API Manager calculate p95 latency | 95th percentile computed |
-| 7    | System API Manager calculate p99 latency | 99th percentile computed |
-| 8    | System API Manager verify p99 < 200ms | SLA met |
-| 9    | System API Manager review error rate | Error rate < 1% |
+| 4    | System API Manager collect latency metrics | Request latency metrics are collected and recorded from all 60,000 requests |
+| 5    | System API Manager calculate p50 latency | The median (50th percentile) latency is calculated from the collected metrics |
+| 6    | System API Manager calculate p95 latency | The 95th percentile latency is calculated from the collected metrics |
+| 7    | System API Manager calculate p99 latency | The 99th percentile latency is calculated from the collected metrics |
+| 8    | System API Manager verify p99 < 200ms | The p99 latency is verified to be under the 200ms SLA threshold |
+| 9    | System API Manager review error rate | The error rate is verified to be under 1% showing excellent request success rate |
 
 
 ## Reviewer Comments
@@ -3620,14 +3625,14 @@ System API Manager can validate scopes with latency under 5ms.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager generate 10000 requests | Requests prepared |
-| 2    | System API Manager include various scope counts | 1-10 scopes per request |
-| 3    | System API Manager measure scope validation time | Timing captured |
-| 4    | System API Manager extract validation latency | Time extracted from logs |
-| 5    | System API Manager calculate mean validation latency | Mean < 5ms |
-| 6    | System API Manager calculate p99 validation latency | p99 < 5ms |
-| 7    | System API Manager verify consistent performance | No degradation |
-| 8    | System API Manager verify cache helps performance | Cached lookups fast |
+| 1    | System API Manager generate 10000 requests | 10,000 test requests are generated for scope validation testing |
+| 2    | System API Manager include various scope counts | Requests are generated with varying numbers of scopes (1-10 scopes per request) |
+| 3    | System API Manager measure scope validation time | The time taken to validate scopes in each request is measured and recorded |
+| 4    | System API Manager extract validation latency | Latency metrics are extracted from request processing logs |
+| 5    | System API Manager calculate mean validation latency | The mean scope validation latency across all 10,000 requests is calculated and verified to be under 5ms |
+| 6    | System API Manager calculate p99 validation latency | The 99th percentile scope validation latency is calculated and verified to be under 5ms |
+| 7    | System API Manager verify consistent performance | Scope validation latency remains consistent across requests with no degradation as test progresses |
+| 8    | System API Manager verify cache helps performance | Scope validation using cached scope lists is confirmed to be faster than uncached lookups |
 
 
 ## Reviewer Comments
@@ -3672,14 +3677,14 @@ System API Manager can validate credentials with latency under 10ms.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager generate 10000 requests | Requests prepared |
-| 2    | System API Manager vary credential types tested | Valid, expired, revoked |
-| 3    | System API Manager measure credential validation time | Timing captured |
-| 4    | System API Manager calculate mean validation latency | Mean < 10ms |
-| 5    | System API Manager calculate p99 validation latency | p99 < 10ms |
-| 6    | System API Manager verify database query performance | Queries fast |
-| 7    | System API Manager verify caching effective | Frequently used creds cached |
-| 8    | System API Manager verify signature verification fast | HMAC calculation fast |
+| 1    | System API Manager generate 10000 requests | 10,000 test requests are generated for credential validation testing |
+| 2    | System API Manager vary credential types tested | Requests use various credential types: valid, expired, and revoked credentials |
+| 3    | System API Manager measure credential validation time | The time taken to validate each credential is measured and recorded |
+| 4    | System API Manager calculate mean validation latency | The mean credential validation latency across all 10,000 requests is calculated and verified to be under 10ms |
+| 5    | System API Manager calculate p99 validation latency | The 99th percentile credential validation latency is calculated and verified to be under 10ms |
+| 6    | System API Manager verify database query performance | Database queries for credential lookups are confirmed to be fast and efficient |
+| 7    | System API Manager verify caching effective | Frequently used credentials are confirmed to be cached, improving validation speed |
+| 8    | System API Manager verify signature verification fast | HMAC-SHA256 signature verification is confirmed to be fast and not a performance bottleneck |
 
 
 ## Reviewer Comments
@@ -3724,15 +3729,15 @@ System API Manager can handle 100 concurrent clients making simultaneous request
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager configure JMeter: 100 threads | Load test setup complete |
-| 2    | System API Manager start 100 concurrent clients | Clients connecting |
-| 3    | System API Manager each client makes 50 requests | 5000 total requests |
-| 4    | System API Manager monitor error rate | Error rate monitored |
-| 5    | System API Manager monitor response times | Latencies captured |
-| 6    | System API Manager monitor system resources | CPU, memory, connections |
-| 7    | System API Manager verify no errors or timeouts | 0% error rate |
-| 8    | System API Manager verify response times acceptable | Latencies within SLA |
-| 9    | System API Manager verify system resources stable | No resource exhaustion |
+| 1    | System API Manager configure JMeter: 100 threads | Load test is configured with 100 concurrent threads (client connections) |
+| 2    | System API Manager start 100 concurrent clients | 100 concurrent clients successfully establish connections to the API |
+| 3    | System API Manager each client makes 50 requests | Each of the 100 clients submits 50 API requests, totaling 5,000 concurrent requests |
+| 4    | System API Manager monitor error rate | The error rate during concurrent load is monitored and should remain near 0% |
+| 5    | System API Manager monitor response times | Response latencies for all requests are captured and monitored for performance degradation |
+| 6    | System API Manager monitor system resources | System resources (CPU, memory, database connections) are monitored to ensure no exhaustion |
+| 7    | System API Manager verify no errors or timeouts | Verification shows 0% error rate with no timeouts or failed requests |
+| 8    | System API Manager verify response times acceptable | All response times are verified to remain within SLA thresholds despite concurrent load |
+| 9    | System API Manager verify system resources stable | System resources remain stable with no CPU spikes, memory leaks, or connection pool exhaustion |
 
 
 ## Reviewer Comments
@@ -3781,14 +3786,14 @@ System API Manager can maintain acceptable query performance with large datasets
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager load scaled test data into database | Data populated |
-| 2    | System API Manager query: find client by ID | Query executes < 10ms |
-| 3    | System API Manager query: list clients for customer | Query executes < 100ms |
-| 4    | System API Manager query: find credential | Query executes < 5ms |
-| 5    | System API Manager query: list all credentials | Query executes < 500ms |
-| 6    | System API Manager query: find active clients | Query executes < 200ms |
-| 7    | System API Manager verify index effectiveness | Indexes used by queries |
-| 8    | System API Manager analyze query execution plans | Plans efficient |
+| 1    | System API Manager load scaled test data into database | Test database is populated with 100,000 customers, 1,000,000 integration clients, and 5,000,000 credentials |
+| 2    | System API Manager query: find client by ID | Query to find a specific client by ID executes in under 10ms |
+| 3    | System API Manager query: list clients for customer | Query to list all clients for a specific customer executes in under 100ms |
+| 4    | System API Manager query: find credential | Query to find a specific credential by ID executes in under 5ms |
+| 5    | System API Manager query: list all credentials | Query to list credentials (with pagination) executes in under 500ms |
+| 6    | System API Manager query: find active clients | Query to find all active clients for filtering/searching executes in under 200ms |
+| 7    | System API Manager verify index effectiveness | Database query execution analysis confirms that all queries use appropriate indexes to achieve good performance |
+| 8    | System API Manager analyze query execution plans | Query execution plans are analyzed and verified to be efficient (avoiding full table scans) |
 
 
 ## Reviewer Comments
@@ -3833,15 +3838,15 @@ System API Manager can maintain stable memory under sustained 1000 req/sec load.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager record baseline memory usage | Baseline captured |
-| 2    | System API Manager generate 1000 req/sec load | Load sustained |
-| 3    | System API Manager monitor memory usage continuously | Memory tracked |
-| 4    | System API Manager run test for 60 minutes | Full duration completed |
-| 5    | System API Manager check memory at 10 min mark | Memory stable |
-| 6    | System API Manager check memory at 30 min mark | Memory stable |
-| 7    | System API Manager check memory at 60 min mark | Memory stable |
-| 8    | System API Manager calculate memory growth rate | Growth < 1% per hour |
-| 9    | System API Manager check for memory leaks | No leaks detected |
+| 1    | System API Manager record baseline memory usage | Initial system memory usage is recorded as a baseline for comparison |
+| 2    | System API Manager generate 1000 req/sec load | Load generation is configured and sustained at 1000 requests per second |
+| 3    | System API Manager monitor memory usage continuously | Memory usage is continuously monitored throughout the 60-minute test |
+| 4    | System API Manager run test for 60 minutes | The load test runs for the full 60-minute duration, generating 3,600,000 total requests |
+| 5    | System API Manager check memory at 10 min mark | Memory usage at the 10-minute mark is verified to be stable and near baseline |
+| 6    | System API Manager check memory at 30 min mark | Memory usage at the 30-minute mark is verified to remain stable without significant growth |
+| 7    | System API Manager check memory at 60 min mark | Memory usage at the 60-minute mark is verified to be stable and not significantly higher than baseline |
+| 8    | System API Manager calculate memory growth rate | The memory growth rate is calculated and verified to be less than 1% per hour (acceptable for a production system) |
+| 9    | System API Manager check for memory leaks | Final analysis confirms no memory leaks detected; memory remains stable throughout the test |
 
 
 ## Reviewer Comments
@@ -3885,14 +3890,14 @@ System API Manager can handle concurrent credential rotation from multiple clien
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager prepare 10 clients for rotation | Clients ready |
-| 2    | System API Manager initiate 10 concurrent rotations | All rotation requests sent |
-| 3    | System API Manager monitor for race conditions | No races detected |
-| 4    | System API Manager verify all 10 rotations succeed | All successful |
-| 5    | System API Manager verify new credentials unique | Each client has unique new creds |
-| 6    | System API Manager verify old credentials revoked | All old creds revoked |
-| 7    | System API Manager repeat rotation cycle 10 times | Total 100 rotations |
-| 8    | System API Manager verify no duplicates created | All credentials unique |
+| 1    | System API Manager prepare 10 clients for rotation | 10 integration clients are prepared and confirmed ready for credential rotation |
+| 2    | System API Manager initiate 10 concurrent rotations | Credential rotation requests for all 10 clients are initiated simultaneously |
+| 3    | System API Manager monitor for race conditions | The concurrent rotations are monitored for race conditions, deadlocks, or data corruption |
+| 4    | System API Manager verify all 10 rotations succeed | All 10 credential rotation operations complete successfully without errors |
+| 5    | System API Manager verify new credentials unique | Each of the 10 clients receives unique new API key and secret values |
+| 6    | System API Manager verify old credentials revoked | All old credentials for the 10 clients are revoked and marked as inactive |
+| 7    | System API Manager repeat rotation cycle 10 times | The 10-client concurrent rotation is repeated 10 times, totaling 100 rotation operations |
+| 8    | System API Manager verify no duplicates created | All 100 sets of newly generated credentials are verified to be unique with no duplicate keys or secrets |
 
 
 ## Reviewer Comments
@@ -3937,14 +3942,14 @@ Admin System Administrator can paginate through 10000 clients quickly.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager load first page (page 1) | Page loads < 1 second |
-| 2    | System API Manager load middle page (page 100) | Page loads < 1 second |
-| 3    | System API Manager load last page (page 200) | Page loads < 1 second |
-| 4    | System API Manager request page with search filter | Results load < 1 second |
-| 5    | System API Manager request page with sort applied | Results load < 1 second |
-| 6    | System API Manager navigate through 10 consecutive pages | Each < 1 second |
-| 7    | System API Manager verify accuracy of pagination | Correct clients on each page |
-| 8    | System API Manager verify no missing data | All 10,000 clients accessible |
+| 1    | System API Manager load first page (page 1) | The first page of 50 clients from the 10,000 total clients loads in less than 1 second |
+| 2    | System API Manager load middle page (page 100) | The 100th page (middle of 200 total pages) loads in less than 1 second |
+| 3    | System API Manager load last page (page 200) | The final page (page 200 with remaining clients) loads in less than 1 second |
+| 4    | System API Manager request page with search filter | A page of results filtered by search criteria loads in less than 1 second |
+| 5    | System API Manager request page with sort applied | A page of results sorted by a specific column loads in less than 1 second |
+| 6    | System API Manager navigate through 10 consecutive pages | Navigating through 10 consecutive pages takes less than 1 second per page |
+| 7    | System API Manager verify accuracy of pagination | Each page displays the correct 50 clients with no duplicates or omissions between pages |
+| 8    | System API Manager verify no missing data | All 10,000 clients are accessible through pagination with no inaccessible or orphaned records |
 
 
 ## Reviewer Comments
@@ -3993,15 +3998,15 @@ System API Manager can validate HMAC-SHA256 signatures using constant-time compa
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager generate valid HMAC-SHA256 signature | Signature created |
-| 2    | System API Manager submit request with valid signature | Request accepted (200 OK) |
-| 3    | System API Manager generate invalid signature (1-bit flip) | Modified signature |
-| 4    | System API Manager submit request with invalid signature | Request rejected (401) |
-| 5    | System API Manager measure validation time for valid sig | Time recorded |
-| 6    | System API Manager measure validation time for invalid sig | Time recorded |
-| 7    | System API Manager calculate time difference | Difference calculated |
-| 8    | System API Manager verify constant-time comparison | No timing difference |
-| 9    | System API Manager test with multiple 1-bit variations | All timing equal |
+| 1    | System API Manager generate valid HMAC-SHA256 signature | A valid HMAC-SHA256 signature is generated for a test request |
+| 2    | System API Manager submit request with valid signature | A request with the valid signature is submitted and accepted with HTTP 200 OK |
+| 3    | System API Manager generate invalid signature (1-bit flip) | An invalid signature is created by flipping one bit of the valid signature |
+| 4    | System API Manager submit request with invalid signature | A request with the invalid signature is submitted and rejected with HTTP 401 Unauthorized |
+| 5    | System API Manager measure validation time for valid sig | The time taken to validate and accept the valid signature is measured |
+| 6    | System API Manager measure validation time for invalid sig | The time taken to validate and reject the invalid signature is measured |
+| 7    | System API Manager calculate time difference | The difference between validation times for valid and invalid signatures is calculated |
+| 8    | System API Manager verify constant-time comparison | The timing difference is verified to be negligible (within measurement error), confirming constant-time comparison |
+| 9    | System API Manager test with multiple 1-bit variations | Multiple invalid signatures (each with single-bit variations) are tested, and validation times are verified to be equal |
 
 
 ## Reviewer Comments
