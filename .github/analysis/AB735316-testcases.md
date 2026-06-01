@@ -44,15 +44,15 @@ Customer Integration Manager can register a new integration client with valid in
 
 | Step | Action                                              | Expected Result                              |
 | ---- | --------------------------------------------------- | -------------------------------------------- |
-| 1    | Navigate to Integration Clients section            | Client list page loads successfully          |
-| 2    | Click "New Client" button                          | New client creation form opens               |
-| 3    | Enter client name "Workday Integration"            | Name field populated                         |
-| 4    | Enter description "Directory sync tool"            | Description field populated                  |
-| 5    | Select scopes: api-directory, api-incident         | Both scopes appear selected in form           |
-| 6    | Click "Create" button                             | Client creation processes                    |
-| 7    | Verify API credentials display (one-time only)     | API key and secret visible in modal          |
-| 8    | Close credentials modal                           | Modal closes, client appears in list         |
-| 9    | Verify email sent to customer@example.com          | Onboarding email received with setup guide   |
+| 1    | Customer Integration Manager navigates to Integration Clients section | Client list page loads successfully          |
+| 2    | Customer Integration Manager clicks "New Client" button | New client creation form opens               |
+| 3    | Customer Integration Manager enters client name "Workday Integration" | Name field populated                         |
+| 4    | Customer Integration Manager enters description "Directory sync tool" | Description field populated                  |
+| 5    | Customer Integration Manager selects scopes: api-directory, api-incident | Both scopes appear selected in form           |
+| 6    | Customer Integration Manager clicks "Create" button | Client creation processes                    |
+| 7    | Customer Integration Manager verifies API credentials display (one-time only) | API key and secret visible in modal          |
+| 8    | Customer Integration Manager closes credentials modal | Modal closes, client appears in list         |
+| 9    | Customer Integration Manager verifies email sent to customer@example.com | Onboarding email received with setup guide   |
 
 
 ## Reviewer Comments
@@ -98,16 +98,16 @@ System API Manager can generate cryptographically strong unique API credentials.
 
 | Step | Action                              | Expected Result                      |
 | ---- | ----------------------------------- | ------------------------------------ |
-| 1    | Create first integration client     | API key-1 and secret-1 generated     |
-| 2    | Capture and record key-1, secret-1  | Credentials recorded for comparison  |
-| 3    | Create second integration client    | API key-2 and secret-2 generated     |
-| 4    | Capture and record key-2, secret-2  | Credentials recorded for comparison  |
-| 5    | Compare key-1 with key-2            | Keys are different (not duplicated)  |
-| 6    | Compare secret-1 with secret-2      | Secrets are different (not duplicated) |
-| 7    | Verify key-1 length                 | Length >= 32 characters              |
-| 8    | Verify secret-1 length              | Length >= 64 characters              |
-| 9    | Verify key format (alphanumeric)    | Contains only URL-safe characters    |
-| 10   | Verify secret format (alphanumeric) | Contains only URL-safe characters    |
+| 1    | System API Manager creates first integration client | API key-1 and secret-1 generated     |
+| 2    | System API Manager captures and records key-1, secret-1 | Credentials recorded for comparison  |
+| 3    | System API Manager creates second integration client | API key-2 and secret-2 generated     |
+| 4    | System API Manager captures and records key-2, secret-2 | Credentials recorded for comparison  |
+| 5    | System API Manager compares key-1 with key-2 | Keys are different (not duplicated)  |
+| 6    | System API Manager compares secret-1 with secret-2 | Secrets are different (not duplicated) |
+| 7    | System API Manager verifies key-1 length | Length >= 32 characters              |
+| 8    | System API Manager verifies secret-1 length | Length >= 64 characters              |
+| 9    | System API Manager verifies key format (alphanumeric) | Contains only URL-safe characters    |
+| 10   | System API Manager verifies secret format (alphanumeric) | Contains only URL-safe characters    |
 
 
 ## Reviewer Comments
@@ -151,16 +151,16 @@ Customer Integration Manager can view a complete list of integration clients.
 
 | Step | Action                      | Expected Result                    |
 | ---- | --------------------------- | ---------------------------------- |
-| 1    | Navigate to Integration Clients section | Clients list page loads      |
-| 2    | Verify page title           | Title shows "Integration Clients"  |
-| 3    | Count displayed clients     | All 3 clients are visible          |
-| 4    | Verify table columns        | All required columns present       |
-| 5    | Check client names          | All client names displayed         |
-| 6    | Check client IDs            | All clientIds properly formatted   |
-| 7    | Check scopes column         | Scopes listed for each client      |
-| 8    | Check status column         | Status shows "active" or "suspended" |
-| 9    | Check createdAt dates       | Dates are valid and readable       |
-| 10   | Check lastUsedAt dates      | Recent client shows current date   |
+| 1    | Customer Integration Manager navigates to Integration Clients section | Clients list page loads      |
+| 2    | Customer Integration Manager verifies page title | Title shows "Integration Clients"  |
+| 3    | Customer Integration Manager counts displayed clients | All 3 clients are visible          |
+| 4    | Customer Integration Manager verifies table columns | All required columns present       |
+| 5    | Customer Integration Manager checks client names | All client names displayed         |
+| 6    | Customer Integration Manager checks client IDs | All clientIds properly formatted   |
+| 7    | Customer Integration Manager checks scopes column | Scopes listed for each client      |
+| 8    | Customer Integration Manager checks status column | Status shows "active" or "suspended" |
+| 9    | Customer Integration Manager checks createdAt dates | Dates are valid and readable       |
+| 10   | Customer Integration Manager checks lastUsedAt dates | Recent client shows current date   |
 
 
 ## Reviewer Comments
@@ -205,16 +205,16 @@ Customer Integration Manager can view detailed information about an integration 
 
 | Step | Action                              | Expected Result                 |
 | ---- | ----------------------------------- | ------------------------------- |
-| 1    | Navigate to Integration Clients list | List page displays all clients   |
-| 2    | Click on specific client (Workday Integration) | Details page loads      |
-| 3    | Verify client name displayed        | "Workday Integration" visible   |
-| 4    | Verify client ID displayed          | Unique client ID shown          |
-| 5    | Verify description displayed        | Description text visible        |
-| 6    | Verify status displayed             | Status shows "active"           |
-| 7    | Verify scopes list                  | Both api-directory and api-incident listed |
-| 8    | Verify creation date displayed      | Formatted date/time shown       |
-| 9    | Verify credentials count            | Shows active credential count   |
-| 10   | Verify no plain-text secret shown   | Secret field masked or empty    |
+| 1    | Customer Integration Manager navigates to Integration Clients list | List page displays all clients   |
+| 2    | Customer Integration Manager clicks on specific client (Workday Integration) | Details page loads      |
+| 3    | Customer Integration Manager verifies client name displayed | "Workday Integration" visible   |
+| 4    | Customer Integration Manager verifies client ID displayed | Unique client ID shown          |
+| 5    | Customer Integration Manager verifies description displayed | Description text visible        |
+| 6    | Customer Integration Manager verifies status displayed | Status shows "active"           |
+| 7    | Customer Integration Manager verifies scopes list | Both api-directory and api-incident listed |
+| 8    | Customer Integration Manager verifies creation date displayed | Formatted date/time shown       |
+| 9    | Customer Integration Manager verifies credentials count | Shows active credential count   |
+| 10   | Customer Integration Manager verifies no plain-text secret shown | Secret field masked or empty    |
 
 
 ## Reviewer Comments
@@ -260,16 +260,16 @@ Customer Integration Manager can update integration client metadata without affe
 
 | Step | Action                              | Expected Result           |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Navigate to client details page     | Details page loads        |
-| 2    | Click "Edit" button                 | Edit form opens           |
-| 3    | Clear name field                    | Field becomes empty       |
-| 4    | Enter new name "Updated Workday Client" | New name entered        |
-| 5    | Clear description field             | Description field cleared |
-| 6    | Enter new description "Syncs directory data" | New description entered |
-| 7    | Verify clientId field is disabled   | Client ID field read-only |
-| 8    | Verify scopes cannot be edited here | Scopes field disabled     |
-| 9    | Click "Save" button                 | Changes submitted         |
-| 10   | Verify update confirmation message  | "Client updated successfully" displayed |
+| 1    | Customer Integration Manager navigates to client details page | Details page loads        |
+| 2    | Customer Integration Manager clicks "Edit" button | Edit form opens           |
+| 3    | Customer Integration Manager clears name field | Field becomes empty       |
+| 4    | Customer Integration Manager enters new name "Updated Workday Client" | New name entered        |
+| 5    | Customer Integration Manager clears description field | Description field cleared |
+| 6    | Customer Integration Manager enters new description "Syncs directory data" | New description entered |
+| 7    | Customer Integration Manager verifies clientId field is disabled | Client ID field read-only |
+| 8    | Customer Integration Manager verifies scopes cannot be edited here | Scopes field disabled     |
+| 9    | Customer Integration Manager clicks "Save" button | Changes submitted         |
+| 10   | Customer Integration Manager verifies update confirmation message | "Client updated successfully" displayed |
 
 
 ## Reviewer Comments
@@ -316,15 +316,15 @@ Customer Integration Manager can add API product scopes to an integration client
 
 | Step | Action                              | Expected Result           |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Navigate to client details page     | Client shows current scope: api-directory |
-| 2    | Click "Add Scope" button             | Add scope modal opens      |
-| 3    | Verify available scopes listed      | api-incident appears in dropdown |
-| 4    | Verify api-directory not shown      | Already assigned scopes excluded |
-| 5    | Select "api-incident" from dropdown | Scope selected in modal   |
-| 6    | Click "Confirm" button              | Change submitted          |
-| 7    | Verify success message              | "Scope added successfully" shown |
-| 8    | Verify updated scope list           | Client now shows both scopes |
-| 9    | Verify audit log entry created      | Log shows SCOPE_ADDED event |
+| 1    | Customer Integration Manager navigates to client details page | Client shows current scope: api-directory |
+| 2    | Customer Integration Manager clicks "Add Scope" button | Add scope modal opens      |
+| 3    | Customer Integration Manager verifies available scopes listed | api-incident appears in dropdown |
+| 4    | Customer Integration Manager verifies api-directory not shown | Already assigned scopes excluded |
+| 5    | Customer Integration Manager selects "api-incident" from dropdown | Scope selected in modal   |
+| 6    | Customer Integration Manager clicks "Confirm" button | Change submitted          |
+| 7    | Customer Integration Manager verifies success message | "Scope added successfully" shown |
+| 8    | Customer Integration Manager verifies updated scope list | Client now shows both scopes |
+| 9    | Customer Integration Manager verifies audit log entry created | Log shows SCOPE_ADDED event |
 
 
 ## Reviewer Comments
@@ -371,15 +371,15 @@ Customer Integration Manager can remove API product scopes from an integration c
 
 | Step | Action                              | Expected Result           |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Navigate to client details page     | Client shows both scopes  |
-| 2    | Locate scope "api-incident"         | Scope listed with X button |
-| 3    | Click X button next to api-incident | Confirmation dialog shown |
-| 4    | Verify warning message              | Warning about access revocation shown |
-| 5    | Click "Confirm Remove" button       | Scope removal submitted   |
-| 6    | Verify success message              | "Scope removed successfully" displayed |
-| 7    | Verify updated scope list           | Client now shows only api-directory |
-| 8    | Verify audit log entry              | Log shows SCOPE_REMOVED event |
-| 9    | Attempt API call to removed scope   | Request rejected (403 Forbidden) |
+| 1    | Customer Integration Manager navigates to client details page | Client shows both scopes  |
+| 2    | Customer Integration Manager locates scope "api-incident" | Scope listed with X button |
+| 3    | Customer Integration Manager clicks X button next to api-incident | Confirmation dialog shown |
+| 4    | Customer Integration Manager verifies warning message | Warning about access revocation shown |
+| 5    | Customer Integration Manager clicks "Confirm Remove" button | Scope removal submitted   |
+| 6    | Customer Integration Manager verifies success message | "Scope removed successfully" displayed |
+| 7    | Customer Integration Manager verifies updated scope list | Client now shows only api-directory |
+| 8    | Customer Integration Manager verifies audit log entry | Log shows SCOPE_REMOVED event |
+| 9    | Customer Integration Manager attempts API call to removed scope | Request rejected (403 Forbidden) |
 
 
 ## Reviewer Comments
@@ -426,15 +426,15 @@ API Consumer can make API calls to endpoints within assigned scopes.
 
 | Step | Action                              | Expected Result           |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Prepare API request with valid credentials | Request headers set    |
-| 2    | Generate HMAC-SHA256 signature      | Signature calculated      |
-| 3    | Include X-Signature header          | Signature added to request |
-| 4    | Call /api/v1/directory/users endpoint | Request sent to APIm   |
-| 5    | Verify request reaches APIm layer   | Request received          |
-| 6    | Verify scope validation passes      | Scope check succeeds (api-directory) |
-| 7    | Verify request forwarded to backend | Backend receives request  |
-| 8    | Verify response received            | 200 OK response returned  |
-| 9    | Measure response latency            | Latency < 200ms           |
+| 1    | API Consumer prepares API request with valid credentials | Request headers set    |
+| 2    | API Consumer generates HMAC-SHA256 signature | Signature calculated      |
+| 3    | API Consumer includes X-Signature header | Signature added to request |
+| 4    | API Consumer calls /api/v1/directory/users endpoint | Request sent to APIm   |
+| 5    | API Consumer verifies request reaches APIm layer | Request received          |
+| 6    | API Consumer verifies scope validation passes | Scope check succeeds (api-directory) |
+| 7    | API Consumer verifies request forwarded to backend | Backend receives request  |
+| 8    | API Consumer verifies response received | 200 OK response returned  |
+| 9    | API Consumer measures response latency | Latency < 200ms           |
 
 
 ## Reviewer Comments
@@ -481,15 +481,15 @@ System API Manager can validate credential scopes before processing requests.
 
 | Step | Action                              | Expected Result           |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Prepare API request with valid credentials | Request headers set    |
-| 2    | Set target endpoint to /api/v1/incident/list | Endpoint configured    |
-| 3    | Generate valid signature for client | Signature calculated      |
-| 4    | Send request to APIm layer          | Request submitted         |
-| 5    | System checks credential scope      | Scope validation performed |
-| 6    | System identifies scope mismatch    | api-directory vs api-incident |
-| 7    | Verify request NOT forwarded to backend | Backend not contacted |
-| 8    | Verify 403 error response           | 403 Forbidden returned    |
-| 9    | Verify error message                | Message: "Insufficient scope: api-directory. Required: api-incident" |
+| 1    | System API Manager prepares API request with valid credentials | Request headers set    |
+| 2    | System API Manager sets target endpoint to /api/v1/incident/list | Endpoint configured    |
+| 3    | System API Manager generates valid signature for client | Signature calculated      |
+| 4    | System API Manager sends request to APIm layer | Request submitted         |
+| 5    | System API Manager checks credential scope | Scope validation performed |
+| 6    | System API Manager identifies scope mismatch | api-directory vs api-incident |
+| 7    | System API Manager verifies request NOT forwarded to backend | Backend not contacted |
+| 8    | System API Manager verifies 403 error response | 403 Forbidden returned    |
+| 9    | System API Manager verifies error message | Message: "Insufficient scope: api-directory. Required: api-incident" |
 
 
 ## Reviewer Comments
@@ -757,18 +757,18 @@ System API Manager can reject old credentials after credential rotation.
 
 | Step | Action                              | Expected Result           |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Prepare API request with old credentials | Request prepared        |
-| 2    | Calculate signature using old secret | Signature calculated    |
-| 3    | Send request with old credentials   | Request sent             |
-| 4    | APIm validates old credentials      | Validation attempt       |
-| 5    | System checks credential status     | Status = revoked found   |
-| 6    | Request rejected                   | 401 Unauthorized returned |
-| 7    | Prepare API request with new credentials | Request prepared        |
-| 8    | Calculate signature using new secret | Signature calculated    |
-| 9    | Send request with new credentials   | Request sent             |
-| 10   | APIm validates new credentials      | Validation succeeds      |
-| 11   | System checks credential status     | Status = active found    |
-| 12   | Request forwarded to backend        | Request processed (200 OK) |
+| 1    | System API Manager prepares API request with old credentials | Request prepared        |
+| 2    | System API Manager calculates signature using old secret | Signature calculated    |
+| 3    | System API Manager sends request with old credentials   | Request sent             |
+| 4    | System API Manager performs APIm validation of old credentials      | Validation attempt       |
+| 5    | System API Manager checks credential status     | Status = revoked found   |
+| 6    | System API Manager verifies request rejected                   | 401 Unauthorized returned |
+| 7    | System API Manager prepares API request with new credentials | Request prepared        |
+| 8    | System API Manager calculates signature using new secret | Signature calculated    |
+| 9    | System API Manager sends request with new credentials   | Request sent             |
+| 10   | System API Manager performs APIm validation of new credentials      | Validation succeeds      |
+| 11   | System API Manager checks credential status     | Status = active found    |
+| 12   | System API Manager verifies request forwarded to backend        | Request processed (200 OK) |
 
 
 ## Reviewer Comments
@@ -4349,6 +4349,8 @@ API Consumer can complete end-to-end subscription upgrade and downgrade workflow
 **Format:** Enterprise-Grade Test Case Template  
 **Feature:** AB#735316 - API Consumer and Scope Management  
 **Generated:** 5/29/2026
+
+
 
 
 
