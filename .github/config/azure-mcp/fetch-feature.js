@@ -14,31 +14,6 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Save complete feature data to JSON file
- */
-function saveFeatureJson(featureId, feature, comments) {
-  try {
-    const analyticsDir = path.join(__dirname, '../../analysis');
-    if (!fs.existsSync(analyticsDir)) {
-      fs.mkdirSync(analyticsDir, { recursive: true });
-    }
-    
-    const filename = path.join(analyticsDir, `${featureId.replace('#', '')}-feature-data.json`);
-    const data = {
-      feature,
-      comments,
-      fetchedAt: new Date().toISOString(),
-    };
-    
-    fs.writeFileSync(filename, JSON.stringify(data, null, 2));
-    return filename;
-  } catch (error) {
-    console.error(`⚠️  Could not save JSON file:`, error.message);
-    return null;
-  }
-}
-
-/**
  * Convert HTML content to Markdown while preserving structure
  */
 function htmlToMarkdown(html) {
@@ -450,15 +425,11 @@ async function fetchAndDisplayFeature(featureId) {
 
     console.log('\n✅ Feature fetched successfully!\n');
     
-    // Save complete feature data to files
-    const jsonFile = saveFeatureJson(featureId, feature, comments);
+    // Save feature report to Markdown file
     const mdFile = saveFeatureMarkdown(featureId, feature, comments);
     
-    // Display file paths
-    console.log('📁 Complete Feature Data Saved:');
-    if (jsonFile) {
-      console.log(`   JSON: ${jsonFile}`);
-    }
+    // Display file path
+    console.log('📁 Feature Report Saved:');
     if (mdFile) {
       console.log(`   Markdown: ${mdFile}`);
     }
