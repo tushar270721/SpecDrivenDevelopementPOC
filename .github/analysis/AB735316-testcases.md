@@ -44,15 +44,15 @@ Customer Integration Manager can register a new integration client with valid in
 
 | Step | Action                                              | Expected Result |
 | ---- | --------------------------------------------------- | -------------------------------------------- |
-| 1    | Customer Integration Manager navigates to Integration Clients section | Client list page loads successfully |
-| 2    | Customer Integration Manager clicks "New Client" button | New client creation form opens |
-| 3    | Customer Integration Manager enters client name "Workday Integration" | Name field populated |
-| 4    | Customer Integration Manager enters description "Directory sync tool" | Description field populated |
-| 5    | Customer Integration Manager selects scopes: api-directory, api-incident | Both scopes appear selected in form |
-| 6    | Customer Integration Manager clicks "Create" button | Client creation processes |
-| 7    | Customer Integration Manager verifies API credentials display (one-time only) | API key and secret visible in modal |
-| 8    | Customer Integration Manager closes credentials modal | Modal closes, client appears in list |
-| 9    | Customer Integration Manager verifies email sent to customer@example.com | Onboarding email received with setup guide |
+| 1    | Customer Integration Manager navigates to Integration Clients section | The Integration Clients page displays all active integration clients with their unique identifiers, names, assigned scopes, status, creation dates, and last usage timestamps |
+| 2    | Customer Integration Manager clicks "New Client" button | The new integration client creation form displays with all required fields: Client Name, Description, and Scope Selection checkboxes for available API scopes |
+| 3    | Customer Integration Manager enters client name "Workday Integration" | The Client Name field displays the entered value 'Workday Integration' and is editable for modifications |
+| 4    | Customer Integration Manager enters description "Directory sync tool" | The Description field displays the entered value 'Directory sync tool' and is editable |
+| 5    | Customer Integration Manager selects scopes: api-directory, api-incident | Both api-directory and api-incident scopes are marked as selected (checked) in the form's scope selection section |
+| 6    | Customer Integration Manager clicks "Create" button | A new integration client is created successfully with a unique clientId, assigned to the customer, stored in the database, and added to the active clients list |
+| 7    | Customer Integration Manager verifies API credentials display (one-time only) | A secure modal displays the generated credentials: a 32+ character alphanumeric API Key (key_xxxxx) and a 64+ character alphanumeric API Secret (secret_xxxxx), each displayed only once with a copy button |
+| 8    | Customer Integration Manager closes credentials modal | The credentials modal closes after user acknowledges one-time display, and the newly created integration client appears in the Integration Clients list with status 'Active' |
+| 9    | Customer Integration Manager verifies email sent to customer@example.com | An onboarding email is delivered to customer@example.com containing the generated API credentials, integration setup instructions, security best practices, and API documentation links |
 
 
 ## Reviewer Comments
@@ -151,7 +151,7 @@ Customer Integration Manager can view a complete list of integration clients.
 
 | Step | Action                      | Expected Result |
 | ---- | --------------------------- | ---------------------------------- |
-| 1    | Customer Integration Manager navigates to Integration Clients section | Clients list page loads |
+| 1    | Customer Integration Manager navigates to Integration Clients section | The Integration Clients page loads and displays all active integration clients for the authenticated customer with their complete metadata |
 | 2    | Customer Integration Manager verifies page title | Title shows "Integration Clients" |
 | 3    | Customer Integration Manager counts displayed clients | All 3 clients are visible |
 | 4    | Customer Integration Manager verifies table columns | All required columns present |
@@ -206,7 +206,7 @@ Customer Integration Manager can view detailed information about an integration 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------------- |
 | 1    | Customer Integration Manager navigates to Integration Clients list | List page displays all clients |
-| 2    | Customer Integration Manager clicks on specific client (Workday Integration) | Details page loads |
+| 2    | Customer Integration Manager clicks on specific client (Workday Integration) | The client details page loads displaying the client name, description, assigned scopes, credential history, creation timestamp, and available action buttons (Edit, Add Scope, Rotate Credentials, Revoke) |
 | 3    | Customer Integration Manager verifies client name displayed | "Workday Integration" visible |
 | 4    | Customer Integration Manager verifies client ID displayed | Unique client ID shown |
 | 5    | Customer Integration Manager verifies description displayed | Description text visible |
@@ -260,16 +260,16 @@ Customer Integration Manager can update integration client metadata without affe
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager navigates to client details page | Details page loads |
-| 2    | Customer Integration Manager clicks "Edit" button | Edit form opens |
+| 1    | Customer Integration Manager navigates to client details page | The client details page loads displaying the client name, description, assigned scopes, credential history, creation timestamp, and available action buttons (Edit, Add Scope, Rotate Credentials, Revoke) |
+| 2    | Customer Integration Manager clicks "Edit" button | The client edit form displays with all current client fields (Name, Description) pre-populated with existing values and ready for modification |
 | 3    | Customer Integration Manager clears name field | Field becomes empty |
 | 4    | Customer Integration Manager enters new name "Updated Workday Client" | New name entered |
 | 5    | Customer Integration Manager clears description field | Description field cleared |
 | 6    | Customer Integration Manager enters new description "Syncs directory data" | New description entered |
 | 7    | Customer Integration Manager verifies clientId field is disabled | Client ID field read-only |
 | 8    | Customer Integration Manager verifies scopes cannot be edited here | Scopes field disabled |
-| 9    | Customer Integration Manager clicks "Save" button | Changes submitted |
-| 10   | Customer Integration Manager verifies update confirmation message | "Client updated successfully" displayed |
+| 9    | Customer Integration Manager clicks "Save" button | The edited client information is submitted to the backend API and validated for accuracy |
+| 10   | Customer Integration Manager verifies update confirmation message | "The system updates the client record in the database, displays a success notification, and refreshes the page to show the updated values" displayed |
 
 
 ## Reviewer Comments
@@ -317,12 +317,12 @@ Customer Integration Manager can add API product scopes to an integration client
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | Customer Integration Manager navigates to client details page | Client shows current scope: api-directory |
-| 2    | Customer Integration Manager clicks "Add Scope" button | Add scope modal opens |
+| 2    | Customer Integration Manager clicks "Add Scope" button | A modal dialog appears displaying a list of available API scopes with checkboxes for each scope and a Confirm button |
 | 3    | Customer Integration Manager verifies available scopes listed | api-incident appears in dropdown |
 | 4    | Customer Integration Manager verifies api-directory not shown | Already assigned scopes excluded |
 | 5    | Customer Integration Manager selects "api-incident" from dropdown | Scope selected in modal |
-| 6    | Customer Integration Manager clicks "Confirm" button | Change submitted |
-| 7    | Customer Integration Manager verifies success message | "Scope added successfully" shown |
+| 6    | Customer Integration Manager clicks "Confirm" button | The scope change request is submitted to the backend API and processed |
+| 7    | Customer Integration Manager verifies success message | "A success notification confirms the scope has been added, the client's assigned scopes list is updated, and the client can now access that API scope" shown |
 | 8    | Customer Integration Manager verifies updated scope list | Client now shows both scopes |
 | 9    | Customer Integration Manager verifies audit log entry created | Log shows SCOPE_ADDED event |
 
@@ -373,10 +373,10 @@ Customer Integration Manager can remove API product scopes from an integration c
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | Customer Integration Manager navigates to client details page | Client shows both scopes |
 | 2    | Customer Integration Manager locates scope "api-incident" | Scope listed with X button |
-| 3    | Customer Integration Manager clicks X button next to api-incident | Confirmation dialog shown |
+| 3    | Customer Integration Manager clicks X button next to api-incident | A confirmation dialog appears with details of the pending action and Clear buttons to Confirm or Cancel the operation |
 | 4    | Customer Integration Manager verifies warning message | Warning about access revocation shown |
-| 5    | Customer Integration Manager clicks "Confirm Remove" button | Scope removal submitted |
-| 6    | Customer Integration Manager verifies success message | "Scope removed successfully" displayed |
+| 5    | Customer Integration Manager clicks "Confirm Remove" button | The scope removal request is submitted to the backend and permanently processed |
+| 6    | Customer Integration Manager verifies success message | "A success notification confirms the scope has been removed, the client's scope list is updated to exclude the removed scope, and future requests for that scope receive 403 Forbidden" displayed |
 | 7    | Customer Integration Manager verifies updated scope list | Client now shows only api-directory |
 | 8    | Customer Integration Manager verifies audit log entry | Log shows SCOPE_REMOVED event |
 | 9    | Customer Integration Manager attempts API call to removed scope | Request rejected (403 Forbidden) |
@@ -426,8 +426,8 @@ API Consumer can make API calls to endpoints within assigned scopes.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer prepares API request with valid credentials | Request headers set |
-| 2    | API Consumer generates HMAC-SHA256 signature | Signature calculated |
+| 1    | API Consumer prepares API request with valid credentials | The API request includes all required headers: Authorization (bearer token), X-Signature (HMAC-SHA256), Content-Type (application/json), and User-Agent |
+| 2    | API Consumer generates HMAC-SHA256 signature | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
 | 3    | API Consumer includes X-Signature header | Signature added to request |
 | 4    | API Consumer calls /api/v1/directory/users endpoint | Request sent to APIm |
 | 5    | API Consumer verifies request reaches APIm layer | Request received |
@@ -481,9 +481,9 @@ System API Manager can validate credential scopes before processing requests.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager prepares API request with valid credentials | Request headers set |
+| 1    | System API Manager prepares API request with valid credentials | The API request includes all required headers: Authorization (bearer token), X-Signature (HMAC-SHA256), Content-Type (application/json), and User-Agent |
 | 2    | System API Manager sets target endpoint to /api/v1/incident/list | Endpoint configured |
-| 3    | System API Manager generates valid signature for client | Signature calculated |
+| 3    | System API Manager generates valid signature for client | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
 | 4    | System API Manager sends request to APIm layer | Request submitted |
 | 5    | System API Manager checks credential scope | Scope validation performed |
 | 6    | System API Manager identifies scope mismatch | api-directory vs api-incident |
@@ -701,17 +701,17 @@ Customer Integration Manager can rotate API credentials for an integration clien
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager navigate to client details page | Client details loaded |
-| 2    | Customer Integration Manager click "Rotate Credentials" button | Rotation confirmation shown |
-| 3    | Customer Integration Manager review rotation warning | Warning about current key revocation |
-| 4    | Customer Integration Manager click "Confirm Rotation" | Rotation process initiated |
-| 5    | Customer Integration Manager verify new credentials generated | New API key and secret displayed |
-| 6    | Customer Integration Manager verify new key format (32+ chars) | Key properly formatted |
-| 7    | Customer Integration Manager verify new secret format (64+ chars) | Secret properly formatted |
-| 8    | Customer Integration Manager verify credentials display once | Modal shows one-time display |
-| 9    | Customer Integration Manager copy new credentials to clipboard | Credentials copied |
-| 10    | Customer Integration Manager close credentials modal | Modal closes |
-| 11    | Customer Integration Manager verify old credentials revoked | Old key status = revoked |
+| 1    | Customer Integration Manager navigate to client details page | The client details page loads displaying the client name, description, assigned scopes, credential history, creation timestamp, and available action buttons (Edit, Add Scope, Rotate Credentials, Revoke) |
+| 2    | Customer Integration Manager click "Rotate Credentials" button | A confirmation dialog appears warning that the current API key will be immediately revoked and new credentials will be generated |
+| 3    | Customer Integration Manager review rotation warning | A warning message is displayed explaining that rotating credentials will immediately revoke the current API key, existing integrations may fail, and new credentials must be updated in the consumer systems |
+| 4    | Customer Integration Manager click "Confirm Rotation" | The credential rotation process is initiated, the system generates new API Key and Secret, and the old credentials are marked as revoked |
+| 5    | Customer Integration Manager verify new credentials generated | New API Key (32+ characters) and new API Secret (64+ characters) are generated and displayed in a secure modal |
+| 6    | Customer Integration Manager verify new key format (32+ chars) | The new API Key is properly formatted as a 32+ character alphanumeric string using only URL-safe characters (no special characters) |
+| 7    | Customer Integration Manager verify new secret format (64+ chars) | The new API Secret is properly formatted as a 64+ character alphanumeric string using only URL-safe characters |
+| 8    | Customer Integration Manager verify credentials display once | A modal displays the new credentials with a clear "This is your only chance to copy these credentials" warning and a copy button |
+| 9    | Customer Integration Manager copy new credentials to clipboard | The new API Key and Secret are successfully copied to the system clipboard for use in integrations |
+| 10    | Customer Integration Manager close credentials modal | The credentials modal closes after the user acknowledges one-time display, and the credentials are no longer retrievable from the system |
+| 11    | Customer Integration Manager verify old credentials revoked | The old API key's status is updated to 'revoked' in the system, preventing any future API calls using that key from being accepted |
 
 
 ## Reviewer Comments
@@ -757,18 +757,18 @@ System API Manager can reject old credentials after credential rotation.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager prepares API request with old credentials | Request prepared |
-| 2    | System API Manager calculates signature using old secret | Signature calculated |
-| 3    | System API Manager sends request with old credentials   | Request sent |
-| 4    | System API Manager performs APIm validation of old credentials      | Validation attempt |
-| 5    | System API Manager checks credential status     | Status = revoked found |
-| 6    | System API Manager verifies request rejected                   | 401 Unauthorized returned |
-| 7    | System API Manager prepares API request with new credentials | Request prepared |
-| 8    | System API Manager calculates signature using new secret | Signature calculated |
-| 9    | System API Manager sends request with new credentials   | Request sent |
-| 10   | System API Manager performs APIm validation of new credentials      | Validation succeeds |
-| 11   | System API Manager checks credential status     | Status = active found |
-| 12   | System API Manager verifies request forwarded to backend        | Request processed (200 OK) |
+| 1    | System API Manager prepares API request with old credentials | An API request is prepared with the old (revoked) API Key and calculated HMAC-SHA256 signature using the old API Secret |
+| 2    | System API Manager calculates signature using old secret | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
+| 3    | System API Manager sends request with old credentials   | The API request is transmitted to the APIm gateway with the old credentials in the Authorization header |
+| 4    | System API Manager performs APIm validation of old credentials      | The APIm layer performs credential validation, signature verification, and scope checking against the old credential set |
+| 5    | System API Manager checks credential status     | The system queries the credential database and finds that the old API Key's status is 'revoked' |
+| 6    | System API Manager verifies request rejected                   | The APIm layer rejects the request and returns HTTP 401 Unauthorized with error message 'Credential revoked or invalid' |
+| 7    | System API Manager prepares API request with new credentials | An API request is prepared with the new API Key and calculated HMAC-SHA256 signature using the new API Secret |
+| 8    | System API Manager calculates signature using new secret | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
+| 9    | System API Manager sends request with new credentials   | The API request is transmitted to the APIm gateway with the new credentials in the Authorization header |
+| 10   | System API Manager performs APIm validation of new credentials      | The APIm layer performs credential validation, signature verification, and scope checking, and all validations succeed |
+| 11   | System API Manager checks credential status     | The system queries the credential database and finds that the new API Key's status is 'active' |
+| 12   | System API Manager verifies request forwarded to backend        | The API request is successfully processed by the backend service and returns the appropriate HTTP status code (200 OK, 201 Created, etc.) (200 OK) |
 
 
 ## Reviewer Comments
@@ -815,10 +815,10 @@ Customer Integration Manager can revoke specific credential sets for a client.
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | Customer Integration Manager navigate to client credentials section | Credentials list displayed |
 | 2    | Customer Integration Manager locate specific credential | credential_id_001 visible |
-| 3    | Customer Integration Manager click revoke button next to credential | Revocation confirmation shown |
+| 3    | Customer Integration Manager click revoke button next to credential | A confirmation dialog appears requesting final confirmation to permanently revoke the selected credential set with a warning about impact |
 | 4    | Customer Integration Manager verify confirmation dialog | Dialog asks for confirmation |
 | 5    | Customer Integration Manager click "Confirm Revoke" | Revocation submitted |
-| 6    | Customer Integration Manager verify success message | "Credential revoked successfully" |
+| 6    | Customer Integration Manager verify success message | "The system confirms the credential has been permanently revoked, removes it from the active credentials list, logs the revocation event, and future requests using that credential receive 401 Unauthorized" |
 | 7    | Customer Integration Manager verify credential status changed | Status = revoked shown |
 | 8    | Customer Integration Manager attempt API call with revoked key | Request rejected (401) |
 | 9    | Customer Integration Manager attempt API call with other key | Request accepted (200 OK) |
@@ -979,7 +979,7 @@ System API Manager can validate HMAC-SHA256 signatures on API requests.
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | Customer Integration Manager prepare request body | Body = {"action": "list_users"} |
-| 2    | Customer Integration Manager calculate HMAC-SHA256 with secret | Signature calculated |
+| 2    | Customer Integration Manager calculate HMAC-SHA256 with secret | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
 | 3    | Customer Integration Manager include signature in X-Signature header | Header added |
 | 4    | Customer Integration Manager send request with valid signature | Request submitted |
 | 5    | Customer Integration Manager aPIm calculates signature | Signature recalculated |
@@ -1035,7 +1035,7 @@ Customer Integration Manager can prevent duplicate client names within their acc
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | API Consumer navigate to client creation form | Form loads |
-| 2    | API Consumer enter name: "Workday-Integration" | Name field populated |
+| 2    | API Consumer enter name: "Workday-Integration" | The Client Name field displays the entered value 'Workday Integration' and is editable for modifications |
 | 3    | API Consumer enter description | Description entered |
 | 4    | API Consumer select scopes | Scopes selected |
 | 5    | API Consumer click "Create" button | Validation triggered |
@@ -1089,17 +1089,17 @@ Customer Integration Manager can view audit trail for integration clients.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Read-Only User navigate to client details page | Client details loaded |
-| 2    | Read-Only User click "Audit Log" tab or button | Audit log section opens |
-| 3    | Read-Only User verify log displays events | Events listed in reverse chronological order |
-| 4    | Read-Only User verify CLIENT_CREATED event | Initial creation logged |
-| 5    | Read-Only User verify SCOPE_ADDED event | Scope additions logged |
-| 6    | Read-Only User verify SCOPE_REMOVED event | Scope removals logged |
-| 7    | Read-Only User verify CREDENTIAL_ROTATED event | Credential changes logged |
-| 8    | Read-Only User verify CREDENTIAL_REVOKED event | Credential revocations logged |
-| 9    | Read-Only User verify timestamp for each event | Timestamps accurate and formatted |
-| 10    | Read-Only User verify user/actor for each event | Actor identified |
-| 11    | Read-Only User verify event details | Details include before/after values |
+| 1    | Read-Only User navigate to client details page | The client details page loads and displays all client information including name, description, assigned scopes, and credential history |
+| 2    | Read-Only User click "Audit Log" tab or button | The Audit Log tab or section opens displaying a chronological list of all integration client actions including creation, modifications, scope changes, and credential rotations with timestamps |
+| 3    | Read-Only User verify log displays events | All events are displayed in reverse chronological order (newest first) |
+| 4    | Read-Only User verify CLIENT_CREATED event | The CLIENT_CREATED event is logged showing the client creation details |
+| 5    | Read-Only User verify SCOPE_ADDED event | SCOPE_ADDED events are logged showing which scopes were added and when |
+| 6    | Read-Only User verify SCOPE_REMOVED event | SCOPE_REMOVED events are logged showing which scopes were removed |
+| 7    | Read-Only User verify CREDENTIAL_ROTATED event | CREDENTIAL_ROTATED events are logged showing credential rotation history |
+| 8    | Read-Only User verify CREDENTIAL_REVOKED event | CREDENTIAL_REVOKED events are logged showing revoked credentials and revocation times |
+| 9    | Read-Only User verify timestamp for each event | Each event displays an accurate, properly formatted timestamp (ISO 8601 format) |
+| 10    | Read-Only User verify user/actor for each event | Each event shows the actor/user who performed the action (Admin, Support Lead, System, etc.) |
+| 11    | Read-Only User verify event details | Each event record includes before/after values for modified fields (e.g., old scope vs. new scope) |
 
 
 ## Reviewer Comments
@@ -1145,18 +1145,18 @@ API Consumer can receive rate limit information in response headers.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer make initial API request | Request processed |
-| 2    | API Consumer capture response headers | Headers extracted |
-| 3    | API Consumer verify X-RateLimit-Limit header | Header present, value = 100 |
-| 4    | API Consumer verify X-RateLimit-Remaining header | Header present, value = 99 |
-| 5    | API Consumer verify X-RateLimit-Reset header | Header present, timestamp shown |
-| 6    | API Consumer make second API request | Request processed |
-| 7    | API Consumer capture response headers | Headers extracted |
-| 8    | API Consumer verify X-RateLimit-Remaining | Value = 98 (decremented) |
-| 9    | API Consumer make third API request | Request processed |
-| 10    | API Consumer capture response headers | Headers extracted |
-| 11    | API Consumer verify X-RateLimit-Remaining | Value = 97 (decremented) |
-| 12    | API Consumer verify reset time accuracy | Timestamp matches quota reset |
+| 1    | API Consumer make initial API request | The API request is successfully processed by the backend service and returns HTTP 200 OK with response headers including rate limit information |
+| 2    | API Consumer capture response headers | The response headers are extracted and parsed containing X-RateLimit-Limit, X-RateLimit-Remaining, and X-RateLimit-Reset headers |
+| 3    | API Consumer verify X-RateLimit-Limit header | The X-RateLimit-Limit header is present with value 100 (requests per second limit) |
+| 4    | API Consumer verify X-RateLimit-Remaining header | The X-RateLimit-Remaining header is present with value 99 (one request used) |
+| 5    | API Consumer verify X-RateLimit-Reset header | The X-RateLimit-Reset header is present with a unix timestamp indicating when the rate limit window resets |
+| 6    | API Consumer make second API request | The API request is successfully processed by the backend service and returns HTTP 200 OK with updated rate limit headers |
+| 7    | API Consumer capture response headers | The response headers are extracted showing updated rate limit values |
+| 8    | API Consumer verify X-RateLimit-Remaining | The X-RateLimit-Remaining header shows value 98 (decremented by one from previous request) |
+| 9    | API Consumer make third API request | The API request is successfully processed by the backend service and returns HTTP 200 OK with further updated rate limit headers |
+| 10    | API Consumer capture response headers | The response headers are extracted showing further updated rate limit values |
+| 11    | API Consumer verify X-RateLimit-Remaining | The X-RateLimit-Remaining header shows value 97 (decremented again) |
+| 12    | API Consumer verify reset time accuracy | The X-RateLimit-Reset timestamp is accurate and matches the configured quota window reset time |
 
 
 ## Reviewer Comments
@@ -1263,10 +1263,10 @@ Read-Only User cannot create new integration clients.
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | System API Manager login as read-only user | User logged in |
-| 2    | System API Manager navigate to Integration Clients | List page loads |
-| 3    | System API Manager locate "New Client" button | Button visible/hidden |
-| 4    | System API Manager verify button state | Button disabled or not shown |
-| 5    | System API Manager attempt to click button | No action occurs or tooltip shown |
+| 2    | System API Manager navigate to Integration Clients | The Integration Clients list page loads displaying all active clients with their metadata and relevant action options |
+| 3    | System API Manager locate "New Client" button | The button is either visible in the UI or hidden from the UI based on the user's permission level and role |
+| 4    | System API Manager verify button state | The button is either disabled (greyed out and unclickable) or completely hidden from the UI based on role-based access control restrictions |
+| 5    | System API Manager attempt to click button | The button click produces no action, no error message is displayed to the user, and the unauthorized operation is silently prevented or tooltip shown |
 | 6    | System API Manager attempt direct API call to create | POST /clients submitted |
 | 7    | System API Manager aPIm checks user permissions | Permission check fails |
 | 8    | System API Manager verify API response | 403 Forbidden returned |
@@ -1317,10 +1317,10 @@ Read-Only User cannot modify client scopes.
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | API Consumer login as read-only user | User logged in |
-| 2    | API Consumer navigate to client details | Client details page loads |
-| 3    | API Consumer locate "Add Scope" button | Button visible/hidden |
-| 4    | API Consumer verify button is disabled | Button disabled or greyed out |
-| 5    | API Consumer attempt to click "Add Scope" | No action occurs |
+| 2    | API Consumer navigate to client details | Client The client details page loads displaying the client name, description, assigned scopes, credential history, creation timestamp, and available action buttons (Edit, Add Scope, Rotate Credentials, Revoke) |
+| 3    | API Consumer locate "Add Scope" button | The button is either visible in the UI or hidden from the UI based on the user's permission level and role |
+| 4    | API Consumer verify button is disabled | The button is visually disabled (greyed out with reduced opacity) and is not clickable or actionable out |
+| 5    | API Consumer attempt to click "Add Scope" | The button click produces no action, no error message is displayed to the user, and the unauthorized operation is silently prevented |
 | 6    | API Consumer attempt direct API call to add scope | PUT /clients/{id}/scopes |
 | 7    | API Consumer aPIm checks permissions | Permission check fails |
 | 8    | API Consumer verify API response | 403 Forbidden returned |
@@ -1372,9 +1372,9 @@ Read-Only User cannot rotate credentials for a client.
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | Read-Only User login as read-only user | User logged in |
 | 2    | Read-Only User navigate to client details | Details page loaded |
-| 3    | Read-Only User locate "Rotate Credentials" button | Button visible/hidden |
-| 4    | Read-Only User verify button is disabled | Button disabled or greyed |
-| 5    | Read-Only User attempt to click button | No action occurs |
+| 3    | Read-Only User locate "Rotate Credentials" button | The button is either visible in the UI or hidden from the UI based on the user's permission level and role |
+| 4    | Read-Only User verify button is disabled | The button is visually disabled (greyed out with reduced opacity) and is not clickable or actionable |
+| 5    | Read-Only User attempt to click button | The button click produces no action, no error message is displayed to the user, and the unauthorized operation is silently prevented |
 | 6    | Read-Only User attempt direct API call for rotation | POST /clients/{id}/rotate-credentials |
 | 7    | Read-Only User aPIm checks user permissions | Permission check fails |
 | 8    | Read-Only User verify API response | 403 Forbidden returned |
@@ -1424,17 +1424,17 @@ Admin System Administrator can manage integration clients for any customer.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Admin System Administrator login as admin user | Admin logged in |
-| 2    | Admin System Administrator navigate to customer management | Customer list displayed |
-| 3    | Admin System Administrator select Customer-ABC | Customer details loaded |
-| 4    | Admin System Administrator click "Manage Integration Clients" | Clients for Customer-ABC shown |
-| 5    | Admin System Administrator verify admin can view all clients | All clients visible |
-| 6    | Admin System Administrator click "Create Client" button | New client form opens |
-| 7    | Admin System Administrator create new client for Customer-ABC | Client created successfully |
-| 8    | Admin System Administrator click "Edit" on existing client | Edit form opens |
-| 9    | Admin System Administrator modify client details | Details updated |
-| 10    | Admin System Administrator click "Delete" on existing client | Client deleted (if confirmed) |
-| 11    | Admin System Administrator verify all actions logged | Audit log shows admin actions |
+| 1    | Admin System Administrator login as admin user | The admin user is successfully authenticated and logged into the system with all admin privileges granted |
+| 2    | Admin System Administrator navigate to customer management | The Customer Management interface loads displaying a list of all registered customer accounts |
+| 3    | Admin System Administrator select Customer-ABC | Customer-ABC is selected and the customer details panel displays showing account information |
+| 4    | Admin System Administrator click "Manage Integration Clients" | The Integration Clients management interface loads displaying all clients created by Customer-ABC |
+| 5    | Admin System Administrator verify admin can view all clients | All integration clients are visible with their complete metadata including name, ID, scopes, and status |
+| 6    | Admin System Administrator click "Create Client" button | The new integration client creation form displays with all required fields ready for input |
+| 7    | Admin System Administrator create new client for Customer-ABC | A new integration client is successfully created with a unique identifier, assigned to the customer, stored in the database, and appears immediately in the clients list |
+| 8    | Admin System Administrator click "Edit" on existing client | The client edit form displays with all current client fields (Name, Description) pre-populated with existing values and ready for modification |
+| 9    | Admin System Administrator modify client details | The client details are successfully modified and saved to the database |
+| 10    | Admin System Administrator click "Delete" on existing client | A confirmation dialog appears asking the admin to confirm deletion of the client |
+| 11    | Admin System Administrator verify all actions logged | The audit log displays records of all admin actions (create, edit, delete) with timestamps and actor information |
 
 
 ## Reviewer Comments
@@ -1479,17 +1479,17 @@ Support Lead can view client details without accessing secrets.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Admin System Administrator login as support lead | Support user logged in |
-| 2    | Admin System Administrator navigate to customer lookup | Customer search interface |
-| 3    | Admin System Administrator search for customer | Customer found |
-| 4    | Admin System Administrator click "View Clients" for customer | Client list loads |
-| 5    | Admin System Administrator verify support can see client names | Names visible |
-| 6    | Admin System Administrator verify support can see scopes | Scopes visible |
-| 7    | Admin System Administrator verify support can see status | Status visible |
-| 8    | Admin System Administrator verify support can see lastUsedAt | Last used date visible |
-| 9    | Admin System Administrator click on specific client | Client details open |
-| 10    | Admin System Administrator verify API secret is masked | Secret not shown or masked |
-| 11    | Admin System Administrator verify credentials not visible | Credential details hidden |
+| 1    | Admin System Administrator login as support lead | The support lead user is successfully authenticated and logged into the system with support-level permissions (read-only access with limited write capabilities) |
+| 2    | Admin System Administrator navigate to customer lookup | The Customer Lookup interface loads displaying a search form to find customer accounts |
+| 3    | Admin System Administrator search for customer | The customer search returns matching results and displays the target customer account |
+| 4    | Admin System Administrator click "View Clients" for customer | The Integration Clients view for that customer loads displaying all clients without sensitive information |
+| 5    | Admin System Administrator verify support can see client names | All client names are displayed and visible to the support lead |
+| 6    | Admin System Administrator verify support can see scopes | All assigned API scopes are displayed for each client |
+| 7    | Admin System Administrator verify support can see status | Each client's status (Active, Suspended, Retired) is displayed |
+| 8    | Admin System Administrator verify support can see lastUsedAt | The last usage timestamp is displayed for each client |
+| 9    | Admin System Administrator click on specific client | The client details page opens with limited information available to the support lead |
+| 10    | Admin System Administrator verify API secret is masked | The API secret is either masked (hidden with asterisks) or completely hidden from the support lead's view |
+| 11    | Admin System Administrator verify credentials not visible | No credential details, keys, or secrets are visible to the support lead on any interface |
 
 
 ## Reviewer Comments
@@ -1535,8 +1535,8 @@ Support Lead cannot rotate customer credentials.
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | API Consumer login as support lead | Support user logged in |
 | 2    | API Consumer navigate to customer's client | Client details open |
-| 3    | API Consumer locate "Rotate Credentials" button | Button visible/hidden |
-| 4    | API Consumer verify button is disabled | Button disabled or not shown |
+| 3    | API Consumer locate "Rotate Credentials" button | The button is either visible in the UI or hidden from the UI based on the user's permission level and role |
+| 4    | API Consumer verify button is disabled | The button is either disabled (greyed out and unclickable) or completely hidden from the UI based on role-based access control restrictions |
 | 5    | API Consumer attempt direct API call to rotate | Request sent |
 | 6    | API Consumer aPIm checks permissions | Permission check fails |
 | 7    | API Consumer verify API response | 403 Forbidden returned |
@@ -1756,7 +1756,7 @@ System API Manager can reject API requests with expired credentials.
 | 1    | Customer Integration Manager verify API key is past expiration | Expiration date confirmed |
 | 2    | Customer Integration Manager prepare API request with expired key | Request prepared |
 | 3    | Customer Integration Manager include expired key in request | Key included |
-| 4    | Customer Integration Manager generate signature | Signature calculated |
+| 4    | Customer Integration Manager generate signature | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
 | 5    | Customer Integration Manager send request with expired key | Request submitted |
 | 6    | Customer Integration Manager aPIm validates credentials | Validation performed |
 | 7    | Customer Integration Manager aPIm checks key expiration date | Expiration check fails |
@@ -1807,16 +1807,16 @@ System API Manager can reject requests from suspended integration clients.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager verify client is initially active | Status = active |
-| 2    | System API Manager admin suspends the client | Suspension action triggered |
-| 3    | System API Manager verify client status changed | Status = suspended |
-| 4    | System API Manager prepare API request with client credentials | Request prepared |
-| 5    | System API Manager send request to APIm | Request submitted |
-| 6    | System API Manager aPIm validates credentials | Validation passes |
-| 7    | System API Manager aPIm checks client status | Status check fails |
-| 8    | System API Manager verify response code | 403 Forbidden returned |
+| 1    | System API Manager verify client is initially active | The client status in the database is confirmed as 'active' |
+| 2    | System API Manager admin suspends the client | The admin user triggers the suspension action through the management interface |
+| 3    | System API Manager verify client status changed | The client status is updated to 'suspended' in the database with suspension timestamp |
+| 4    | System API Manager prepare API request with client credentials | An API request is prepared with the suspended client's credentials and calculated signature |
+| 5    | System API Manager send request to APIm | The API request is transmitted to the APIm gateway with the suspended client's credentials |
+| 6    | System API Manager aPIm validates credentials | The APIm layer validates the credentials and confirms they are valid but associated with a suspended client |
+| 7    | System API Manager aPIm checks client status | The APIm layer checks the client status in the database and finds it is 'suspended', failing the status check |
+| 8    | System API Manager verify response code | The API request is rejected and the APIm returns HTTP 403 Forbidden status code |
 | 9    | System API Manager verify error message | "Client is suspended. Contact support" |
-| 10    | System API Manager verify backend not contacted | Request not forwarded |
+| 10    | System API Manager verify backend not contacted | The request is not forwarded to the backend service; the rejection occurs at the APIm layer |
 
 
 ## Reviewer Comments
@@ -1861,18 +1861,18 @@ Customer Integration Manager cannot reactivate retired integration clients.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager navigate to client details | Client details loaded |
-| 2    | System API Manager click "Retire Client" button | Confirmation dialog shown |
-| 3    | System API Manager review retirement warning | Warning about permanent action |
-| 4    | System API Manager click "Confirm Retire" | Retirement processed |
-| 5    | System API Manager verify client status | Status = retired |
-| 6    | System API Manager verify client removed from active list | Not shown in list |
-| 7    | System API Manager attempt to find reactivation option | No "Reactivate" button |
-| 8    | System API Manager search for "Reactivate" UI option | Option not found |
-| 9    | System API Manager attempt API call to reactivate | Request sent |
-| 10    | System API Manager verify API response | 400 Bad Request or 404 |
+| 1    | System API Manager navigate to client details | The client details page loads displaying the client information, assigned scopes, credential history, creation timestamp, and retirement/management action buttons |
+| 2    | System API Manager click "Retire Client" button | A confirmation dialog appears with details of the pending action and Clear buttons to Confirm or Cancel the operation |
+| 3    | System API Manager review retirement warning | A warning message is displayed explaining that retirement is permanent, all API requests will be rejected, and this action cannot be undone |
+| 4    | System API Manager click "Confirm Retire" | The client retirement process completes, the client is marked as 'Retired' (not active), and it no longer accepts new API requests |
+| 5    | System API Manager verify client status | The client status in the database is confirmed as 'retired', and the retirement timestamp is recorded |
+| 6    | System API Manager verify client removed from active list | The retired client no longer appears in the active Integration Clients list, though it may be viewable in a retired/archived clients section |
+| 7    | System API Manager attempt to find reactivation option | No 'Reactivate', 'Restore', or 'Undo Retirement' button is present in the UI |
+| 8    | System API Manager search for "Reactivate" UI option | No reactivation option is found anywhere in the management interface |
+| 9    | System API Manager attempt API call to reactivate | An API call is sent to attempt reactivation (e.g., PUT /clients/{id}/reactivate) |
+| 10    | System API Manager verify API response | The API returns HTTP 400 Bad Request or 404 Not Found error, preventing reactivation |
 | 11    | System API Manager verify error message | "Cannot reactivate retired client" |
-| 12    | System API Manager verify customer can create new client | New client creation allowed |
+| 12    | System API Manager verify customer can create new client | The customer can still create new integration clients; retirement is permanent and irreversible, but new clients can be added |
 
 
 ## Reviewer Comments
@@ -1919,16 +1919,16 @@ System API Manager can reject requests with missing API key.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer prepare API request | Request prepared |
-| 2    | API Consumer leave API key field empty | Key field blank |
-| 3    | API Consumer include valid signature | Signature calculated |
+| 1    | API Consumer prepare API request | An API request is prepared with all standard headers except the API key will be intentionally omitted |
+| 2    | API Consumer leave API key field empty | The API Key header field or body parameter is left empty/blank or intentionally omitted |
+| 3    | API Consumer include valid signature | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
 | 4    | API Consumer send request | Request submitted |
-| 5    | API Consumer aPIm validates request format | Validation performed |
-| 6    | API Consumer aPIm checks for API key | Key field check fails |
-| 7    | API Consumer verify response code | 400 Bad Request returned |
+| 5    | API Consumer aPIm validates request format | The APIm layer validates the overall request format and structure |
+| 6    | API Consumer aPIm checks for API key | The APIm layer checks for the presence of the required API Key header/parameter and finds it missing, failing validation |
+| 7    | API Consumer verify response code | The APIm layer rejects the request and returns HTTP 400 Bad Request status code |
 | 8    | API Consumer verify error message | "API key is required" |
-| 9    | API Consumer prepare request without key header | Key header omitted |
-| 10    | API Consumer send request | Request submitted |
+| 9    | API Consumer prepare request without key header | A new request is prepared with the API Key header completely omitted (not even present in headers) |
+| 10    | API Consumer send request | The API request is sent to the APIm gateway without an API Key header |
 | 11    | API Consumer verify response code | 400 Bad Request returned |
 
 
@@ -1973,16 +1973,16 @@ System API Manager can generate URL-safe API credentials without special charact
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System Security Manager create integration client | Client creation triggered |
-| 2    | System Security Manager observe generated API key | Key generated |
-| 3    | System Security Manager inspect key characters | Characters examined |
-| 4    | System Security Manager verify no special characters | No @#$%^&*() found |
-| 5    | System Security Manager verify no spaces | No spaces found |
-| 6    | System Security Manager verify only URL-safe characters | Only [a-zA-Z0-9_-] found |
-| 7    | System Security Manager test generated key in URL encoding | URL encoding test |
-| 8    | System Security Manager verify no encoding needed | Key remains unchanged |
-| 9    | System Security Manager create multiple clients | Multiple keys generated |
-| 10    | System Security Manager inspect all keys | All keys URL-safe |
+| 1    | System Security Manager create integration client | An integration client creation request is submitted through the API or UI |
+| 2    | System Security Manager observe generated API key | The generated API Key is captured and inspected for character composition |
+| 3    | System Security Manager inspect key characters | Each character in the generated API Key is examined against a character whitelist |
+| 4    | System Security Manager verify no special characters | The generated API Key contains no special characters such as @, #, $, %, ^, &, or * |
+| 5    | System Security Manager verify no spaces | The generated API Key contains no whitespace, tab, or space characters |
+| 6    | System Security Manager verify only URL-safe characters | The generated API Key contains only URL-safe characters: alphanumeric (a-z, A-Z, 0-9), hyphen (-), and underscore (_) |
+| 7    | System Security Manager test generated key in URL encoding | The generated API Key is used in a URL context to verify it doesn't require percent-encoding |
+| 8    | System Security Manager verify no encoding needed | The API Key remains unchanged when used in URLs, confirming it contains no characters requiring URL percent-encoding |
+| 9    | System Security Manager create multiple clients | Multiple integration clients are created to generate and inspect several API Keys |
+| 10    | System Security Manager inspect all keys | Each of the generated API Keys is inspected to confirm all contain only URL-safe characters |
 
 
 ## Reviewer Comments
@@ -2031,8 +2031,8 @@ Customer Integration Manager can manage integration clients with pagination and 
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer load integration clients list | First page loads |
-| 2    | API Consumer verify pagination controls visible | Previous/Next buttons shown |
+| 1    | API Consumer load integration clients list | The first page of the integration clients list loads successfully displaying the initial set of clients and pagination controls (Previous/Next buttons) |
+| 2    | API Consumer verify pagination controls visible | Pagination controls are displayed with Previous and Next buttons, enabled or disabled based on the current page position (first page or last page) |
 | 3    | API Consumer verify client count shown | Shows "1 of 1000+" or similar |
 | 4    | API Consumer load first page (50 clients) | Page 1 loads quickly |
 | 5    | API Consumer navigate to page 10 | Page 10 loads within 2 seconds |
@@ -2091,7 +2091,7 @@ System API Manager can enforce maximum length constraints on client names.
 | 7    | System API Manager verify client not created | Creation blocked |
 | 8    | System API Manager enter 100-character name (valid) | Valid name entered |
 | 9    | System API Manager submit form | Form submitted |
-| 10    | System API Manager verify client created | Client created successfully |
+| 10    | System API Manager verify client created | A new integration client is successfully created with a unique identifier, assigned to the customer, stored in the database, and appears immediately in the clients list |
 
 
 ## Reviewer Comments
@@ -2139,7 +2139,7 @@ Customer Integration Manager can create integration clients with Unicode charact
 | 1    | Customer Integration Manager navigate to client creation form | Form loaded |
 | 2    | Customer Integration Manager enter Unicode name: "Интеграция 😊 العربية" | Name entered |
 | 3    | Customer Integration Manager submit client creation | Form submitted |
-| 4    | Customer Integration Manager verify client created | Client created successfully |
+| 4    | Customer Integration Manager verify client created | A new integration client is successfully created with a unique identifier, assigned to the customer, stored in the database, and appears immediately in the clients list |
 | 5    | Customer Integration Manager retrieve client details | Details page loaded |
 | 6    | Customer Integration Manager verify name displayed correctly | "Интеграция 😊 العربية" shown |
 | 7    | Customer Integration Manager verify no encoding errors | Characters render properly |
@@ -2197,9 +2197,9 @@ System API Manager can handle scope formats with version numbers and pre-release
 | 5    | System API Manager verify scope assigned correctly | Scope shows api-directory.v2-beta |
 | 6    | System API Manager make API request with this scope | Request prepared |
 | 7    | System API Manager include scope in validation | Scope sent to endpoint |
-| 8    | System API Manager verify scope parsing | Version/beta parsing correct |
-| 9    | System API Manager verify request routed correctly | Backend receives request |
-| 10    | System API Manager verify scope validation passes | Scope match succeeds |
+| 8    | System API Manager verify scope parsing | The API Product scope 'api/directory/v1beta1' is correctly parsed, with version/beta information extracted and validated |
+| 9    | System API Manager verify request routed correctly | The APIm correctly routes the request to the appropriate backend service (Directory API v1beta1) based on scope parsing |
+| 10    | System API Manager verify scope validation passes | The scope validation check confirms the client has the 'api/directory/v1beta1' scope and authorization succeeds |
 
 
 ## Reviewer Comments
@@ -2245,17 +2245,17 @@ System API Manager can handle concurrent scope modifications without conflicts.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer verify client has current scopes | Scopes verified |
-| 2    | API Consumer initiate Thread A (add scope) | Request 1 prepared |
-| 3    | API Consumer initiate Thread B (remove scope) | Request 2 prepared |
-| 4    | API Consumer submit both requests simultaneously | Both submitted at same time |
-| 5    | API Consumer thread A adds api-analytics | Request processing |
-| 6    | API Consumer thread B removes api-incident | Request processing |
-| 7    | API Consumer monitor for race conditions | Processing observed |
-| 8    | API Consumer verify final scope list | Final state = [api-directory, api-analytics] |
-| 9    | API Consumer verify both operations reflected | Both add and remove applied |
-| 10    | API Consumer check audit log for events | Both events recorded |
-| 11    | API Consumer verify event order | Events show correct sequence |
+| 1    | API Consumer verify client has current scopes | The client's current scopes are verified as [api-directory, api-incident] in the system |
+| 2    | API Consumer initiate Thread A (add scope) | Thread A is initiated to add 'api-analytics' scope to the client |
+| 3    | API Consumer initiate Thread B (remove scope) | Thread B is initiated to remove 'api-incident' scope from the client |
+| 4    | API Consumer submit both requests simultaneously | Both scope modification requests (add and remove) are submitted to the system at exactly the same time |
+| 5    | API Consumer thread A adds api-analytics | Thread A's add scope request is processed, adding 'api-analytics' to the client's scope list |
+| 6    | API Consumer thread B removes api-incident | Thread B's remove scope request is processed, removing 'api-incident' from the client's scope list |
+| 7    | API Consumer monitor for race conditions | Both concurrent requests are monitored to ensure no race conditions or data corruption occurs |
+| 8    | API Consumer verify final scope list | The client's final scope list is verified as [api-directory, api-analytics], confirming both operations completed successfully |
+| 9    | API Consumer verify both operations reflected | Both the add-scope and remove-scope operations are confirmed to be reflected in the final client configuration |
+| 10    | API Consumer check audit log for events | The audit log is checked and both SCOPE_ADDED and SCOPE_REMOVED events are recorded |
+| 11    | API Consumer verify event order | The audit log events are ordered correctly showing the sequence in which the concurrent operations were processed |
 
 
 ## Reviewer Comments
@@ -2299,19 +2299,19 @@ System API Manager can gracefully handle backend service unavailability.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer disable backend Directory API | Service stopped |
-| 2    | API Consumer prepare client API request | Request prepared |
-| 3    | API Consumer send request to APIm | Request submitted |
-| 4    | API Consumer aPIm validates credentials | Validation passes |
-| 5    | API Consumer aPIm attempts to forward request | Forwarding fails |
-| 6    | API Consumer aPIm detects backend unavailability | Service unavailability detected |
-| 7    | API Consumer verify response code | 503 Service Unavailable |
+| 1    | API Consumer disable backend Directory API | The backend Directory API service is stopped or made unavailable for testing |
+| 2    | API Consumer prepare client API request | An API request is prepared with valid client credentials and payload |
+| 3    | API Consumer send request to APIm | The prepared request is sent to the APIm gateway |
+| 4    | API Consumer aPIm validates credentials | The APIm layer validates the client credentials and signature, and validation succeeds |
+| 5    | API Consumer aPIm attempts to forward request | The APIm layer attempts to forward the validated request to the backend Directory API service |
+| 6    | API Consumer aPIm detects backend unavailability | The APIm detects that the backend service is unavailable (connection timeout or refused) |
+| 7    | API Consumer verify response code | The APIm returns HTTP 503 Service Unavailable status code to the client |
 | 8    | API Consumer verify error message | "API service temporarily unavailable" |
 | 9    | API Consumer verify message includes retry info | "Please try again in 5 minutes" |
-| 10    | API Consumer verify backend error not exposed | No internal error details shown |
-| 11    | API Consumer re-enable backend service | Service restored |
-| 12    | API Consumer retry same request | Request resubmitted |
-| 13    | API Consumer verify request now succeeds | 200 OK returned |
+| 10    | API Consumer verify backend error not exposed | The error response does not expose internal backend error details, stack traces, or implementation specifics; only a generic error message is returned |
+| 11    | API Consumer re-enable backend service | The backend Directory API service is brought back online and becomes available |
+| 12    | API Consumer retry same request | The same API request is resubmitted to the APIm gateway |
+| 13    | API Consumer verify request now succeeds | The APIm forwards the request to the now-available backend, and the backend returns HTTP 200 OK with the expected response data |
 
 
 ## Reviewer Comments
@@ -2360,14 +2360,14 @@ System API Manager can reset API quota at UTC midnight.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager verify customer quota | Shows 1000 available |
-| 2    | System API Manager make 1000 API requests | Requests submitted |
-| 3    | System API Manager verify quota exhausted | Remaining = 0 |
-| 4    | System API Manager attempt request at 23:59 UTC | Request rejected (429) |
-| 5    | System API Manager wait for UTC midnight (00:00) | Time advances |
-| 6    | System API Manager check quota after reset | Quota reset to 1000 |
-| 7    | System API Manager attempt request at 00:01 UTC | Request accepted (200 OK) |
-| 8    | System API Manager verify quota decreased | Remaining = 999 |
+| 1    | System API Manager verify customer quota | The customer's remaining daily API quota is verified and shows 1000 requests available |
+| 2    | System API Manager make 1000 API requests | Exactly 1000 API requests are submitted by the customer to consume the entire daily quota |
+| 3    | System API Manager verify quota exhausted | After 1000 requests, the customer's remaining quota is verified as 0 (quota fully consumed) |
+| 4    | System API Manager attempt request at 23:59 UTC | An additional API request is attempted at 23:59:59 UTC (quota period not yet reset) |
+| 5    | System API Manager wait for UTC midnight (00:00) | The system time advances from 23:59:59 UTC to 00:00:00 UTC (midnight), crossing the daily quota reset boundary |
+| 6    | System API Manager check quota after reset | After UTC midnight, the customer's remaining daily quota is verified and shows 1000 requests (quota reset to daily limit) |
+| 7    | System API Manager attempt request at 00:01 UTC | An API request is attempted at 00:01 UTC (after quota reset) and is accepted by the system |
+| 8    | System API Manager verify quota decreased | After the new request succeeds, the customer's remaining quota is verified as 999 (one request consumed from fresh daily quota) |
 
 
 ## Reviewer Comments
@@ -2801,7 +2801,7 @@ Customer Integration Manager can complete full Workday middleware onboarding wor
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | Customer Integration Manager new customer completes signup | Customer account created |
-| 2    | Customer Integration Manager customer navigates to Integration | Integrations page loads |
+| 2    | Customer Integration Manager customer navigates to Integration | The Integrations page loads displaying available integration options, onboarding wizards for each integration, and currently active integrations for the customer |
 | 3    | Customer Integration Manager customer selects "Workday" | Workday onboarding starts |
 | 4    | Customer Integration Manager customer creates integration client | Client "Workday Integration" created |
 | 5    | Customer Integration Manager customer selects scopes | api-directory, api-incident selected |
@@ -2861,15 +2861,15 @@ API Consumer can send requests routed to multiple backend services with metadata
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer send request to Directory API | Request routed to Directory Backend |
-| 2    | API Consumer verify X-API-Product header | Header = "Directory APIs" |
-| 3    | API Consumer verify request received | Directory Backend logs request |
-| 4    | API Consumer send request to Incident API | Request routed to Incident Backend |
-| 5    | API Consumer verify X-API-Product header | Header = "Incident APIs" |
-| 6    | API Consumer verify request received | Incident Backend logs request |
-| 7    | API Consumer send request to Analytics API | Request routed to Analytics Backend |
-| 8    | API Consumer verify X-API-Product header | Header = "Analytics APIs" |
-| 9    | API Consumer verify request received | Analytics Backend logs request |
+| 1    | API Consumer send request to Directory API | The API request is routed by APIm to the appropriate backend service for the Directory API (https://directory.backend.example.com) |
+| 2    | API Consumer verify X-API-Product header | The X-API-Product header is present in the forwarded request with value 'Directory APIs' |
+| 3    | API Consumer verify request received | The Directory Backend service receives and logs the API request including all forwarded headers and customer context |
+| 4    | API Consumer send request to Incident API | The API request is routed by APIm to the appropriate backend service for the Incident API (https://incident.backend.example.com) |
+| 5    | API Consumer verify X-API-Product header | The X-API-Product header is present in the forwarded request with value 'Incident APIs' |
+| 6    | API Consumer verify request received | The Incident Backend service receives and logs the API request including all forwarded headers and customer context |
+| 7    | API Consumer send request to Analytics API | The API request is routed by APIm to the appropriate backend service for the Analytics API (https://analytics.backend.example.com) |
+| 8    | API Consumer verify X-API-Product header | The X-API-Product header is present in the forwarded request with value 'Analytics APIs' |
+| 9    | API Consumer verify request received | The Analytics Backend service receives and logs the API request including all forwarded headers and customer context |
 
 
 ## Reviewer Comments
@@ -2915,16 +2915,16 @@ System API Manager can cache scope lists from Auth Service and refresh on update
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager call Auth Service /scopes endpoint | Scopes list returned |
-| 2    | System API Manager verify scopes returned | 5 scopes in response |
-| 3    | System API Manager verify TTL value included | TTL = 3600 seconds |
-| 4    | System API Manager verify cache populated | Scopes cached |
-| 5    | System API Manager publish new scope to Auth Service | New scope added |
-| 6    | System API Manager call /scopes before TTL expires | Cache returns old list |
-| 7    | System API Manager verify old list returned | Old 5 scopes returned |
-| 8    | System API Manager wait for TTL to expire | Wait 3600+ seconds |
-| 9    | System API Manager call /scopes after TTL | Fresh list fetched |
-| 10    | System API Manager verify updated list | New scope now included |
+| 1    | System API Manager call Auth Service /scopes endpoint | The Auth Service's /scopes endpoint is called and returns a JSON response containing all available API scopes |
+| 2    | System API Manager verify scopes returned | The response contains exactly 5 available API scopes in a properly formatted array |
+| 3    | System API Manager verify TTL value included | The response includes a TTL (Time To Live) value of 3600 seconds, indicating the cache validity period |
+| 4    | System API Manager verify cache populated | The scopes list is cached in the APIm cache layer with the 3600-second TTL |
+| 5    | System API Manager publish new scope to Auth Service | A new scope 'api-analytics' is published to the Auth Service |
+| 6    | System API Manager call /scopes before TTL expires | The /scopes endpoint is called again before the 3600-second cache TTL has expired (e.g., at 1800 seconds) |
+| 7    | System API Manager verify old list returned | The cached scopes list is returned (still containing only the original 5 scopes), not the updated list with the new scope |
+| 8    | System API Manager wait for TTL to expire | The system waits for the cache TTL to expire (3600+ seconds pass) |
+| 9    | System API Manager call /scopes after TTL | The /scopes endpoint is called after the cache TTL expires, forcing a fresh fetch from the Auth Service |
+| 10    | System API Manager verify updated list | The updated scopes list is returned, now containing the newly published 'api-analytics' scope in addition to the original 5 scopes |
 
 
 ## Reviewer Comments
@@ -2968,16 +2968,16 @@ Customer Integration Manager can assign newly published API products to integrat
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | Customer Integration Manager verify api-reporting not available | Product not in dropdown |
-| 2    | Customer Integration Manager admin publishes api-reporting | Product published |
-| 3    | Customer Integration Manager trigger scope cache refresh | Cache refresh initiated |
-| 4    | Customer Integration Manager navigate to client scope selector | Scope list loads |
-| 5    | Customer Integration Manager verify api-reporting now available | Product appears in dropdown |
-| 6    | Customer Integration Manager add api-reporting to client | Scope selected |
-| 7    | Customer Integration Manager save changes | Changes submitted |
-| 8    | Customer Integration Manager verify scope assignment successful | api-reporting added |
-| 9    | Customer Integration Manager make API call to api-reporting | Request processed |
-| 10    | Customer Integration Manager verify request succeeds | 200 OK returned |
+| 1    | Customer Integration Manager verify api-reporting not available | The 'api-reporting' product is confirmed to not appear in the available scopes dropdown |
+| 2    | Customer Integration Manager admin publishes api-reporting | The 'api-reporting' API product is published to the Auth Service making it available for assignment |
+| 3    | Customer Integration Manager trigger scope cache refresh | The scope cache in the APIm is manually refreshed or the TTL is allowed to expire to fetch updated scopes |
+| 4    | Customer Integration Manager navigate to client scope selector | The client details page is opened and the scope selection interface loads displaying available scopes |
+| 5    | Customer Integration Manager verify api-reporting now available | The 'api-reporting' product is now visible in the available scopes dropdown menu |
+| 6    | Customer Integration Manager add api-reporting to client | The 'api-reporting' scope is selected and added to the client's scope list |
+| 7    | Customer Integration Manager save changes | The edited client information is submitted to the backend API and validated for accuracy |
+| 8    | Customer Integration Manager verify scope assignment successful | A success notification confirms that the 'api-reporting' scope has been successfully added to the client's scope list |
+| 9    | Customer Integration Manager make API call to api-reporting | The API request is successfully processed by the backend service and returns the appropriate HTTP status code (200 OK, 201 Created, etc.) |
+| 10    | Customer Integration Manager verify request succeeds | The API request to the 'api-reporting' endpoint returns HTTP 200 OK with expected data |
 
 
 ## Reviewer Comments
@@ -3024,15 +3024,15 @@ API Consumer can route requests to new tier backend after subscription tier upgr
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | API Consumer verify customer tier is Free | Tier = Free confirmed |
-| 2    | API Consumer make API request | Request sent |
-| 3    | API Consumer verify routed to Free backend | Free backend receives request |
-| 4    | API Consumer admin upgrades customer to Premium | Tier change submitted |
-| 5    | API Consumer verify customer tier updated | Tier = Premium confirmed |
-| 6    | API Consumer make API request | Request sent |
-| 7    | API Consumer verify routed to Premium backend | Premium backend receives request |
-| 8    | API Consumer verify different backend used | URL changed from Free to Premium |
-| 9    | API Consumer verify no service interruption | All requests succeed |
+| 1    | API Consumer verify customer tier is Free | The customer's current subscription tier is confirmed to be 'Free' in the system |
+| 2    | API Consumer make API request | An API request is sent from the Free tier customer's integration client |
+| 3    | API Consumer verify routed to Free backend | The request is routed to and processed by the Free tier backend service (https://backend-free.example.com) |
+| 4    | API Consumer admin upgrades customer to Premium | The customer's subscription tier is changed from 'Free' to 'Premium' in the subscription management system |
+| 5    | API Consumer verify customer tier updated | The customer's tier is confirmed to be 'Premium' in the system after the upgrade |
+| 6    | API Consumer make API request | An API request is sent from the Premium tier customer's integration client |
+| 7    | API Consumer verify routed to Premium backend | The request is routed to and processed by the Premium tier backend service (https://backend-premium.example.com) |
+| 8    | API Consumer verify different backend used | The request routing URL has changed from the Free tier backend URL to the Premium tier backend URL |
+| 9    | API Consumer verify no service interruption | All API requests succeed during the tier upgrade process, with no failed requests or service downtime |
 
 
 ## Reviewer Comments
@@ -3077,14 +3077,14 @@ System API Manager can enforce tier-specific rate limits correctly.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager generate 100 requests/sec as Free tier | Load sent |
-| 2    | System API Manager monitor response codes | All 200 OK responses |
-| 3    | System API Manager generate 101 requests/sec as Free tier | Overload sent |
-| 4    | System API Manager monitor response codes | 429 Too Many Requests |
-| 5    | System API Manager generate 1000 requests/sec as Premium | Premium load sent |
-| 6    | System API Manager monitor response codes | All 200 OK responses |
-| 7    | System API Manager generate 1001 requests/sec as Premium | Premium overload sent |
-| 8    | System API Manager monitor response codes | 429 Too Many Requests |
+| 1    | System API Manager generate 100 requests/sec as Free tier | Load of exactly 100 API requests per second is generated from a Free tier customer's client |
+| 2    | System API Manager monitor response codes | All requests return HTTP 200 OK responses (within the Free tier rate limit of 100 req/sec) |
+| 3    | System API Manager generate 101 requests/sec as Free tier | Load of 101 API requests per second is generated (exceeding the 100 req/sec Free tier limit) |
+| 4    | System API Manager monitor response codes | Excess requests above the 100 req/sec limit are rejected with HTTP 429 Too Many Requests responses |
+| 5    | System API Manager generate 1000 requests/sec as Premium | Load of 1000 API requests per second is generated from a Premium tier customer's client (within Premium limit) |
+| 6    | System API Manager monitor response codes | All 1000 requests per second return HTTP 200 OK responses (within the Premium tier rate limit) |
+| 7    | System API Manager generate 1001 requests/sec as Premium | Load of 1001 API requests per second is generated (exceeding the 1000 req/sec Premium tier limit) |
+| 8    | System API Manager monitor response codes | Excess requests above the 1000 req/sec limit are rejected with HTTP 429 Too Many Requests responses |
 
 
 ## Reviewer Comments
@@ -3129,16 +3129,16 @@ System API Manager can forward complete customer context to backend services.
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager prepare API request | Request prepared |
-| 2    | System API Manager include valid credentials | Credentials included |
-| 3    | System API Manager send request to APIm | Request submitted |
-| 4    | System API Manager aPIm forwards request to backend | Backend receives request |
-| 5    | System API Manager inspect forwarded headers | Headers examined |
-| 6    | System API Manager verify X-Customer-ID header | Header = cust_12345 |
-| 7    | System API Manager verify X-Subscription-Tier header | Header = Premium |
-| 8    | System API Manager verify X-Assigned-Scopes header | Header = [api-directory, api-incident] |
-| 9    | System API Manager verify backend processes context | Backend uses context |
-| 10    | System API Manager backend returns data for tier | Premium data returned |
+| 1    | System API Manager prepare API request | An API request is prepared with valid credentials and payload for the integration client |
+| 2    | System API Manager include valid credentials | Valid API Key and calculated HMAC-SHA256 signature are included in the request headers |
+| 3    | System API Manager send request to APIm | The prepared request with credentials is sent to the APIm gateway |
+| 4    | System API Manager aPIm forwards request to backend | After validating credentials and scope, the APIm forwards the request to the backend service |
+| 5    | System API Manager inspect forwarded headers | The headers in the forwarded request are captured and examined for customer context information |
+| 6    | System API Manager verify X-Customer-ID header | The X-Customer-ID header is present in the forwarded request with value 'cust_12345' |
+| 7    | System API Manager verify X-Subscription-Tier header | The X-Subscription-Tier header is present in the forwarded request with value 'Premium' |
+| 8    | System API Manager verify X-Assigned-Scopes header | The X-Assigned-Scopes header is present in the forwarded request with value '[api-directory, api-incident]' |
+| 9    | System API Manager verify backend processes context | The backend service receives and processes the forwarded customer context headers to customize the response |
+| 10    | System API Manager backend returns data for tier | The backend returns response data appropriate for the Premium tier (e.g., extended data set, higher limits) |
 
 
 ## Reviewer Comments
@@ -3352,7 +3352,7 @@ Admin System Administrator can view integration client metrics on dashboard.
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | Admin System Administrator login as admin user | Admin logged in |
-| 2    | Admin System Administrator navigate to dashboard | Dashboard page loads |
+| 2    | Admin System Administrator navigate to dashboard | The admin dashboard loads displaying all integration clients across all customer tenants, system metrics, and relevant management options |
 | 3    | Admin System Administrator locate client metrics section | Metrics visible |
 | 4    | Admin System Administrator verify total clients count | Number displayed |
 | 5    | Admin System Administrator verify active clients count | Number displayed |
@@ -3404,8 +3404,8 @@ System API Manager can send accurate customer tier usage metrics to billing syst
 
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
-| 1    | System API Manager free tier customer makes 500 requests | Requests processed |
-| 2    | System API Manager premium tier customer makes 5000 requests | Requests processed |
+| 1    | System API Manager free tier customer makes 500 requests | All API requests are successfully processed by the backend without throttling, rate limiting, or rejection due to tier restrictions |
+| 2    | System API Manager premium tier customer makes 5000 requests | All API requests are successfully processed by the backend without throttling, rate limiting, or rejection due to tier restrictions |
 | 3    | System API Manager query billing system metrics | Metrics recorded |
 | 4    | System API Manager verify Free tier usage logged | 500 requests recorded |
 | 5    | System API Manager verify Premium tier usage logged | 5000 requests recorded |
@@ -3569,7 +3569,7 @@ System API Manager can maintain API request latency SLA below 200ms at p99.
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | System API Manager configure JMeter for 100 req/sec | Load test configured |
 | 2    | System API Manager run load test for 10 minutes | Test executing |
-| 3    | System API Manager generate 60000 requests | Requests processed |
+| 3    | System API Manager generate 60000 requests | All API requests are successfully processed by the backend without throttling, rate limiting, or rejection due to tier restrictions |
 | 4    | System API Manager collect latency metrics | Latency data captured |
 | 5    | System API Manager calculate p50 latency | Median latency computed |
 | 6    | System API Manager calculate p95 latency | 95th percentile computed |
@@ -4162,7 +4162,7 @@ System Security Manager can prevent customer credentials from accessing internal
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | System Security Manager prepare request to internal API | Request prepared |
 | 2    | System Security Manager include customer API key | Key included |
-| 3    | System Security Manager generate signature | Signature calculated |
+| 3    | System Security Manager generate signature | The HMAC-SHA256 signature is calculated correctly using the API secret and request payload, resulting in a 64-character hexadecimal string |
 | 4    | System Security Manager send request with customer key | Request submitted |
 | 5    | System Security Manager system checks if internal API | Internal API detected |
 | 6    | System Security Manager system checks credential type | Customer credential identified |
@@ -4224,7 +4224,7 @@ API Consumer can successfully complete end-to-end Workday integration workflow f
 | Step | Action                              | Expected Result |
 | ---- | ----------------------------------- | ------------------------- |
 | 1    | API Consumer customer signs up | Account created |
-| 2    | API Consumer navigate to integrations | Integrations page loads |
+| 2    | API Consumer navigate to integrations | The Integrations page loads displaying available integration options, onboarding wizards for each integration, and currently active integrations for the customer |
 | 3    | API Consumer create Workday client | Client created |
 | 4    | API Consumer select api-directory scope | Scope selected |
 | 5    | API Consumer receive credentials | Key/secret displayed once |
