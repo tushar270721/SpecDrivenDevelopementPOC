@@ -4329,7 +4329,7 @@ API Consumer can complete end-to-end subscription upgrade and downgrade workflow
 
 **Document Status:** ✅ Ready for Human Review  
 **Format:** Enterprise-Grade Test Case Template  
-**Feature:** AB#735316 - API Consumer and Scope Management  
+**Feature:** FE#735316 - API Consumer and Scope Management  
 **Generated:** May 29, 2026  
 **All 78 Test Cases:** Complete with full metadata, preconditions, test data, steps, expected outcomes, and reviewer sections
 
