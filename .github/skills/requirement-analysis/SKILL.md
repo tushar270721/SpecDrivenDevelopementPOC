@@ -5,12 +5,12 @@ Perform comprehensive requirement analysis on a feature fetched from Azure DevOp
 
 ## Trigger Phrases
 - "Analyze feature requirements"
-- "Perform requirement analysis for AB#12345"
-- "Validate feature AB#12345"
-- "Analyze AB#12345 and create questions for PO"
+- "Perform requirement analysis for FE#12345"
+- "Validate feature FE#12345"
+- "Analyze FE#12345 and create questions for PO"
 
 ## Input Requirements
-- Feature ID (e.g., AB#816692)
+- Feature ID (e.g., FE#816692)
 - Fetched feature data (title, description, acceptance criteria)
 
 ## Workflow Phases
@@ -19,13 +19,13 @@ Perform comprehensive requirement analysis on a feature fetched from Azure DevOp
 **Goal:** Get complete feature information from Azure DevOps
 
 ```
-✅ Fetch feature using: node .github/config/azure-mcp/fetch-feature.js AB#<ID>
+✅ Fetch feature using: node .github/config/azure-mcp/fetch-feature.js FE#<ID>
 ✅ Retrieve: Title, Description, Acceptance Criteria, Comments
 ✅ Extract all metadata: Priority, State, Assigned To, Created/Updated dates
 ```
 
 **Questions to Ask:**
-- Feature ID valid? (AB#\d+)
+- Feature ID valid? (FE#\d+)
 - All required fields present?
 - Description is complete?
 
@@ -398,7 +398,7 @@ Recommendation: [Action to take]
 ## Output Artifacts
 
 ### 1. Requirement Analysis Report (Markdown)
-- Location: `.github/analysis/AB#<ID>-requirement-analysis.md`
+- Location: `.github/analysis/FE#<ID>-requirement-analysis.md`
 - Contents: All validation results, gaps, questions for PO
 
 ### 2. Questions for PO (Extracted)
