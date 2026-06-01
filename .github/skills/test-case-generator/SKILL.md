@@ -4,13 +4,13 @@
 Generate comprehensive test cases from feature specifications and requirements. Test cases cover functional, role-based, edge case, integration, performance, security, accessibility, and E2E scenarios. All test cases are created in draft mode for QA review before finalization.
 
 ## Trigger Phrases
-- "Generate test cases for feature AB#12345"
-- "Create test cases from specification AB#12345"
-- "Generate testcase.md for AB#12345"
-- "Create test cases using specification and feature AB#12345"
+- "Generate test cases for feature FE#12345"
+- "Create test cases from specification FE#12345"
+- "Generate testcase.md for FE#12345"
+- "Create test cases using specification and feature FE#12345"
 
 ## Input Requirements
-- Feature ID (e.g., AB#768248)
+- Feature ID (e.g., FE#768248)
 - Fetched feature data (title, description, acceptance criteria)
 - SPECIFICATION.md file for the feature (if available)
 
@@ -615,18 +615,6 @@ Reason: Accessibility testing with screen reader requires manual verification
 - Test cases can be imported directly to Azure DevOps Test Cases
 - All 7 standard personas should be represented across test cases
 - File prefix FE# indicates feature/frontend reference (standardized from AB# format)
-3. ✅ Each test with full metadata: ID, Title, Priority, Automatable, Status, Review Status, Reviewer, Review Date
-4. ✅ Complete documentation: Description, Preconditions, Test Data, Steps, Expected Outcome, Reviewer Comments
-5. ✅ Ready for QA review and approval
-6. ✅ Formatted for Azure DevOps import (post-review)
-File: .github/analysis/AB#[ID]-testcases.md
-Format: Markdown with embedded tables
-Contains: All test cases in table format with review checkboxes
-Status: DRAFT (awaiting QA review)
-```<ID>-testcases.md`
-- **Format:** Markdown with structured metadata tables
-- **Contents:** All test cases (typically 70-80 cases) organized by 7 categories
-- **Status:** DRAFT (pending QA lead review and approval)
 
 ### 2. Test Case Structure & Metadata
 - **Metadata Table:** ID, Title, Priority, Automatable, Status, Review Status, Reviewer, Review Date
