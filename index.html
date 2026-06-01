@@ -791,7 +791,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>📊 Test Case Review Portal - AB#735316</h1>
+        <h1>📊 Test Case Review Portal - FE#735316</h1>
         <div class="header-actions">
             <button id="downloadBtn" class="btn btn-primary" disabled>⬇️ Export Markdown</button>
         </div>
@@ -799,7 +799,7 @@
 
     <div class="input-section">
         <h2>Paste Test Cases (Markdown)</h2>
-        <textarea id="markdownInput" placeholder="Paste your AB735316-testcases.md content here..."></textarea>
+        <textarea id="markdownInput" placeholder="Paste your FE735316-testcases.md content here..."></textarea>
         <div class="input-actions">
             <button id="parseBtn" class="btn btn-primary">📋 Parse Test Cases</button>
             <button id="clearBtn" class="btn btn-secondary">Clear</button>
@@ -1396,7 +1396,7 @@
         }
 
         function downloadMarkdown() {
-            let markdown = '# Test Cases: AB#735316 - API Consumer and Scope Management\n\n---\n\n';
+            let markdown = '# Test Cases: FE#735316 - API Consumer and Scope Management\n\n---\n\n';
 
             testCases.forEach((tc) => {
                 markdown += `# ${tc.id}\n\n`;
@@ -1444,7 +1444,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `AB735316-testcases-updated-${new Date().toISOString().split('T')[0]}.md`;
+            a.download = `FE735316-testcases-updated-${new Date().toISOString().split('T')[0]}.md`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
