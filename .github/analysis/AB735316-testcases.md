@@ -6,14 +6,13 @@
 
 ---
 
-# TC-AB735316-001
+# TC-FE735316-001
 
 ## Metadata
 
 | Field         | Value                                      |
 | ------------- | ------------------------------------------ |
-| Test Case ID  | TC-AB735316-001                            |
-| Title         | Customer registers valid integration client |
+| Test Case ID  | TC-FE735316-001                            |
 | Priority      | High                                       |
 | Automatable   | Yes                                        |
 | Status        | Draft                                      |
@@ -21,9 +20,9 @@
 | Reviewer      |                                            |
 | Review Date   |                                            |
 
-## Description
+## Title
 
-Verify that a customer can successfully register a new integration client with valid inputs through the management UI. The system should generate unique credentials and send an onboarding email.
+Customer Integration Manager can register a new integration client with valid inputs.
 
 ## Preconditions
 
@@ -55,14 +54,6 @@ Verify that a customer can successfully register a new integration client with v
 | 8    | Close credentials modal                           | Modal closes, client appears in list         |
 | 9    | Verify email sent to customer@example.com          | Onboarding email received with setup guide   |
 
-## Expected Outcome
-
-* Integration client "Workday Integration" created successfully
-* Unique API key and secret generated and displayed
-* Client added to customer's client list
-* Onboarding email sent to customer with credentials
-* Audit log records client creation event
-* Credentials securely stored (hashed/encrypted in database)
 
 ## Reviewer Comments
 
@@ -70,14 +61,13 @@ Verify that a customer can successfully register a new integration client with v
 
 ---
 
-# TC-AB735316-002
+# TC-FE735316-002
 
 ## Metadata
 
 | Field         | Value                              |
 | ------------- | ---------------------------------- |
-| Test Case ID  | TC-AB735316-002                    |
-| Title         | System generates unique API credentials |
+| Test Case ID  | TC-FE735316-002                    |
 | Priority      | High                               |
 | Automatable   | Yes                                |
 | Status        | Draft                              |
@@ -85,9 +75,9 @@ Verify that a customer can successfully register a new integration client with v
 | Reviewer      |                                    |
 | Review Date   |                                    |
 
-## Description
+## Title
 
-Verify that API credentials (key and secret) are generated with proper uniqueness, format compliance, and cryptographic strength.
+System API Manager can generate cryptographically strong unique API credentials.
 
 ## Preconditions
 
@@ -119,15 +109,6 @@ Verify that API credentials (key and secret) are generated with proper uniquenes
 | 9    | Verify key format (alphanumeric)    | Contains only URL-safe characters    |
 | 10   | Verify secret format (alphanumeric) | Contains only URL-safe characters    |
 
-## Expected Outcome
-
-* Both API keys are unique and not duplicated
-* Both API secrets are unique and not duplicated
-* API keys meet minimum length requirement (32+ chars)
-* API secrets meet minimum length requirement (64+ chars)
-* Credentials contain only URL-safe characters (alphanumeric, hyphen, underscore)
-* No special characters that could cause encoding issues
-* Credentials follow cryptographically secure random generation pattern
 
 ## Reviewer Comments
 
@@ -135,14 +116,13 @@ Verify that API credentials (key and secret) are generated with proper uniquenes
 
 ---
 
-# TC-AB735316-003
+# TC-FE735316-003
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-003                |
-| Title         | Customer lists all integration clients |
+| Test Case ID  | TC-FE735316-003                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -150,9 +130,9 @@ Verify that API credentials (key and secret) are generated with proper uniquenes
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customers can view a complete list of their registered integration clients with relevant metadata displayed correctly.
+Customer Integration Manager can view a complete list of integration clients.
 
 ## Preconditions
 
@@ -182,14 +162,6 @@ Verify that customers can view a complete list of their registered integration c
 | 9    | Check createdAt dates       | Dates are valid and readable       |
 | 10   | Check lastUsedAt dates      | Recent client shows current date   |
 
-## Expected Outcome
-
-* All integration clients for customer displayed in list
-* List includes columns: clientId, clientName, scopes, status, createdAt, lastUsedAt
-* Clients are sorted by creation date (newest first)
-* Client names are correctly displayed
-* No unauthorized clients appear in list
-* Pagination available if count exceeds 50 clients
 
 ## Reviewer Comments
 
@@ -197,14 +169,13 @@ Verify that customers can view a complete list of their registered integration c
 
 ---
 
-# TC-AB735316-004
+# TC-FE735316-004
 
 ## Metadata
 
 | Field         | Value                           |
 | ------------- | ------------------------------- |
-| Test Case ID  | TC-AB735316-004                 |
-| Title         | Customer views integration client details |
+| Test Case ID  | TC-FE735316-004                 |
 | Priority      | Medium                          |
 | Automatable   | Yes                             |
 | Status        | Draft                           |
@@ -212,9 +183,9 @@ Verify that customers can view a complete list of their registered integration c
 | Reviewer      |                                 |
 | Review Date   |                                 |
 
-## Description
+## Title
 
-Verify that customers can view detailed information about a specific integration client, including all assigned scopes and metadata.
+Customer Integration Manager can view detailed information about an integration client.
 
 ## Preconditions
 
@@ -245,15 +216,6 @@ Verify that customers can view detailed information about a specific integration
 | 9    | Verify credentials count            | Shows active credential count   |
 | 10   | Verify no plain-text secret shown   | Secret field masked or empty    |
 
-## Expected Outcome
-
-* All client details displayed correctly
-* Client ID, name, description, status all visible
-* All assigned scopes listed
-* Creation date properly formatted
-* Credential count accurate
-* API secret never shown in plain text (masked or empty)
-* Edit and Rotate buttons available if user has permission
 
 ## Reviewer Comments
 
@@ -261,14 +223,13 @@ Verify that customers can view detailed information about a specific integration
 
 ---
 
-# TC-AB735316-005
+# TC-FE735316-005
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-005                |
-| Title         | Customer edits integration client details |
+| Test Case ID  | TC-FE735316-005                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -276,9 +237,9 @@ Verify that customers can view detailed information about a specific integration
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customers can successfully update client metadata such as name and description without affecting security attributes like client ID or scopes.
+Customer Integration Manager can update integration client metadata without affecting security.
 
 ## Preconditions
 
@@ -310,15 +271,6 @@ Verify that customers can successfully update client metadata such as name and d
 | 9    | Click "Save" button                 | Changes submitted         |
 | 10   | Verify update confirmation message  | "Client updated successfully" displayed |
 
-## Expected Outcome
-
-* Client name updated from "Old Name" to "Updated Workday Client"
-* Description updated from "Old Description" to "Syncs directory data"
-* Client ID remains unchanged
-* Scopes remain unchanged
-* Audit log records edit event with old/new values
-* Changes persist after page refresh
-* No change to API credentials
 
 ## Reviewer Comments
 
@@ -326,14 +278,13 @@ Verify that customers can successfully update client metadata such as name and d
 
 ---
 
-# TC-AB735316-006
+# TC-FE735316-006
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-006                |
-| Title         | Customer adds API product scope to client |
+| Test Case ID  | TC-FE735316-006                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -341,9 +292,9 @@ Verify that customers can successfully update client metadata such as name and d
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customers can extend an integration client's scope to additional API products that are available in their subscription.
+Customer Integration Manager can add API product scopes to an integration client.
 
 ## Preconditions
 
@@ -375,14 +326,6 @@ Verify that customers can extend an integration client's scope to additional API
 | 8    | Verify updated scope list           | Client now shows both scopes |
 | 9    | Verify audit log entry created      | Log shows SCOPE_ADDED event |
 
-## Expected Outcome
-
-* API product scope "api-incident" successfully added to client
-* Client now has scopes: [api-directory, api-incident]
-* Scope list immediately updated in UI
-* Audit log records scope addition with timestamp
-* New scope becomes effective for next API request
-* Client can now call api-incident APIs
 
 ## Reviewer Comments
 
@@ -390,14 +333,13 @@ Verify that customers can extend an integration client's scope to additional API
 
 ---
 
-# TC-AB735316-007
+# TC-FE735316-007
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-007                |
-| Title         | Customer removes API product scope from client |
+| Test Case ID  | TC-FE735316-007                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -405,9 +347,9 @@ Verify that customers can extend an integration client's scope to additional API
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customers can revoke API product scopes from integration clients, preventing further access to those APIs.
+Customer Integration Manager can remove API product scopes from an integration client.
 
 ## Preconditions
 
@@ -439,14 +381,6 @@ Verify that customers can revoke API product scopes from integration clients, pr
 | 8    | Verify audit log entry              | Log shows SCOPE_REMOVED event |
 | 9    | Attempt API call to removed scope   | Request rejected (403 Forbidden) |
 
-## Expected Outcome
-
-* Scope "api-incident" successfully removed from client
-* Client now has only scope: [api-directory]
-* Scope removal effective immediately
-* Future API calls to incident endpoint rejected with "Insufficient scope" error
-* Audit log records scope removal with timestamp
-* Client retains access to directory API
 
 ## Reviewer Comments
 
@@ -454,14 +388,13 @@ Verify that customers can revoke API product scopes from integration clients, pr
 
 ---
 
-# TC-AB735316-008
+# TC-FE735316-008
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-008                |
-| Title         | Integration client makes API call within assigned scope |
+| Test Case ID  | TC-FE735316-008                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -469,9 +402,9 @@ Verify that customers can revoke API product scopes from integration clients, pr
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that an integration client can successfully make API calls to endpoints within its assigned scopes.
+API Consumer can make API calls to endpoints within assigned scopes.
 
 ## Preconditions
 
@@ -503,14 +436,6 @@ Verify that an integration client can successfully make API calls to endpoints w
 | 8    | Verify response received            | 200 OK response returned  |
 | 9    | Measure response latency            | Latency < 200ms           |
 
-## Expected Outcome
-
-* API request processed successfully (200 OK)
-* Directory data returned to client
-* Request includes necessary headers (X-API-Product, X-Subscription-Tier)
-* Response includes rate limit headers
-* Request latency meets SLA (<200ms typical)
-* Audit log records API call with client ID, endpoint, result
 
 ## Reviewer Comments
 
@@ -518,14 +443,13 @@ Verify that an integration client can successfully make API calls to endpoints w
 
 ---
 
-# TC-AB735316-009
+# TC-FE735316-009
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-009                |
-| Title         | System validates credential scope matches API product |
+| Test Case ID  | TC-FE735316-009                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -533,9 +457,9 @@ Verify that an integration client can successfully make API calls to endpoints w
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system performs scope validation before forwarding requests to backend services, rejecting requests where credential scope does not match the requested API product.
+System API Manager can validate credential scopes before processing requests.
 
 ## Preconditions
 
@@ -567,14 +491,6 @@ Verify that the system performs scope validation before forwarding requests to b
 | 8    | Verify 403 error response           | 403 Forbidden returned    |
 | 9    | Verify error message                | Message: "Insufficient scope: api-directory. Required: api-incident" |
 
-## Expected Outcome
-
-* Scope validation rejected before backend forwarding (APIm layer)
-* Request returns 403 Forbidden status
-* Error message clearly indicates insufficient scope
-* Backend service not contacted (no unnecessary traffic)
-* Audit log records scope violation attempt
-* Client receives helpful error message
 
 ## Reviewer Comments
 
@@ -582,14 +498,13 @@ Verify that the system performs scope validation before forwarding requests to b
 
 ---
 
-# TC-AB735316-010
+# TC-FE735316-010
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-010                |
-| Title         | System includes API product in forwarded request |
+| Test Case ID  | TC-FE735316-010                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -597,9 +512,9 @@ Verify that the system performs scope validation before forwarding requests to b
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that when APIm forwards requests to backend services, it includes the API product metadata in the request headers.
+System API Manager can include API product metadata in forwarded requests.
 
 ## Preconditions
 
@@ -630,13 +545,6 @@ Verify that when APIm forwards requests to backend services, it includes the API
 | 8    | Verify header value                 | Value = "Directory APIs"  |
 | 9    | Verify backend received header      | Backend acknowledges      |
 
-## Expected Outcome
-
-* Forwarded request includes X-API-Product header
-* Header value correctly identifies API product
-* Backend can identify which product is being accessed
-* Backend can apply product-specific policies
-* Product metadata available for logging and monitoring
 
 ## Reviewer Comments
 
@@ -644,14 +552,13 @@ Verify that when APIm forwards requests to backend services, it includes the API
 
 ---
 
-# TC-AB735316-011
+# TC-FE735316-011
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-011                |
-| Title         | System includes subscription tier in forwarded request |
+| Test Case ID  | TC-FE735316-011                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -659,9 +566,9 @@ Verify that when APIm forwards requests to backend services, it includes the API
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that subscription tier information is included in forwarded requests to backend services, enabling tier-specific processing.
+System API Manager can include subscription tier in forwarded requests.
 
 ## Preconditions
 
@@ -692,14 +599,6 @@ Verify that subscription tier information is included in forwarded requests to b
 | 8    | Capture forwarded request headers   | Headers inspected         |
 | 9    | Verify X-Subscription-Tier header   | Header present and correct |
 
-## Expected Outcome
-
-* Forwarded request includes X-Subscription-Tier header
-* Header value correctly reflects customer's subscription tier (Premium)
-* Backend receives tier information
-* Backend can apply tier-specific rate limits and features
-* Premium customers get priority processing if configured
-* Tier information enables SLA enforcement
 
 ## Reviewer Comments
 
@@ -707,14 +606,13 @@ Verify that subscription tier information is included in forwarded requests to b
 
 ---
 
-# TC-AB735316-012
+# TC-FE735316-012
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-012                |
-| Title         | Backend receives correct backendURL based on tier |
+| Test Case ID  | TC-FE735316-012                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -722,9 +620,9 @@ Verify that subscription tier information is included in forwarded requests to b
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that APIm routes requests to the correct backend service URL based on customer's subscription tier.
+System API Manager can route requests to correct backend based on subscription tier.
 
 ## Preconditions
 
@@ -760,14 +658,6 @@ Verify that APIm routes requests to the correct backend service URL based on cus
 | 11   | APIm selects backend URL            | backendURL_Premium selected |
 | 12   | Verify request routed to Premium backend | Network traffic verified |
 
-## Expected Outcome
-
-* Free tier requests routed to backendURL_Free
-* Premium tier requests routed to backendURL_Premium
-* Each tier receives appropriate quality of service
-* Backend routing is automatic and transparent to client
-* Routing persists consistently across multiple requests
-* Backend URL per tier can be updated without client changes
 
 ## Reviewer Comments
 
@@ -775,14 +665,13 @@ Verify that APIm routes requests to the correct backend service URL based on cus
 
 ---
 
-# TC-AB735316-013
+# TC-FE735316-013
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-013                |
-| Title         | System rotates API credentials successfully |
+| Test Case ID  | TC-FE735316-013                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -790,9 +679,9 @@ Verify that APIm routes requests to the correct backend service URL based on cus
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customers can successfully rotate API credentials for an integration client, generating new credentials and revoking old ones.
+Customer Integration Manager can rotate API credentials for an integration client.
 
 ## Preconditions
 
@@ -824,15 +713,6 @@ Verify that customers can successfully rotate API credentials for an integration
 | 10   | Close credentials modal             | Modal closes              |
 | 11   | Verify old credentials revoked      | Old key status = revoked  |
 
-## Expected Outcome
-
-* New API credentials generated successfully
-* Old API credentials automatically revoked
-* New credentials displayed in one-time modal (secure)
-* Old credentials immediately rejected for API calls
-* Audit log records credential rotation with timestamp
-* Customer notified via email with rotation confirmation
-* No grace period for old credentials (immediate revocation)
 
 ## Reviewer Comments
 
@@ -840,14 +720,13 @@ Verify that customers can successfully rotate API credentials for an integration
 
 ---
 
-# TC-AB735316-014
+# TC-FE735316-014
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-014                |
-| Title         | Old credentials rejected after rotation |
+| Test Case ID  | TC-FE735316-014                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -855,9 +734,9 @@ Verify that customers can successfully rotate API credentials for an integration
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that old API credentials are immediately rejected after credential rotation and new credentials are accepted.
+System API Manager can reject old credentials after credential rotation.
 
 ## Preconditions
 
@@ -891,14 +770,6 @@ Verify that old API credentials are immediately rejected after credential rotati
 | 11   | System checks credential status     | Status = active found    |
 | 12   | Request forwarded to backend        | Request processed (200 OK) |
 
-## Expected Outcome
-
-* API calls with old credentials rejected (401 Unauthorized)
-* Error message indicates credential revocation
-* API calls with new credentials accepted and processed
-* No grace period for credential transition
-* Old and new credentials work independently
-* Audit log records both rejection and acceptance
 
 ## Reviewer Comments
 
@@ -906,14 +777,13 @@ Verify that old API credentials are immediately rejected after credential rotati
 
 ---
 
-# TC-AB735316-015
+# TC-FE735316-015
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-015                |
-| Title         | Customer explicitly revokes credentials |
+| Test Case ID  | TC-FE735316-015                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -921,9 +791,9 @@ Verify that old API credentials are immediately rejected after credential rotati
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customers can manually revoke specific credential sets for a client, immediately preventing their use.
+Customer Integration Manager can revoke specific credential sets for a client.
 
 ## Preconditions
 
@@ -953,14 +823,6 @@ Verify that customers can manually revoke specific credential sets for a client,
 | 8    | Attempt API call with revoked key   | Request rejected (401)    |
 | 9    | Attempt API call with other key     | Request accepted (200 OK) |
 
-## Expected Outcome
-
-* Credential manually revoked successfully
-* Revoked credential immediately rejected for API calls
-* Remaining credentials continue to work
-* Audit log records credential revocation with timestamp
-* Reason field optional for customer to note why revoked
-* Revocation effective immediately (no grace period)
 
 ## Reviewer Comments
 
@@ -968,14 +830,13 @@ Verify that customers can manually revoke specific credential sets for a client,
 
 ---
 
-# TC-AB735316-016
+# TC-FE735316-016
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-016                |
-| Title         | System enforces subscription entitlement |
+| Test Case ID  | TC-FE735316-016                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -983,9 +844,9 @@ Verify that customers can manually revoke specific credential sets for a client,
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customers cannot make API calls to products outside their subscription, even if they have scopes configured for those products.
+API Consumer can enforce subscription entitlement validation on API requests.
 
 ## Preconditions
 
@@ -1016,14 +877,6 @@ Verify that customers cannot make API calls to products outside their subscripti
 | 8    | Request rejected                   | 403 Forbidden returned    |
 | 9    | Verify error message                | Message indicates "Product not in subscription" |
 
-## Expected Outcome
-
-* Request rejected with 403 Forbidden
-* Error message indicates product not in subscription
-* Message suggests contacting sales for upgrade
-* Backend service not contacted (no unnecessary traffic)
-* Audit log records subscription violation attempt
-* Sales team notified of upsell opportunity
 
 ## Reviewer Comments
 
@@ -1031,14 +884,13 @@ Verify that customers cannot make API calls to products outside their subscripti
 
 ---
 
-# TC-AB735316-017
+# TC-FE735316-017
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-017                |
-| Title         | System validates API key format |
+| Test Case ID  | TC-FE735316-017                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1046,9 +898,9 @@ Verify that customers cannot make API calls to products outside their subscripti
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system rejects API requests with malformed or invalid API keys.
+System API Manager can reject requests with invalid API key formats.
 
 ## Preconditions
 
@@ -1082,13 +934,6 @@ Verify that the system rejects API requests with malformed or invalid API keys.
 | 11   | Send request with spaces in key     | Request sent              |
 | 12   | APIm validates key format           | Validation fails          |
 
-## Expected Outcome
-
-* All requests with invalid key formats rejected
-* Error code 400 Bad Request returned consistently
-* Clear error messages guide client to fix issue
-* Validation occurs before database lookup (efficiency)
-* Audit log records invalid format attempts
 
 ## Reviewer Comments
 
@@ -1096,14 +941,13 @@ Verify that the system rejects API requests with malformed or invalid API keys.
 
 ---
 
-# TC-AB735316-018
+# TC-FE735316-018
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-018                |
-| Title         | System validates API request signature (HMAC) |
+| Test Case ID  | TC-FE735316-018                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1111,9 +955,9 @@ Verify that the system rejects API requests with malformed or invalid API keys.
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system validates HMAC-SHA256 signatures on API requests, accepting valid signatures and rejecting invalid or tampered signatures.
+System API Manager can validate HMAC-SHA256 signatures on API requests.
 
 ## Preconditions
 
@@ -1147,14 +991,6 @@ Verify that the system validates HMAC-SHA256 signatures on API requests, accepti
 | 11   | APIm compares signatures            | Signatures do NOT match   |
 | 12   | Request rejected                   | 401 Unauthorized returned |
 
-## Expected Outcome
-
-* Valid signatures accepted and request processed
-* Invalid signatures rejected with 401 Unauthorized
-* Tampered request bodies detected via signature mismatch
-* Constant-time comparison prevents timing attacks
-* Error message does not reveal signature details
-* Audit log records signature validation failures
 
 ## Reviewer Comments
 
@@ -1162,14 +998,13 @@ Verify that the system validates HMAC-SHA256 signatures on API requests, accepti
 
 ---
 
-# TC-AB735316-019
+# TC-FE735316-019
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-019                |
-| Title         | System prevents duplicate client names |
+| Test Case ID  | TC-FE735316-019                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1177,9 +1012,9 @@ Verify that the system validates HMAC-SHA256 signatures on API requests, accepti
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system prevents customers from creating multiple integration clients with the same name within their account.
+Customer Integration Manager can prevent duplicate client names within their account.
 
 ## Preconditions
 
@@ -1212,14 +1047,6 @@ Verify that the system prevents customers from creating multiple integration cli
 | 11   | System performs case-insensitive check | Case-insensitive match |
 | 12   | Request rejected                   | Creation blocked (case-insensitive) |
 
-## Expected Outcome
-
-* Duplicate client names rejected
-* Validation prevents duplicate names
-* Case-insensitive validation enforced
-* Clear error message guides user to choose different name
-* No duplicate clients created
-* Audit log records duplicate name attempt
 
 ## Reviewer Comments
 
@@ -1227,14 +1054,13 @@ Verify that the system prevents customers from creating multiple integration cli
 
 ---
 
-# TC-AB735316-020
+# TC-FE735316-020
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-020                |
-| Title         | Customer retrieves client audit trail |
+| Test Case ID  | TC-FE735316-020                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1242,9 +1068,9 @@ Verify that the system prevents customers from creating multiple integration cli
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customers can view a complete audit trail for an integration client, showing all historical actions and changes.
+Customer Integration Manager can view audit trail for integration clients.
 
 ## Preconditions
 
@@ -1275,15 +1101,6 @@ Verify that customers can view a complete audit trail for an integration client,
 | 10   | Verify user/actor for each event    | Actor identified         |
 | 11   | Verify event details                | Details include before/after values |
 
-## Expected Outcome
-
-* All client events visible in audit trail
-* Events displayed in chronological order (newest first)
-* Timestamps accurate and consistently formatted
-* Actor/user identified for each event
-* Event details include relevant context
-* Audit log is immutable (read-only for customer)
-* Tamper-evident audit trail maintained
 
 ## Reviewer Comments
 
@@ -1291,14 +1108,13 @@ Verify that customers can view a complete audit trail for an integration client,
 
 ---
 
-# TC-AB735316-021
+# TC-FE735316-021
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-021                |
-| Title         | Rate limit information displayed in response |
+| Test Case ID  | TC-FE735316-021                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1306,9 +1122,9 @@ Verify that customers can view a complete audit trail for an integration client,
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that API responses include rate limit information in headers, helping clients manage their quota proactively.
+API Consumer can receive rate limit information in response headers.
 
 ## Preconditions
 
@@ -1342,15 +1158,6 @@ Verify that API responses include rate limit information in headers, helping cli
 | 11   | Verify X-RateLimit-Remaining        | Value = 97 (decremented) |
 | 12   | Verify reset time accuracy          | Timestamp matches quota reset |
 
-## Expected Outcome
-
-* Response includes X-RateLimit-Limit header
-* Response includes X-RateLimit-Remaining header
-* Response includes X-RateLimit-Reset header
-* Values accurately reflect current quota status
-* Remaining count decrements correctly
-* Reset timestamp accurate
-* Client can proactively manage quota
 
 ## Reviewer Comments
 
@@ -1358,14 +1165,13 @@ Verify that API responses include rate limit information in headers, helping cli
 
 ---
 
-# TC-AB735316-022
+# TC-FE735316-022
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-022                |
-| Title         | System handles concurrent API requests from same client |
+| Test Case ID  | TC-FE735316-022                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1373,9 +1179,9 @@ Verify that API responses include rate limit information in headers, helping cli
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system correctly handles multiple simultaneous API requests from the same client without race conditions or credential validation conflicts.
+System API Manager can handle concurrent requests without race conditions.
 
 ## Preconditions
 
@@ -1408,15 +1214,6 @@ Verify that the system correctly handles multiple simultaneous API requests from
 | 11   | Verify response bodies              | All contain expected data |
 | 12   | Verify request isolation            | No cross-contamination of data |
 
-## Expected Outcome
-
-* All concurrent requests processed successfully
-* No race conditions between requests
-* Credential validation not affected by concurrency
-* Each request properly isolated
-* All responses returned correctly
-* No request blocking or deadlocks
-* Performance acceptable with concurrent load
 
 ## Reviewer Comments
 
@@ -1428,14 +1225,13 @@ Verify that the system correctly handles multiple simultaneous API requests from
 
 ---
 
-# TC-AB735316-023
+# TC-FE735316-023
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-023                |
-| Title         | Read-only user cannot create integration clients |
+| Test Case ID  | TC-FE735316-023                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1443,9 +1239,9 @@ Verify that the system correctly handles multiple simultaneous API requests from
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that users with read-only role cannot create new integration clients, preventing unauthorized client registration.
+Read-Only User cannot create new integration clients.
 
 ## Preconditions
 
@@ -1477,14 +1273,6 @@ Verify that users with read-only role cannot create new integration clients, pre
 | 9    | Verify error message                | "Insufficient permissions" |
 | 10   | Verify no client created            | Client count unchanged    |
 
-## Expected Outcome
-
-* "New Client" button disabled or hidden for read-only users
-* Direct API calls to create client rejected (403)
-* Error message clearly indicates insufficient permissions
-* No clients created via UI or API
-* Audit log records unauthorized creation attempt
-* User receives appropriate error message
 
 ## Reviewer Comments
 
@@ -1492,14 +1280,13 @@ Verify that users with read-only role cannot create new integration clients, pre
 
 ---
 
-# TC-AB735316-024
+# TC-FE735316-024
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-024                |
-| Title         | Read-only user cannot modify scopes |
+| Test Case ID  | TC-FE735316-024                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1507,9 +1294,9 @@ Verify that users with read-only role cannot create new integration clients, pre
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that users with read-only role cannot add or remove scopes from integration clients.
+Read-Only User cannot modify client scopes.
 
 ## Preconditions
 
@@ -1540,13 +1327,6 @@ Verify that users with read-only role cannot add or remove scopes from integrati
 | 9    | Verify scope list unchanged         | Scope list remains [api-directory] |
 | 10   | Verify audit log                    | Unauthorized attempt logged |
 
-## Expected Outcome
-
-* "Add Scope" button disabled for read-only users
-* Scope modification API calls rejected (403)
-* No scopes added to client
-* Error message indicates insufficient permissions
-* Audit log records unauthorized modification attempt
 
 ## Reviewer Comments
 
@@ -1554,14 +1334,13 @@ Verify that users with read-only role cannot add or remove scopes from integrati
 
 ---
 
-# TC-AB735316-025
+# TC-FE735316-025
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-025                |
-| Title         | Read-only user cannot rotate credentials |
+| Test Case ID  | TC-FE735316-025                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1569,9 +1348,9 @@ Verify that users with read-only role cannot add or remove scopes from integrati
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that users with read-only role cannot rotate credentials, preventing unauthorized credential generation.
+Read-Only User cannot rotate credentials for a client.
 
 ## Preconditions
 
@@ -1602,14 +1381,6 @@ Verify that users with read-only role cannot rotate credentials, preventing unau
 | 9    | Verify old credentials still active | Original credentials unchanged |
 | 10   | Verify no new credentials created   | No new credentials generated |
 
-## Expected Outcome
-
-* "Rotate Credentials" button disabled for read-only users
-* Credential rotation API calls rejected (403)
-* Old credentials remain active
-* Error message indicates insufficient permissions
-* Audit log records unauthorized rotation attempt
-* Client security not compromised
 
 ## Reviewer Comments
 
@@ -1617,14 +1388,13 @@ Verify that users with read-only role cannot rotate credentials, preventing unau
 
 ---
 
-# TC-AB735316-026
+# TC-FE735316-026
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-026                |
-| Title         | Admin user can manage all customer clients |
+| Test Case ID  | TC-FE735316-026                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1632,9 +1402,9 @@ Verify that users with read-only role cannot rotate credentials, preventing unau
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that admin users have override permissions to manage integration clients for any customer account.
+Admin System Administrator can manage integration clients for any customer.
 
 ## Preconditions
 
@@ -1666,15 +1436,6 @@ Verify that admin users have override permissions to manage integration clients 
 | 10   | Click "Delete" on existing client   | Client deleted (if confirmed) |
 | 11   | Verify all actions logged           | Audit log shows admin actions |
 
-## Expected Outcome
-
-* Admin can view all customers' integration clients
-* Admin can create clients for any customer
-* Admin can edit clients for any customer
-* Admin can delete clients for any customer
-* All admin actions are logged with admin ID
-* Customer cannot be accessed by other customers
-* Override permissions documented and audited
 
 ## Reviewer Comments
 
@@ -1682,14 +1443,13 @@ Verify that admin users have override permissions to manage integration clients 
 
 ---
 
-# TC-AB735316-027
+# TC-FE735316-027
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-027                |
-| Title         | Support lead can view client details |
+| Test Case ID  | TC-FE735316-027                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1697,9 +1457,9 @@ Verify that admin users have override permissions to manage integration clients 
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that support lead users can view client details to assist with customer issues, but cannot see sensitive information like secrets.
+Support Lead can view client details without accessing secrets.
 
 ## Preconditions
 
@@ -1731,14 +1491,6 @@ Verify that support lead users can view client details to assist with customer i
 | 10   | Verify API secret is masked         | Secret not shown or masked |
 | 11   | Verify credentials not visible      | Credential details hidden |
 
-## Expected Outcome
-
-* Support lead can view client metadata
-* Support lead can see scopes and status for troubleshooting
-* Support lead cannot see API secrets or credentials
-* Credentials section shows masked values or "Not available"
-* Support lead can view audit trail
-* Access is read-only (no modifications)
 
 ## Reviewer Comments
 
@@ -1746,14 +1498,13 @@ Verify that support lead users can view client details to assist with customer i
 
 ---
 
-# TC-AB735316-028
+# TC-FE735316-028
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-028                |
-| Title         | Support lead cannot rotate customer credentials |
+| Test Case ID  | TC-FE735316-028                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1761,9 +1512,9 @@ Verify that support lead users can view client details to assist with customer i
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that support lead users cannot rotate credentials for customer clients, maintaining credential security.
+Support Lead cannot rotate customer credentials.
 
 ## Preconditions
 
@@ -1791,14 +1542,6 @@ Verify that support lead users cannot rotate credentials for customer clients, m
 | 7    | Verify API response                 | 403 Forbidden returned    |
 | 8    | Verify credentials unchanged        | Old credentials still active |
 
-## Expected Outcome
-
-* Support lead cannot access credential rotation feature
-* API calls for credential rotation rejected (403)
-* Error message indicates insufficient permissions
-* Customer's credentials remain unchanged
-* Security of customer credentials maintained
-* Audit log records unauthorized rotation attempt
 
 ## Reviewer Comments
 
@@ -1806,14 +1549,13 @@ Verify that support lead users cannot rotate credentials for customer clients, m
 
 ---
 
-# TC-AB735316-029
+# TC-FE735316-029
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-029                |
-| Title         | API key alone is not sufficient (requires signature) |
+| Test Case ID  | TC-FE735316-029                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1821,9 +1563,9 @@ Verify that support lead users cannot rotate credentials for customer clients, m
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that API key alone cannot be used to make requests; a valid cryptographic signature is required, proving key ownership.
+API Consumer requires valid cryptographic signature with API key.
 
 ## Preconditions
 
@@ -1856,13 +1598,6 @@ Verify that API key alone cannot be used to make requests; a valid cryptographic
 | 11   | APIm validates request              | Validation succeeds       |
 | 12   | Verify response code                | 200 OK returned           |
 
-## Expected Outcome
-
-* Requests with key but no signature rejected (401)
-* Clear error message indicates missing signature
-* Requests with both key and valid signature accepted
-* Signature requirement prevents key interception attacks
-* Audit log records missing signature attempts
 
 ## Reviewer Comments
 
@@ -1870,14 +1605,13 @@ Verify that API key alone cannot be used to make requests; a valid cryptographic
 
 ---
 
-# TC-AB735316-030
+# TC-FE735316-030
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-030                |
-| Title         | Customer cannot access other customer's clients |
+| Test Case ID  | TC-FE735316-030                |
 | Priority      | Critical                      |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1885,9 +1619,9 @@ Verify that API key alone cannot be used to make requests; a valid cryptographic
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that multi-tenant isolation is enforced, preventing one customer from accessing another customer's integration clients.
+System Security Manager can enforce multi-tenant isolation.
 
 ## Preconditions
 
@@ -1920,15 +1654,6 @@ Verify that multi-tenant isolation is enforced, preventing one customer from acc
 | 9    | Attempt API call to modify Customer B's client | PUT request    |
 | 10   | Verify request rejected             | 403 Forbidden returned    |
 
-## Expected Outcome
-
-* Customer A cannot view Customer B's clients
-* Customer A cannot access Customer B's client details
-* Customer A cannot modify Customer B's clients
-* URL manipulation prevented by server-side validation
-* Error message does not leak Customer B information
-* Audit log records unauthorized access attempt
-* Multi-tenant isolation enforced at all levels
 
 ## Reviewer Comments
 
@@ -1936,14 +1661,13 @@ Verify that multi-tenant isolation is enforced, preventing one customer from acc
 
 ---
 
-# TC-AB735316-031
+# TC-FE735316-031
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-031                |
-| Title         | Customer token scoped to specific customer |
+| Test Case ID  | TC-FE735316-031                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -1951,9 +1675,9 @@ Verify that multi-tenant isolation is enforced, preventing one customer from acc
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that authentication tokens are scoped to a specific customer, preventing cross-customer access even with valid tokens.
+System Security Manager can validate token scope for customer access.
 
 ## Preconditions
 
@@ -1985,14 +1709,6 @@ Verify that authentication tokens are scoped to a specific customer, preventing 
 | 10   | Verify response code                | 403 Forbidden returned    |
 | 11   | Verify error message                | "Not authorized for this customer" |
 
-## Expected Outcome
-
-* Tokens contain customer_id claim
-* Token scope tied to specific customer
-* Cross-customer requests rejected (403)
-* Token cannot be reused for other customers
-* Header manipulation detected
-* Audit log records scope violation attempt
 
 ## Reviewer Comments
 
@@ -2000,14 +1716,13 @@ Verify that authentication tokens are scoped to a specific customer, preventing 
 
 ---
 
-# TC-AB735316-032
+# TC-FE735316-032
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-032                |
-| Title         | Expired credentials are rejected |
+| Test Case ID  | TC-FE735316-032                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2015,9 +1730,9 @@ Verify that authentication tokens are scoped to a specific customer, preventing 
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that API keys with expired credentials cannot be used to make requests and are properly rejected.
+System API Manager can reject API requests with expired credentials.
 
 ## Preconditions
 
@@ -2049,14 +1764,6 @@ Verify that API keys with expired credentials cannot be used to make requests an
 | 9    | Verify error message                | "API key expired. Please rotate credentials" |
 | 10   | Verify request not forwarded        | Backend not contacted     |
 
-## Expected Outcome
-
-* Expired API keys are rejected (401)
-* Error message indicates expiration
-* Message suggests credential rotation
-* Backend service not contacted for expired keys
-* Audit log records expired key usage attempt
-* Customer prompted to rotate credentials
 
 ## Reviewer Comments
 
@@ -2064,14 +1771,13 @@ Verify that API keys with expired credentials cannot be used to make requests an
 
 ---
 
-# TC-AB735316-033
+# TC-FE735316-033
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-033                |
-| Title         | Suspended clients cannot make API calls |
+| Test Case ID  | TC-FE735316-033                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2079,9 +1785,9 @@ Verify that API keys with expired credentials cannot be used to make requests an
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that suspended integration clients are locked out and cannot make API requests.
+System API Manager can reject requests from suspended integration clients.
 
 ## Preconditions
 
@@ -2112,14 +1818,6 @@ Verify that suspended integration clients are locked out and cannot make API req
 | 9    | Verify error message                | "Client is suspended. Contact support" |
 | 10   | Verify backend not contacted        | Request not forwarded     |
 
-## Expected Outcome
-
-* Suspended clients cannot make API requests
-* Requests return 403 Forbidden
-* Error message indicates suspension
-* Message directs customer to contact support
-* Backend not contacted for suspended clients
-* Audit log records suspension and rejection
 
 ## Reviewer Comments
 
@@ -2127,14 +1825,13 @@ Verify that suspended integration clients are locked out and cannot make API req
 
 ---
 
-# TC-AB735316-034
+# TC-FE735316-034
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-034                |
-| Title         | Retired clients cannot be reactivated |
+| Test Case ID  | TC-FE735316-034                |
 | Priority      | Low                            |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2142,9 +1839,9 @@ Verify that suspended integration clients are locked out and cannot make API req
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that once an integration client is retired/deleted, it cannot be reactivated and must be recreated if needed.
+Customer Integration Manager cannot reactivate retired integration clients.
 
 ## Preconditions
 
@@ -2177,14 +1874,6 @@ Verify that once an integration client is retired/deleted, it cannot be reactiva
 | 11   | Verify error message                | "Cannot reactivate retired client" |
 | 12   | Verify customer can create new client | New client creation allowed |
 
-## Expected Outcome
-
-* Retired clients cannot be reactivated
-* No UI option exists for reactivation
-* API calls to reactivate are rejected
-* Retired clients removed from active lists
-* Customer must create new client if needed
-* Retirement is permanent (design choice documented)
 
 ## Reviewer Comments
 
@@ -2196,14 +1885,13 @@ Verify that once an integration client is retired/deleted, it cannot be reactiva
 
 ---
 
-# TC-AB735316-035
+# TC-FE735316-035
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-035                |
-| Title         | Empty API key in request |
+| Test Case ID  | TC-FE735316-035                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2211,9 +1899,9 @@ Verify that once an integration client is retired/deleted, it cannot be reactiva
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that requests with empty or missing API key are properly rejected with appropriate error message.
+System API Manager can reject requests with missing API key.
 
 ## Preconditions
 
@@ -2243,13 +1931,6 @@ Verify that requests with empty or missing API key are properly rejected with ap
 | 10   | Send request                       | Request submitted         |
 | 11   | Verify response code                | 400 Bad Request returned  |
 
-## Expected Outcome
-
-* Empty API keys rejected (400)
-* Missing API key header rejected (400)
-* Clear error message guides client
-* Validation occurs early in request processing
-* Backend not contacted for missing keys
 
 ## Reviewer Comments
 
@@ -2257,14 +1938,13 @@ Verify that requests with empty or missing API key are properly rejected with ap
 
 ---
 
-# TC-AB735316-036
+# TC-FE735316-036
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-036                |
-| Title         | API credentials contain only URL-safe characters |
+| Test Case ID  | TC-FE735316-036                |
 | Priority      | Low                            |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2272,9 +1952,9 @@ Verify that requests with empty or missing API key are properly rejected with ap
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that API credentials are generated only with URL-safe characters, without special characters or spaces that could cause encoding issues.
+System API Manager can generate URL-safe API credentials without special characters.
 
 ## Preconditions
 
@@ -2304,14 +1984,6 @@ Verify that API credentials are generated only with URL-safe characters, without
 | 9    | Create multiple clients             | Multiple keys generated   |
 | 10   | Inspect all keys                    | All keys URL-safe         |
 
-## Expected Outcome
-
-* API keys contain only URL-safe characters
-* API secrets contain only URL-safe characters
-* No special characters that require encoding
-* No spaces in credentials
-* Credentials work directly in URLs without encoding
-* Generation enforces safe character set
 
 ## Reviewer Comments
 
@@ -2319,14 +1991,13 @@ Verify that API credentials are generated only with URL-safe characters, without
 
 ---
 
-# TC-AB735316-037
+# TC-FE735316-037
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-037                |
-| Title         | Customer registers 1000+ integration clients |
+| Test Case ID  | TC-FE735316-037                |
 | Priority      | Low                            |
 | Automatable   | No                             |
 | Status        | Draft                          |
@@ -2338,9 +2009,9 @@ Verify that API credentials are generated only with URL-safe characters, without
 
 Requires manual creation of 1000+ clients or bulk data loading with verification. Automated UI testing would be extremely time-consuming. Manual verification of system handling and performance testing via API recommended.
 
-## Description
+## Title
 
-Verify that the system properly handles customers with large numbers of integration clients (1000+), ensuring proper pagination and search performance.
+Customer Integration Manager can manage integration clients with pagination and search performance.
 
 ## Preconditions
 
@@ -2370,14 +2041,6 @@ Verify that the system properly handles customers with large numbers of integrat
 | 8    | Filter by status                    | Filtering works correctly  |
 | 9    | Sort by creation date               | Sorting applies correctly  |
 
-## Expected Outcome
-
-* System handles 1000+ clients without errors
-* Pagination loads pages quickly (<2 seconds per page)
-* Search functionality works efficiently
-* Filtering and sorting work with large datasets
-* Database queries well-optimized with proper indexing
-* UI remains responsive with large client counts
 
 ## Reviewer Comments
 
@@ -2385,14 +2048,13 @@ Verify that the system properly handles customers with large numbers of integrat
 
 ---
 
-# TC-AB735316-038
+# TC-FE735316-038
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-038                |
-| Title         | Client name with 500 character string |
+| Test Case ID  | TC-FE735316-038                |
 | Priority      | Low                            |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2400,9 +2062,9 @@ Verify that the system properly handles customers with large numbers of integrat
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system enforces maximum length constraints on client names, rejecting names that exceed the defined limit.
+System API Manager can enforce maximum length constraints on client names.
 
 ## Preconditions
 
@@ -2431,13 +2093,6 @@ Verify that the system enforces maximum length constraints on client names, reje
 | 9    | Submit form                        | Form submitted            |
 | 10   | Verify client created               | Client created successfully |
 
-## Expected Outcome
-
-* 500-character name rejected (400)
-* Clear error message indicates max length
-* 100-character name accepted
-* Validation enforced on both UI and API
-* Database field size matches validation limit
 
 ## Reviewer Comments
 
@@ -2445,14 +2100,13 @@ Verify that the system enforces maximum length constraints on client names, reje
 
 ---
 
-# TC-AB735316-039
+# TC-FE735316-039
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-039                |
-| Title         | Client name with Unicode characters (emoji, Chinese, Arabic) |
+| Test Case ID  | TC-FE735316-039                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2460,7 +2114,7 @@ Verify that the system enforces maximum length constraints on client names, reje
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that the system properly handles and stores Unicode characters including emoji, Chinese characters, and Arabic script in client names.
 
@@ -2494,14 +2148,6 @@ Verify that the system properly handles and stores Unicode characters including 
 | 10   | Verify second client created        | Second client created     |
 | 11   | Verify name displays correctly      | "中文 クライアント عميل" shown |
 
-## Expected Outcome
-
-* Unicode characters accepted in client names
-* Characters stored correctly in database (UTF-8)
-* Characters displayed correctly in UI
-* No encoding errors or character corruption
-* International names fully supported
-* Search and filtering work with Unicode names
 
 ## Reviewer Comments
 
@@ -2509,14 +2155,13 @@ Verify that the system properly handles and stores Unicode characters including 
 
 ---
 
-# TC-AB735316-040
+# TC-FE735316-040
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-040                |
-| Title         | API product scope with special format (e.g., "api-product.v2-beta") |
+| Test Case ID  | TC-FE735316-040                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2524,7 +2169,7 @@ Verify that the system properly handles and stores Unicode characters including 
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that the system correctly parses and validates scopes with special formatting including version numbers and pre-release indicators.
 
@@ -2556,14 +2201,6 @@ Verify that the system correctly parses and validates scopes with special format
 | 9    | Verify request routed correctly     | Backend receives request  |
 | 10   | Verify scope validation passes      | Scope match succeeds      |
 
-## Expected Outcome
-
-* Scopes with dots and hyphens parsed correctly
-* Version numbers handled properly
-* Pre-release indicators recognized
-* Scope matching works with complex names
-* Request routed to correct backend
-* Scope validation succeeds with versioned scopes
 
 ## Reviewer Comments
 
@@ -2571,14 +2208,13 @@ Verify that the system correctly parses and validates scopes with special format
 
 ---
 
-# TC-AB735316-041
+# TC-FE735316-041
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-041                |
-| Title         | Concurrent scope modifications on same client |
+| Test Case ID  | TC-FE735316-041                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2586,9 +2222,9 @@ Verify that the system correctly parses and validates scopes with special format
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system handles concurrent modifications to a client's scopes correctly without conflicts or data loss.
+System API Manager can handle concurrent scope modifications without conflicts.
 
 ## Preconditions
 
@@ -2621,14 +2257,6 @@ Verify that the system handles concurrent modifications to a client's scopes cor
 | 10   | Check audit log for events          | Both events recorded      |
 | 11   | Verify event order                  | Events show correct sequence |
 
-## Expected Outcome
-
-* Concurrent modifications handled correctly
-* No data corruption or lost updates
-* Final scope state includes both changes
-* Audit log shows both events
-* Database transactions prevent conflicts
-* Race conditions do not cause inconsistencies
 
 ## Reviewer Comments
 
@@ -2636,14 +2264,13 @@ Verify that the system handles concurrent modifications to a client's scopes cor
 
 ---
 
-# TC-AB735316-042
+# TC-FE735316-042
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-042                |
-| Title         | Backend service unavailable during request |
+| Test Case ID  | TC-FE735316-042                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2651,9 +2278,9 @@ Verify that the system handles concurrent modifications to a client's scopes cor
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system handles backend service unavailability gracefully, returning appropriate error to client without exposing internal issues.
+System API Manager can gracefully handle backend service unavailability.
 
 ## Preconditions
 
@@ -2686,14 +2313,6 @@ Verify that the system handles backend service unavailability gracefully, return
 | 12   | Retry same request                  | Request resubmitted       |
 | 13   | Verify request now succeeds         | 200 OK returned           |
 
-## Expected Outcome
-
-* Unavailable backend returns 503 gracefully
-* Client receives friendly error message
-* No internal error details exposed
-* Suggestion to retry included in message
-* Service recovery transparent to client
-* Audit log records backend unavailability
 
 ## Reviewer Comments
 
@@ -2701,14 +2320,13 @@ Verify that the system handles backend service unavailability gracefully, return
 
 ---
 
-# TC-AB735316-043
+# TC-FE735316-043
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-043                |
-| Title         | Rate limit quota reset at day boundary (UTC) |
+| Test Case ID  | TC-FE735316-043                |
 | Priority      | Low                            |
 | Automatable   | No                             |
 | Status        | Draft                          |
@@ -2720,9 +2338,9 @@ Verify that the system handles backend service unavailability gracefully, return
 
 Requires precise timing at UTC midnight or manual advancement of system clock. Difficult to automate in standard CI/CD pipeline. Manual testing or environment-specific job scheduling test recommended.
 
-## Description
+## Title
 
-Verify that API quota resets occur at UTC midnight (not local timezone) and that customers regain quota after reset.
+System API Manager can reset API quota at UTC midnight.
 
 ## Preconditions
 
@@ -2751,13 +2369,6 @@ Verify that API quota resets occur at UTC midnight (not local timezone) and that
 | 7    | Attempt request at 00:01 UTC        | Request accepted (200 OK) |
 | 8    | Verify quota decreased              | Remaining = 999           |
 
-## Expected Outcome
-
-* Quota fully consumed (1000 requests)
-* Requests rejected at quota limit (429)
-* Quota resets at UTC midnight (not local time)
-* New requests accepted after reset
-* Quota counter reset to 1000
 
 ## Reviewer Comments
 
@@ -2765,14 +2376,13 @@ Verify that API quota resets occur at UTC midnight (not local timezone) and that
 
 ---
 
-# TC-AB735316-044
+# TC-FE735316-044
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-044                |
-| Title         | Client attempts JWT claim injection to escalate scope |
+| Test Case ID  | TC-FE735316-044                |
 | Priority      | Critical                      |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2780,9 +2390,9 @@ Verify that API quota resets occur at UTC midnight (not local timezone) and that
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that JWT token tampering is detected and prevented, specifically when attackers attempt to escalate their scope claims to access unauthorized API products.
+System Security Manager can detect and reject JWT token tampering.
 
 ## Preconditions
 
@@ -2815,14 +2425,6 @@ Verify that JWT token tampering is detected and prevented, specifically when att
 | 9    | Verify no scope escalation          | Escalation attempt blocked |
 | 10   | Verify audit log                    | Tampering attempt logged |
 
-## Expected Outcome
-
-* Token modification detected via signature verification
-* Tampered tokens rejected (401)
-* Signature verification uses constant-time comparison
-* No scope escalation possible
-* Audit log records tampering attempt
-* Client cannot access unauthorized scopes
 
 ## Reviewer Comments
 
@@ -2830,14 +2432,13 @@ Verify that JWT token tampering is detected and prevented, specifically when att
 
 ---
 
-# TC-AB735316-045
+# TC-FE735316-045
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-045                |
-| Title         | Request with future timestamp (clock skew) |
+| Test Case ID  | TC-FE735316-045                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2845,9 +2446,9 @@ Verify that JWT token tampering is detected and prevented, specifically when att
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that the system detects and rejects requests with timestamps that are significantly in the future, preventing replay attacks from devices with incorrect clocks.
+System Security Manager can reject requests with timestamps far in the future.
 
 ## Preconditions
 
@@ -2880,13 +2481,6 @@ Verify that the system detects and rejects requests with timestamps that are sig
 | 11   | Send request with current timestamp | Request with valid time   |
 | 12   | Verify request accepted             | 200 OK returned           |
 
-## Expected Outcome
-
-* Future timestamps outside tolerance rejected (400)
-* Clear error message about timestamp issue
-* Tolerance allows minor clock skew (1-2 minutes)
-* Prevents replay attacks from misaligned clocks
-* Audit log records timestamp violations
 
 ## Reviewer Comments
 
@@ -2894,14 +2488,13 @@ Verify that the system detects and rejects requests with timestamps that are sig
 
 ---
 
-# TC-AB735316-046
+# TC-FE735316-046
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-046                |
-| Title         | Request with very old timestamp (replay attack prevention) |
+| Test Case ID  | TC-FE735316-046                |
 | Priority      | Critical                      |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2909,9 +2502,9 @@ Verify that the system detects and rejects requests with timestamps that are sig
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that old/expired timestamps are rejected, preventing replay attacks where old requests are resent.
+System Security Manager can reject old timestamps to prevent replay attacks.
 
 ## Preconditions
 
@@ -2944,14 +2537,6 @@ Verify that old/expired timestamps are rejected, preventing replay attacks where
 | 10   | Verify error message                | "Request timestamp expired" |
 | 11   | Verify request not processed        | Backend not contacted     |
 
-## Expected Outcome
-
-* Replay attacks prevented via timestamp validation
-* Old requests rejected (401)
-* Clear error message about expiration
-* Even with valid signature, old timestamps rejected
-* Timestamp window enforced (5+ minutes)
-* Audit log records replay attempt
 
 ## Reviewer Comments
 
@@ -2959,14 +2544,13 @@ Verify that old/expired timestamps are rejected, preventing replay attacks where
 
 ---
 
-# TC-AB735316-047
+# TC-FE735316-047
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-047                |
-| Title         | Simultaneous credential rotation and API calls |
+| Test Case ID  | TC-FE735316-047                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -2974,9 +2558,9 @@ Verify that old/expired timestamps are rejected, preventing replay attacks where
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that system state remains consistent when credential rotation occurs while API requests are in flight.
+System API Manager can maintain consistency during credential rotation with in-flight requests.
 
 ## Preconditions
 
@@ -3007,14 +2591,6 @@ Verify that system state remains consistent when credential rotation occurs whil
 | 9    | Attempt new requests with old key   | Rejected (401)            |
 | 10   | Attempt new requests with new key   | Accepted (200 OK)         |
 
-## Expected Outcome
-
-* In-flight requests with old key complete successfully
-* No requests fail due to rotation
-* No data loss during credential transition
-* New requests immediately use new key
-* Old key rejected for new requests
-* Grace period allows in-flight requests to complete
 
 ## Reviewer Comments
 
@@ -3022,14 +2598,13 @@ Verify that system state remains consistent when credential rotation occurs whil
 
 ---
 
-# TC-AB735316-048
+# TC-FE735316-048
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-048                |
-| Title         | API response with very large payload (10MB) |
+| Test Case ID  | TC-FE735316-048                |
 | Priority      | Low                            |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3037,7 +2612,7 @@ Verify that system state remains consistent when credential rotation occurs whil
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that the system can handle and stream large API responses without timeout, truncation, or corruption.
 
@@ -3070,15 +2645,6 @@ Verify that the system can handle and stream large API responses without timeout
 | 9    | Verify JSON parsing succeeds        | Valid JSON structure      |
 | 10   | Calculate checksum                  | Integrity verified        |
 
-## Expected Outcome
-
-* Large responses (10MB) transmitted successfully
-* No timeout during transmission
-* Response streamed efficiently
-* No data truncation
-* Complete response received
-* Content integrity maintained
-* JSON structure valid throughout
 
 ## Reviewer Comments
 
@@ -3086,14 +2652,13 @@ Verify that the system can handle and stream large API responses without timeout
 
 ---
 
-# TC-AB735316-049
+# TC-FE735316-049
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-049                |
-| Title         | Customer account suspended mid-request |
+| Test Case ID  | TC-FE735316-049                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3101,7 +2666,7 @@ Verify that the system can handle and stream large API responses without timeout
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that in-flight API requests complete successfully even if customer account is suspended during processing, but new requests are blocked.
 
@@ -3133,14 +2698,6 @@ Verify that in-flight API requests complete successfully even if customer accoun
 | 9    | Verify new request rejected         | 403 Forbidden returned    |
 | 10   | Verify error message                | "Account is suspended"    |
 
-## Expected Outcome
-
-* In-flight requests complete successfully before suspension takes effect
-* New requests blocked after suspension
-* Grace period allows current requests to finish
-* No abrupt request termination
-* Data integrity maintained
-* Audit log records suspension and request outcomes
 
 ## Reviewer Comments
 
@@ -3148,14 +2705,13 @@ Verify that in-flight API requests complete successfully even if customer accoun
 
 ---
 
-# TC-AB735316-050
+# TC-FE735316-050
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-050                |
-| Title         | Credentials avoid problematic Unicode whitespace |
+| Test Case ID  | TC-FE735316-050                |
 | Priority      | Low                            |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3163,7 +2719,7 @@ Verify that in-flight API requests complete successfully even if customer accoun
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that credentials are generated without problematic Unicode whitespace types (tabs, non-breaking spaces, zero-width spaces) that could cause hidden issues.
 
@@ -3195,14 +2751,6 @@ Verify that credentials are generated without problematic Unicode whitespace typ
 | 9    | Create 10 more clients              | Multiple credentials tested |
 | 10   | Scan all 10 credentials             | All pass whitespace check |
 
-## Expected Outcome
-
-* No tab characters in credentials
-* No non-breaking spaces
-* No zero-width spaces or other hidden characters
-* Only ASCII alphanumeric and safe symbols (dash, underscore)
-* Consistent format across all generated credentials
-* No hidden character issues
 
 ## Reviewer Comments
 
@@ -3214,14 +2762,13 @@ Verify that credentials are generated without problematic Unicode whitespace typ
 
 ---
 
-# TC-AB735316-051
+# TC-FE735316-051
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-051                |
-| Title         | Workday middleware onboarding complete workflow |
+| Test Case ID  | TC-FE735316-051                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3229,7 +2776,7 @@ Verify that credentials are generated without problematic Unicode whitespace typ
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that a customer can complete the full Workday middleware onboarding workflow, including customer account setup, integration client creation, scope assignment, and middleware configuration.
 
@@ -3268,15 +2815,6 @@ Verify that a customer can complete the full Workday middleware onboarding workf
 | 13   | Customer completes onboarding       | Onboarding flow finishes |
 | 14   | Integration shows as active         | Status shows "Active"    |
 
-## Expected Outcome
-
-* Customer successfully onboards Workday integration
-* Integration client created with correct scopes
-* Credentials properly configured in Workday
-* Connection test succeeds
-* Middleware receives correct credentials
-* Audit log records all onboarding steps
-* Customer receives completion confirmation email
 
 ## Reviewer Comments
 
@@ -3284,14 +2822,13 @@ Verify that a customer can complete the full Workday middleware onboarding workf
 
 ---
 
-# TC-AB735316-052
+# TC-FE735316-052
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-052                |
-| Title         | Multiple backends receive correct product routing headers |
+| Test Case ID  | TC-FE735316-052                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3299,7 +2836,7 @@ Verify that a customer can complete the full Workday middleware onboarding workf
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that requests are correctly routed to multiple backend services with proper product metadata headers.
 
@@ -3334,13 +2871,6 @@ Verify that requests are correctly routed to multiple backend services with prop
 | 8    | Verify X-API-Product header         | Header = "Analytics APIs" |
 | 9    | Verify request received             | Analytics Backend logs request |
 
-## Expected Outcome
-
-* All three backends receive correctly routed requests
-* Product headers correctly identify each API
-* Each backend receives appropriate X-API-Product value
-* Audit log shows correct routing for all products
-* No cross-product routing errors
 
 ## Reviewer Comments
 
@@ -3348,14 +2878,13 @@ Verify that requests are correctly routed to multiple backend services with prop
 
 ---
 
-# TC-AB735316-053
+# TC-FE735316-053
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-053                |
-| Title         | Auth Service provides scope list and supports updates |
+| Test Case ID  | TC-FE735316-053                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3363,7 +2892,7 @@ Verify that requests are correctly routed to multiple backend services with prop
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that the system fetches and caches scope lists from Auth Service with TTL, and updates cache when new scopes are published.
 
@@ -3397,14 +2926,6 @@ Verify that the system fetches and caches scope lists from Auth Service with TTL
 | 9    | Call /scopes after TTL              | Fresh list fetched        |
 | 10   | Verify updated list                 | New scope now included    |
 
-## Expected Outcome
-
-* Scope list successfully fetched from Auth Service
-* TTL properly implemented and honored
-* Cache populates with correct scopes
-* Cache refreshes after TTL expiration
-* New scopes appear after refresh
-* Integration with Auth Service working correctly
 
 ## Reviewer Comments
 
@@ -3412,14 +2933,13 @@ Verify that the system fetches and caches scope lists from Auth Service with TTL
 
 ---
 
-# TC-AB735316-054
+# TC-FE735316-054
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-054                |
-| Title         | New API product publication updates client scopes |
+| Test Case ID  | TC-FE735316-054                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3427,7 +2947,7 @@ Verify that the system fetches and caches scope lists from Auth Service with TTL
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that when a new API product is published, it becomes available for assignment to integration clients.
 
@@ -3459,13 +2979,6 @@ Verify that when a new API product is published, it becomes available for assign
 | 9    | Make API call to api-reporting      | Request processed         |
 | 10   | Verify request succeeds             | 200 OK returned           |
 
-## Expected Outcome
-
-* New product becomes available after publication
-* Scope cache updates to include new product
-* Clients can be assigned new scopes
-* API calls to new product endpoints work correctly
-* Integration timeline: product published → cache updated → scopes available
 
 ## Reviewer Comments
 
@@ -3473,14 +2986,13 @@ Verify that when a new API product is published, it becomes available for assign
 
 ---
 
-# TC-AB735316-055
+# TC-FE735316-055
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-055                |
-| Title         | Subscription tier change updates backend routing |
+| Test Case ID  | TC-FE735316-055                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3488,7 +3000,7 @@ Verify that when a new API product is published, it becomes available for assign
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that when a customer upgrades subscription tier, subsequent API requests are routed to the new tier's backend URL.
 
@@ -3522,14 +3034,6 @@ Verify that when a customer upgrades subscription tier, subsequent API requests 
 | 8    | Verify different backend used       | URL changed from Free to Premium |
 | 9    | Verify no service interruption      | All requests succeed      |
 
-## Expected Outcome
-
-* Tier change immediately affects backend routing
-* Requests routed to correct backend after upgrade
-* Premium tier features available after change
-* No data loss during tier transition
-* Rate limits per new tier enforced
-* Audit log records tier change and routing update
 
 ## Reviewer Comments
 
@@ -3537,14 +3041,13 @@ Verify that when a customer upgrades subscription tier, subsequent API requests 
 
 ---
 
-# TC-AB735316-056
+# TC-FE735316-056
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-056                |
-| Title         | Rate limit enforcement per subscription tier |
+| Test Case ID  | TC-FE735316-056                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3552,7 +3055,7 @@ Verify that when a customer upgrades subscription tier, subsequent API requests 
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that rate limits are correctly enforced per subscription tier, with Free tier at 100 req/sec and Premium at 1000 req/sec.
 
@@ -3583,14 +3086,6 @@ Verify that rate limits are correctly enforced per subscription tier, with Free 
 | 7    | Generate 1001 requests/sec as Premium | Premium overload sent    |
 | 8    | Monitor response codes              | 429 Too Many Requests    |
 
-## Expected Outcome
-
-* Free tier rate limit enforced at 100 req/sec
-* Requests above limit rejected (429)
-* Premium tier rate limit enforced at 1000 req/sec
-* Premium tier can handle higher load
-* Rate limit headers present in responses
-* Audit log records rate limit violations
 
 ## Reviewer Comments
 
@@ -3598,14 +3093,13 @@ Verify that rate limits are correctly enforced per subscription tier, with Free 
 
 ---
 
-# TC-AB735316-057
+# TC-FE735316-057
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-057                |
-| Title         | Backend receives complete customer context |
+| Test Case ID  | TC-FE735316-057                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3613,7 +3107,7 @@ Verify that rate limits are correctly enforced per subscription tier, with Free 
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that backend services receive complete customer context including customer ID, subscription tier, and scopes in forwarded requests.
 
@@ -3646,13 +3140,6 @@ Verify that backend services receive complete customer context including custome
 | 9    | Verify backend processes context    | Backend uses context      |
 | 10   | Backend returns data for tier       | Premium data returned     |
 
-## Expected Outcome
-
-* Customer context headers included in forwarded requests
-* Backend receives customer ID, tier, and scopes
-* Backend can apply tier-specific logic
-* Backend delivers tier-appropriate responses
-* Context available for backend logging and analytics
 
 ## Reviewer Comments
 
@@ -3660,14 +3147,13 @@ Verify that backend services receive complete customer context including custome
 
 ---
 
-# TC-AB735316-058
+# TC-FE735316-058
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-058                |
-| Title         | Audit events logged in central system |
+| Test Case ID  | TC-FE735316-058                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3675,7 +3161,7 @@ Verify that backend services receive complete customer context including custome
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that all integration client events are logged to central audit system with complete event details.
 
@@ -3708,14 +3194,6 @@ Verify that all integration client events are logged to central audit system wit
 | 10   | Verify all events have timestamps   | Timestamps present        |
 | 11   | Verify actor/user identified        | User/admin ID logged      |
 
-## Expected Outcome
-
-* All client events logged to central system
-* Events include timestamps and actor information
-* Event details logged (before/after values)
-* Events accessible for compliance and monitoring
-* Audit trail immutable and tamper-evident
-* Logging adds minimal latency to operations
 
 ## Reviewer Comments
 
@@ -3723,14 +3201,13 @@ Verify that all integration client events are logged to central audit system wit
 
 ---
 
-# TC-AB735316-059
+# TC-FE735316-059
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-059                |
-| Title         | Email notification sent on credential rotation |
+| Test Case ID  | TC-FE735316-059                |
 | Priority      | Medium                         |
 | Automatable   | No                             |
 | Status        | Draft                          |
@@ -3742,7 +3219,7 @@ Verify that all integration client events are logged to central audit system wit
 
 Email delivery verification requires access to email system or mailbox. Manual verification recommended by checking customer email or email service logs.
 
-## Description
+## Title
 
 Verify that customer receives email notification when integration client credentials are rotated.
 
@@ -3774,14 +3251,6 @@ Verify that customer receives email notification when integration client credent
 | 8    | Verify no secrets in email          | API secret not included in email |
 | 9    | Verify action items                 | Email includes next steps |
 
-## Expected Outcome
-
-* Customer receives rotation notification email
-* Email sent within 1 minute of rotation
-* Email includes event details but not secrets
-* Email provides next steps for updating client
-* Email sourced from trusted system address
-* Notification aids customer awareness of changes
 
 ## Reviewer Comments
 
@@ -3789,14 +3258,13 @@ Verify that customer receives email notification when integration client credent
 
 ---
 
-# TC-AB735316-060
+# TC-FE735316-060
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-060                |
-| Title         | Onboarding email sent with setup instructions |
+| Test Case ID  | TC-FE735316-060                |
 | Priority      | Medium                         |
 | Automatable   | No                             |
 | Status        | Draft                          |
@@ -3808,7 +3276,7 @@ Verify that customer receives email notification when integration client credent
 
 Email delivery and content verification requires email system access. Manual verification of email content and delivery recommended.
 
-## Description
+## Title
 
 Verify that new customers receive onboarding email with setup instructions when integration client is created.
 
@@ -3840,14 +3308,6 @@ Verify that new customers receive onboarding email with setup instructions when 
 | 9    | Verify no secrets exposed           | Credentials not in email  |
 | 10   | Verify clear call-to-action         | Next steps clearly outlined |
 
-## Expected Outcome
-
-* Onboarding email sent to new customers
-* Email includes setup instructions
-* Email includes required information and links
-* No sensitive credentials in email body
-* Customer receives guidance on next steps
-* Support contact information provided
 
 ## Reviewer Comments
 
@@ -3855,14 +3315,13 @@ Verify that new customers receive onboarding email with setup instructions when 
 
 ---
 
-# TC-AB735316-061
+# TC-FE735316-061
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-061                |
-| Title         | Admin dashboard shows client metrics |
+| Test Case ID  | TC-FE735316-061                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3870,7 +3329,7 @@ Verify that new customers receive onboarding email with setup instructions when 
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that admin dashboard displays metrics about integration clients and their usage.
 
@@ -3902,13 +3361,6 @@ Verify that admin dashboard displays metrics about integration clients and their
 | 8    | Verify no sensitive data exposed    | Only aggregated metrics   |
 | 9    | Click on metrics for detail         | Drill-down works          |
 
-## Expected Outcome
-
-* Admin dashboard displays client metrics
-* Key metrics visible: total, active, requests
-* Metrics updated regularly
-* Sensitive data not exposed in dashboard
-* Admin can monitor system health via metrics
 
 ## Reviewer Comments
 
@@ -3916,14 +3368,13 @@ Verify that admin dashboard displays metrics about integration clients and their
 
 ---
 
-# TC-AB735316-062
+# TC-FE735316-062
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-062                |
-| Title         | Billing system receives and records tier metrics |
+| Test Case ID  | TC-FE735316-062                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3931,7 +3382,7 @@ Verify that admin dashboard displays metrics about integration clients and their
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that billing system receives accurate metrics about customer tier usage for billing purposes.
 
@@ -3963,13 +3414,6 @@ Verify that billing system receives accurate metrics about customer tier usage f
 | 8    | Generate billing report             | Report generated         |
 | 9    | Verify usage accuracy in report     | Metrics match actual usage |
 
-## Expected Outcome
-
-* Billing system receives accurate usage metrics
-* Tier information correctly recorded
-* Request counts accurate per tier
-* Billing data available for invoice generation
-* Usage data supports tier upgrade/downgrade
 
 ## Reviewer Comments
 
@@ -3977,14 +3421,13 @@ Verify that billing system receives accurate metrics about customer tier usage f
 
 ---
 
-# TC-AB735316-063
+# TC-FE735316-063
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-063                |
-| Title         | Support team can reset customer credentials |
+| Test Case ID  | TC-FE735316-063                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -3992,7 +3435,7 @@ Verify that billing system receives accurate metrics about customer tier usage f
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that support team can rotate (reset) credentials for customer's integration client upon customer request.
 
@@ -4025,14 +3468,6 @@ Verify that support team can rotate (reset) credentials for customer's integrati
 | 9    | Verify old credentials revoked      | Old credentials no longer work |
 | 10   | Verify audit log entry              | Reset logged by support user |
 
-## Expected Outcome
-
-* Support can reset customer credentials
-* New credentials generated successfully
-* Old credentials immediately revoked
-* Reason for reset recorded in audit log
-* Support action audited and tracked
-* Customer can retrieve new credentials
 
 ## Reviewer Comments
 
@@ -4040,14 +3475,13 @@ Verify that support team can rotate (reset) credentials for customer's integrati
 
 ---
 
-# TC-AB735316-064
+# TC-FE735316-064
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-064                |
-| Title         | Third-party monitoring collects health metrics |
+| Test Case ID  | TC-FE735316-064                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4055,7 +3489,7 @@ Verify that support team can rotate (reset) credentials for customer's integrati
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that third-party monitoring systems can collect health and performance metrics from the integration system.
 
@@ -4086,13 +3520,6 @@ Verify that third-party monitoring systems can collect health and performance me
 | 8    | Metrics stored in monitoring system | Data persisted            |
 | 9    | Historical trends available         | Time-series data available |
 
-## Expected Outcome
-
-* Metrics endpoint operational
-* Health metrics available for collection
-* Monitoring system can scrape metrics successfully
-* Historical metrics retained for trend analysis
-* Alerts can be configured based on metrics
 
 ## Reviewer Comments
 
@@ -4104,14 +3531,13 @@ Verify that third-party monitoring systems can collect health and performance me
 
 ---
 
-# TC-AB735316-065
+# TC-FE735316-065
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-065                |
-| Title         | API request latency meets SLA (p99 < 200ms) |
+| Test Case ID  | TC-FE735316-065                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4119,7 +3545,7 @@ Verify that third-party monitoring systems can collect health and performance me
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that API request latency meets the SLA requirement with 99th percentile latency under 200ms.
 
@@ -4151,14 +3577,6 @@ Verify that API request latency meets the SLA requirement with 99th percentile l
 | 8    | Verify p99 < 200ms                  | SLA met                   |
 | 9    | Review error rate                   | Error rate < 1%           |
 
-## Expected Outcome
-
-* 99th percentile latency under 200ms
-* Median latency under 100ms
-* Error rate below 1%
-* SLA consistently met throughout test
-* Performance sustainable under load
-* No degradation over time
 
 ## Reviewer Comments
 
@@ -4166,14 +3584,13 @@ Verify that API request latency meets the SLA requirement with 99th percentile l
 
 ---
 
-# TC-AB735316-066
+# TC-FE735316-066
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-066                |
-| Title         | Scope validation overhead < 5ms |
+| Test Case ID  | TC-FE735316-066                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4181,7 +3598,7 @@ Verify that API request latency meets the SLA requirement with 99th percentile l
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that scope validation adds minimal overhead, with validation latency under 5ms.
 
@@ -4212,13 +3629,6 @@ Verify that scope validation adds minimal overhead, with validation latency unde
 | 7    | Verify consistent performance      | No degradation             |
 | 8    | Verify cache helps performance     | Cached lookups fast       |
 
-## Expected Outcome
-
-* Scope validation latency < 5ms average
-* 99th percentile < 5ms
-* Performance consistent across request types
-* Caching effective for scope lookups
-* Minimal impact on overall latency
 
 ## Reviewer Comments
 
@@ -4226,14 +3636,13 @@ Verify that scope validation adds minimal overhead, with validation latency unde
 
 ---
 
-# TC-AB735316-067
+# TC-FE735316-067
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-067                |
-| Title         | Credential validation performance < 10ms |
+| Test Case ID  | TC-FE735316-067                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4241,7 +3650,7 @@ Verify that scope validation adds minimal overhead, with validation latency unde
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that credential validation (key lookup, signature verification) adds minimal overhead under 10ms.
 
@@ -4272,13 +3681,6 @@ Verify that credential validation (key lookup, signature verification) adds mini
 | 7    | Verify caching effective            | Frequently used creds cached |
 | 8    | Verify signature verification fast  | HMAC calculation fast     |
 
-## Expected Outcome
-
-* Credential validation latency < 10ms average
-* 99th percentile < 10ms
-* Database queries efficient
-* Caching effective for popular credentials
-* Signature verification fast
 
 ## Reviewer Comments
 
@@ -4286,14 +3688,13 @@ Verify that credential validation (key lookup, signature verification) adds mini
 
 ---
 
-# TC-AB735316-068
+# TC-FE735316-068
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-068                |
-| Title         | 100 concurrent clients load test |
+| Test Case ID  | TC-FE735316-068                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4301,7 +3702,7 @@ Verify that credential validation (key lookup, signature verification) adds mini
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that the system can handle 100 concurrent clients making simultaneous requests without errors or performance degradation.
 
@@ -4333,14 +3734,6 @@ Verify that the system can handle 100 concurrent clients making simultaneous req
 | 8    | Verify response times acceptable    | Latencies within SLA      |
 | 9    | Verify system resources stable      | No resource exhaustion    |
 
-## Expected Outcome
-
-* All 100 concurrent clients connect successfully
-* All 5000 requests processed
-* Error rate 0%
-* Response times within SLA
-* No resource exhaustion
-* System stable under load
 
 ## Reviewer Comments
 
@@ -4348,14 +3741,13 @@ Verify that the system can handle 100 concurrent clients making simultaneous req
 
 ---
 
-# TC-AB735316-069
+# TC-FE735316-069
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-069                |
-| Title         | Database query performance at scale |
+| Test Case ID  | TC-FE735316-069                |
 | Priority      | High                           |
 | Automatable   | No                             |
 | Status        | Draft                          |
@@ -4367,7 +3759,7 @@ Verify that the system can handle 100 concurrent clients making simultaneous req
 
 Requires database setup with scaled test data (100k customers, 1M clients, 5M credentials) and direct database access for performance testing. Typically performed in staging environment, not production-like environment accessible via API.
 
-## Description
+## Title
 
 Verify that database query performance remains acceptable with large datasets: 100,000 customers, 1,000,000 clients, 5,000,000 credentials.
 
@@ -4398,13 +3790,6 @@ Verify that database query performance remains acceptable with large datasets: 1
 | 7    | Verify index effectiveness          | Indexes used by queries   |
 | 8    | Analyze query execution plans       | Plans efficient           |
 
-## Expected Outcome
-
-* All queries perform efficiently with scale data
-* Index strategy effective
-* No N+1 query problems
-* Query plans optimized
-* Performance acceptable at 100k, 1M, 5M scale
 
 ## Reviewer Comments
 
@@ -4412,14 +3797,13 @@ Verify that database query performance remains acceptable with large datasets: 1
 
 ---
 
-# TC-AB735316-070
+# TC-FE735316-070
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-070                |
-| Title         | Memory usage under sustained 1000 req/sec load |
+| Test Case ID  | TC-FE735316-070                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4427,7 +3811,7 @@ Verify that database query performance remains acceptable with large datasets: 1
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that memory usage remains stable under sustained load of 1000 requests/second for 1 hour, without memory leaks.
 
@@ -4459,13 +3843,6 @@ Verify that memory usage remains stable under sustained load of 1000 requests/se
 | 8    | Calculate memory growth rate        | Growth < 1% per hour      |
 | 9    | Check for memory leaks              | No leaks detected         |
 
-## Expected Outcome
-
-* Memory usage stable throughout test
-* No significant growth over 60 minutes
-* No memory leaks detected
-* Garbage collection effective
-* System sustainable under sustained load
 
 ## Reviewer Comments
 
@@ -4473,14 +3850,13 @@ Verify that memory usage remains stable under sustained load of 1000 requests/se
 
 ---
 
-# TC-AB735316-071
+# TC-FE735316-071
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-071                |
-| Title         | Concurrent credential rotation handling |
+| Test Case ID  | TC-FE735316-071                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4488,7 +3864,7 @@ Verify that memory usage remains stable under sustained load of 1000 requests/se
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that the system handles concurrent credential rotation requests from multiple clients without conflicts or errors.
 
@@ -4518,13 +3894,6 @@ Verify that the system handles concurrent credential rotation requests from mult
 | 7    | Repeat rotation cycle 10 times      | Total 100 rotations       |
 | 8    | Verify no duplicates created        | All credentials unique    |
 
-## Expected Outcome
-
-* Concurrent rotations handled correctly
-* All rotations succeed
-* No race conditions
-* Unique credentials generated consistently
-* System state remains consistent
 
 ## Reviewer Comments
 
@@ -4532,14 +3901,13 @@ Verify that the system handles concurrent credential rotation requests from mult
 
 ---
 
-# TC-AB735316-072
+# TC-FE735316-072
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-072                |
-| Title         | Pagination performance with 10,000 clients |
+| Test Case ID  | TC-FE735316-072                |
 | Priority      | Medium                         |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4547,7 +3915,7 @@ Verify that the system handles concurrent credential rotation requests from mult
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
 Verify that pagination performance remains acceptable when listing 10,000 clients, with each page loading in under 1 second.
 
@@ -4578,13 +3946,6 @@ Verify that pagination performance remains acceptable when listing 10,000 client
 | 7    | Verify accuracy of pagination       | Correct clients on each page |
 | 8    | Verify no missing data              | All 10,000 clients accessible |
 
-## Expected Outcome
-
-* All pages load under 1 second
-* Search and filtering performant
-* Pagination accurate
-* All 10,000 clients accessible
-* Database queries optimized for pagination
 
 ## Reviewer Comments
 
@@ -4596,14 +3957,13 @@ Verify that pagination performance remains acceptable when listing 10,000 client
 
 ---
 
-# TC-AB735316-073
+# TC-FE735316-073
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-073                |
-| Title         | HMAC-SHA256 signature validated with constant-time comparison |
+| Test Case ID  | TC-FE735316-073                |
 | Priority      | Critical                      |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4611,9 +3971,9 @@ Verify that pagination performance remains acceptable when listing 10,000 client
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that HMAC-SHA256 signatures are validated using constant-time comparison to prevent timing attacks.
+System API Manager can validate HMAC-SHA256 signatures using constant-time comparison.
 
 ## Preconditions
 
@@ -4643,13 +4003,6 @@ Verify that HMAC-SHA256 signatures are validated using constant-time comparison 
 | 8    | Verify constant-time comparison     | No timing difference    |
 | 9    | Test with multiple 1-bit variations | All timing equal        |
 
-## Expected Outcome
-
-* Signature validation uses constant-time comparison
-* Timing independent of signature validity
-* Timing attacks prevented
-* Valid signatures accepted consistently
-* Invalid signatures rejected consistently
 
 ## Reviewer Comments
 
@@ -4657,14 +4010,13 @@ Verify that HMAC-SHA256 signatures are validated using constant-time comparison 
 
 ---
 
-# TC-AB735316-074
+# TC-FE735316-074
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-074                |
-| Title         | Secrets never logged in plain text |
+| Test Case ID  | TC-FE735316-074                |
 | Priority      | Critical                      |
 | Automatable   | No                             |
 | Status        | Draft                          |
@@ -4676,9 +4028,9 @@ Verify that HMAC-SHA256 signatures are validated using constant-time comparison 
 
 Requires log inspection across multiple systems (application logs, database logs, audit logs). Manual inspection or log analysis tools needed to verify no secrets logged.
 
-## Description
+## Title
 
-Verify that API secrets, authentication tokens, and sensitive credentials are never logged in plain text, only masked versions are logged.
+System Security Manager can prevent logging of API secrets in plain text.
 
 ## Preconditions
 
@@ -4708,13 +4060,6 @@ Verify that API secrets, authentication tokens, and sensitive credentials are ne
 | 9    | Search for API secret value         | Not found in any logs     |
 | 10   | Verify masked format used           | Values like "key_****" or hashed |
 
-## Expected Outcome
-
-* No plain-text secrets in application logs
-* No plain-text secrets in system logs
-* Secrets masked or hashed in audit logs
-* All logging safe for log aggregation
-* Compliance with security standards
 
 ## Reviewer Comments
 
@@ -4722,14 +4067,13 @@ Verify that API secrets, authentication tokens, and sensitive credentials are ne
 
 ---
 
-# TC-AB735316-075
+# TC-FE735316-075
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-075                |
-| Title         | WCAG 2.1 Level AA accessibility compliance |
+| Test Case ID  | TC-FE735316-075                |
 | Priority      | Medium                         |
 | Automatable   | No                            |
 | Status        | Draft                          |
@@ -4741,9 +4085,9 @@ Verify that API secrets, authentication tokens, and sensitive credentials are ne
 
 Accessibility testing requires manual assessment with screen readers and keyboard navigation, plus automated scanning tools. Cannot be fully automated without specialized accessibility testing frameworks.
 
-## Description
+## Title
 
-Verify that the integration client management UI meets WCAG 2.1 Level AA accessibility standards.
+Customer Integration Manager can use accessible integration client management UI.
 
 ## Preconditions
 
@@ -4773,14 +4117,6 @@ Verify that the integration client management UI meets WCAG 2.1 Level AA accessi
 | 8    | Run automated accessibility scan    | No critical issues found |
 | 9    | Test error messages announced       | Errors announced to screen reader |
 
-## Expected Outcome
-
-* Full keyboard navigation supported
-* Screen reader compatibility confirmed
-* Color contrast meets AA standards
-* Zoom up to 200% functional
-* All interactive elements accessible
-* WCAG 2.1 Level AA compliance verified
 
 ## Reviewer Comments
 
@@ -4788,14 +4124,13 @@ Verify that the integration client management UI meets WCAG 2.1 Level AA accessi
 
 ---
 
-# TC-AB735316-076
+# TC-FE735316-076
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-076                |
-| Title         | Internal API protection (customer credentials denied) |
+| Test Case ID  | TC-FE735316-076                |
 | Priority      | Critical                      |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4803,9 +4138,9 @@ Verify that the integration client management UI meets WCAG 2.1 Level AA accessi
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-Verify that customer-provided API credentials cannot be used to access internal APIs, only internal service credentials work.
+System Security Manager can prevent customer credentials from accessing internal APIs.
 
 ## Preconditions
 
@@ -4837,13 +4172,6 @@ Verify that customer-provided API credentials cannot be used to access internal 
 | 10   | Send with internal credential       | Request submitted         |
 | 11   | Verify internal request accepted    | 200 OK returned           |
 
-## Expected Outcome
-
-* Customer credentials cannot access internal APIs
-* Internal APIs require internal credentials
-* Clear separation of customer vs internal access
-* Audit log records unauthorized attempt
-* Internal access audit logged separately
 
 ## Reviewer Comments
 
@@ -4855,14 +4183,13 @@ Verify that customer-provided API credentials cannot be used to access internal 
 
 ---
 
-# TC-AB735316-077
+# TC-FE735316-077
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-077                |
-| Title         | Complete Workday integration workflow |
+| Test Case ID  | TC-FE735316-077                |
 | Priority      | Critical                      |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4870,9 +4197,9 @@ Verify that customer-provided API credentials cannot be used to access internal 
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-End-to-end test of complete Workday integration workflow: customer signup → client creation → scope selection → credential configuration → Workday connection → data sync → dashboard monitoring → 90-day rotation alert → credential rotation → continued sync.
+API Consumer can successfully complete end-to-end Workday integration workflow from signup to credential rotation.
 
 ## Preconditions
 
@@ -4912,15 +4239,6 @@ End-to-end test of complete Workday integration workflow: customer signup → cl
 | 14   | Update Workday with new credentials | New creds configured      |
 | 15   | Verify continued sync               | Sync continues with new creds |
 
-## Expected Outcome
-
-* Complete workflow succeeds end-to-end
-* All steps complete successfully (<5 min)
-* 100% sync success rate
-* No credential-related errors
-* Rotation alert triggers correctly
-* Post-rotation functionality maintained
-* Customer can monitor and manage integration
 
 ## Reviewer Comments
 
@@ -4928,14 +4246,13 @@ End-to-end test of complete Workday integration workflow: customer signup → cl
 
 ---
 
-# TC-AB735316-078
+# TC-FE735316-078
 
 ## Metadata
 
 | Field         | Value                          |
 | ------------- | ------------------------------ |
-| Test Case ID  | TC-AB735316-078                |
-| Title         | Complete subscription upgrade workflow |
+| Test Case ID  | TC-FE735316-078                |
 | Priority      | High                           |
 | Automatable   | Yes                            |
 | Status        | Draft                          |
@@ -4943,9 +4260,9 @@ End-to-end test of complete Workday integration workflow: customer signup → cl
 | Reviewer      |                                |
 | Review Date   |                                |
 
-## Description
+## Title
 
-End-to-end test of subscription upgrade workflow: Free tier customer with limited scopes → upgrade to Premium → receive additional scopes → access new APIs → downgrade back to Free → scopes automatically removed → access denied to former Premium features.
+API Consumer can complete end-to-end subscription upgrade and downgrade workflow with scope changes.
 
 ## Preconditions
 
@@ -4983,17 +4300,6 @@ End-to-end test of subscription upgrade workflow: Free tier customer with limite
 | 13   | Attempt incident API call           | Rejected (403)            |
 | 14   | Verify no data loss                 | Customer data intact      |
 
-## Expected Outcome
-
-* Tier upgrade succeeds
-* New scopes available after upgrade
-* Premium features functional
-* Tier downgrade succeeds
-* Scopes automatically removed after downgrade
-* Access denied to removed scopes
-* All tier transitions succeed
-* Billing reflects correct tier
-* No data loss during transitions
 
 ## Reviewer Comments
 
@@ -5043,3 +4349,8 @@ End-to-end test of subscription upgrade workflow: Free tier customer with limite
 **Format:** Enterprise-Grade Test Case Template  
 **Feature:** AB#735316 - API Consumer and Scope Management  
 **Generated:** 5/29/2026
+
+
+
+
+
