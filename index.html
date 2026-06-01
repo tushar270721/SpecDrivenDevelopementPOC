@@ -520,11 +520,47 @@
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
+            align-items: center;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         .bulk-actions .btn {
             margin: 0;
+        }
+
+        .user-story-input-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .user-story-input-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #757575;
+            white-space: nowrap;
+        }
+
+        .user-story-input-group input {
+            padding: 10px 12px;
+            border: 1px solid #DADADA;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-family: 'Fira Sans', sans-serif;
+            background: #FFFFFF;
+            color: #000000;
+            min-width: 140px;
+        }
+
+        .user-story-input-group input:focus {
+            outline: none;
+            border-color: #007AC3;
+            box-shadow: 0 0 0 3px rgba(0, 122, 195, 0.1);
+        }
+
+        .user-story-input-group input::placeholder {
+            color: #A3A3A3;
         }
 
         .empty-state {
@@ -894,8 +930,12 @@
         <div class="bulk-actions">
             <button id="bulkApproveBtn" class="btn btn-success" disabled>✓ Approve Selected</button>
             <button id="bulkRejectBtn" class="btn btn-danger" disabled>✗ Reject Selected</button>
-            <button id="pushAzureBtn" class="btn btn-primary">☁ Push to Azure DevOps</button>
             <button id="resetAllBtn" class="btn btn-secondary">↻ Reset All</button>
+            <div class="user-story-input-group">
+                <label for="userStoryInput">User Story:</label>
+                <input type="text" id="userStoryInput" placeholder="e.g., FE#735316" />
+                <button id="pushAzureBtn" class="btn btn-primary">☁ Push to Azure DevOps</button>
+            </div>
         </div>
     </div>
 
@@ -1226,15 +1266,99 @@
             document.getElementById('downloadBtn').disabled = false;
         }
 
-        function pushToAzure() {
+        async function pushToAzure() {
+            const userStory = document.getElementById('userStoryInput').value.trim();
+            if (!userStory) {
+                alert('Please enter a User Story number (e.g., FE#735316)');
+                return;
+            }
             const approved = testCases.filter(tc => tc.reviewStatus === 'Approved');
             if (approved.length === 0) {
                 alert('No approved test cases to push. Please approve at least one test case first.');
                 return;
             }
-            const summary = `Ready to push ${approved.length} approved test cases to Azure DevOps\n\nApproved cases:\n${approved.map(tc => `- ${tc.id}: ${tc.title}`).join('\n')}`;
-            alert(summary + '\n\n[Integration with Azure DevOps API would happen here]');
-            console.log('Pushing to Azure DevOps:', approved);
+
+            // Prepare test cases data for API
+            const testCasesData = approved.map(tc => ({
+                id: tc.id,
+                title: tc.title,
+                priority: tc.priority,
+                category: tc.category,
+                automatable: tc.automatable,
+                description: `${tc.title}\n\nPreconditions:\n${tc.preconditions.join('\n')}`
+            }));
+
+            // Show loading state
+            const pushBtn = document.getElementById('pushAzureBtn');
+            const originalText = pushBtn.textContent;
+            pushBtn.disabled = true;
+            pushBtn.textContent = '⏳ Pushing...';
+
+            try {
+                // Check server health first
+                const healthResponse = await fetch('/api/health');
+                if (!healthResponse.ok) {
+                    throw new Error('Backend server is not running. Please start the server: node server.js');
+                }
+
+                // Call push API
+                const response = await fetch('/api/push-test-cases', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userStoryId: userStory,
+                        testCases: testCasesData
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Success! Show detailed results
+                    let successMessage = `✅ Successfully pushed ${result.results.successful.length} test case(s) to Azure DevOps!\n\n`;
+                    successMessage += `📌 User Story: ${userStory}\n`;
+                    successMessage += `✓ Created: ${result.results.successful.length}\n`;
+                    successMessage += `🔗 Linked: ${result.results.linked.length}\n`;
+                    
+                    if (result.results.successful.length > 0) {
+                        successMessage += `\nCreated Work Items:\n`;
+                        result.results.successful.forEach(item => {
+                            successMessage += `  • #${item.workItemId}: ${item.testCaseId}\n`;
+                        });
+                    }
+
+                    if (result.results.failed.length > 0) {
+                        successMessage += `\n⚠️  Failed: ${result.results.failed.length}\n`;
+                    }
+
+                    alert(successMessage);
+                    console.log('Push Result:', result);
+
+                    // Reset user story field after successful push
+                    document.getElementById('userStoryInput').value = '';
+                } else {
+                    // Error response from API
+                    const errorMessage = `❌ Failed to push test cases:\n\n${result.message || result.error}\n\nPlease ensure:\n1. Backend server is running (node server.js)\n2. Azure DevOps credentials are in .env file\n3. User Story ID is valid`;
+                    alert(errorMessage);
+                    console.error('Push Error:', result);
+                }
+            } catch (error) {
+                let errorMessage = `❌ Error pushing test cases:\n\n${error.message}`;
+                
+                // Check if it's a backend connection issue
+                if (error.message.includes('fetch')) {
+                    errorMessage += `\n\n⚠️  Backend server might not be running.\n\nPlease start the server:\n  npm install express\n  node server.js`;
+                }
+
+                alert(errorMessage);
+                console.error('Push Exception:', error);
+            } finally {
+                // Restore button state
+                pushBtn.disabled = false;
+                pushBtn.textContent = originalText;
+            }
         }
 
         function resetAllSelections() {
