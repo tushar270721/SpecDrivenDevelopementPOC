@@ -791,7 +791,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>📊 Test Case Review Portal - FE#735316</h1>
+        <h1>📊 Test Case Review Portal</h1>
         <div class="header-actions">
             <button id="downloadBtn" class="btn btn-primary" disabled>⬇️ Export Markdown</button>
         </div>
@@ -799,7 +799,7 @@
 
     <div class="input-section">
         <h2>Paste Test Cases (Markdown)</h2>
-        <textarea id="markdownInput" placeholder="Paste your FE735316-testcases.md content here..."></textarea>
+        <textarea id="markdownInput" placeholder="Paste your testcases.md content here..."></textarea>
         <div class="input-actions">
             <button id="parseBtn" class="btn btn-primary">📋 Parse Test Cases</button>
             <button id="clearBtn" class="btn btn-secondary">Clear</button>
@@ -924,10 +924,6 @@
                     <input type="text" id="detailCategory" disabled />
                 </div>
                 <div class="detail-field">
-                    <label>Description</label>
-                    <textarea id="detailDescription"></textarea>
-                </div>
-                <div class="detail-field">
                     <label>Preconditions</label>
                     <textarea id="detailPreconditions" placeholder="One per line"></textarea>
                 </div>
@@ -955,10 +951,6 @@
                         </thead>
                         <tbody id="detailTestStepsBody"></tbody>
                     </table>
-                </div>
-                <div class="detail-field">
-                    <label>Expected Outcome</label>
-                    <textarea id="detailExpectedOutcome" placeholder="One per line"></textarea>
                 </div>
                 <div class="detail-field">
                     <label>Reviewer Comments</label>
@@ -1076,11 +1068,9 @@
                         reviewer: '',
                         reviewDate: '',
                         qualityScore: 75,
-                        description: '',
                         preconditions: [],
                         testData: { headers: ['Field', 'Value'], rows: [] },
                         testSteps: { headers: ['Step', 'Action', 'Expected Result'], rows: [] },
-                        expectedOutcome: [],
                         reviewerComments: ''
                     };
                     section = null;
@@ -1119,7 +1109,6 @@
             else if (lower === 'preconditions') tc.preconditions = parseList(text);
             else if (lower === 'test data') tc.testData.rows = parseTable(text);
             else if (lower === 'test steps') tc.testSteps.rows = parseTable(text);
-            else if (lower === 'expected outcome') tc.expectedOutcome = parseList(text);
             else if (lower === 'reviewer comments') tc.reviewerComments = text;
         }
 
@@ -1279,9 +1268,7 @@
             document.getElementById('detailTitle').value = tc.title;
             document.getElementById('detailPriority').value = tc.priority;
             document.getElementById('detailCategory').value = tc.category;
-            document.getElementById('detailDescription').value = tc.description;
             document.getElementById('detailPreconditions').value = tc.preconditions.join('\n');
-            document.getElementById('detailExpectedOutcome').value = tc.expectedOutcome.join('\n');
             document.getElementById('detailReviewerComments').value = tc.reviewerComments;
             document.getElementById('detailReviewStatus').value = tc.reviewStatus;
 
@@ -1319,9 +1306,7 @@
 
             tc.title = document.getElementById('detailTitle').value;
             tc.priority = document.getElementById('detailPriority').value;
-            tc.description = document.getElementById('detailDescription').value;
             tc.preconditions = document.getElementById('detailPreconditions').value.split('\n').filter(p => p.trim());
-            tc.expectedOutcome = document.getElementById('detailExpectedOutcome').value.split('\n').filter(o => o.trim());
             tc.reviewerComments = document.getElementById('detailReviewerComments').value;
             tc.reviewStatus = document.getElementById('detailReviewStatus').value;
 
@@ -1353,8 +1338,7 @@
 
         function detectCategory(testCase) {
             const title = testCase.title.toLowerCase();
-            const description = testCase.description.toLowerCase();
-            const fullText = title + ' ' + description;
+            const fullText = title;
 
             if (fullText.includes('role') || fullText.includes('permission') || fullText.includes('access')) return 'Role-Based';
             if (fullText.includes('edge') || fullText.includes('boundary') || fullText.includes('invalid')) return 'Edge Cases';
@@ -1429,10 +1413,6 @@
                         markdown += `| ${row.join(' | ')} |\n`;
                     });
                     markdown += `\n`;
-                }
-
-                if (tc.expectedOutcome.length > 0) {
-                    markdown += `## Expected Outcome\n\n${tc.expectedOutcome.map((o, i) => `${i + 1}. ${o}`).join('\n')}\n\n`;
                 }
 
                 markdown += `## Reviewer Comments\n\n${tc.reviewerComments}\n\n`;
