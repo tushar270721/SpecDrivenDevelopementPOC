@@ -2116,7 +2116,7 @@ System API Manager can enforce maximum length constraints on client names.
 
 ## Title
 
-Verify that the system properly handles and stores Unicode characters including emoji, Chinese characters, and Arabic script in client names.
+Customer Integration Manager can create integration clients with Unicode characters in client names.
 
 ## Preconditions
 
@@ -2171,7 +2171,7 @@ Verify that the system properly handles and stores Unicode characters including 
 
 ## Title
 
-Verify that the system correctly parses and validates scopes with special formatting including version numbers and pre-release indicators.
+System API Manager can handle scope formats with version numbers and pre-release indicators.
 
 ## Preconditions
 
@@ -2614,7 +2614,7 @@ System API Manager can maintain consistency during credential rotation with in-f
 
 ## Title
 
-Verify that the system can handle and stream large API responses without timeout, truncation, or corruption.
+API Consumer can receive large API responses streamed without timeout or corruption.
 
 ## Preconditions
 
@@ -2668,7 +2668,7 @@ Verify that the system can handle and stream large API responses without timeout
 
 ## Title
 
-Verify that in-flight API requests complete successfully even if customer account is suspended during processing, but new requests are blocked.
+API Consumer can complete in-flight requests successfully even if account is suspended.
 
 ## Preconditions
 
@@ -2721,7 +2721,7 @@ Verify that in-flight API requests complete successfully even if customer accoun
 
 ## Title
 
-Verify that credentials are generated without problematic Unicode whitespace types (tabs, non-breaking spaces, zero-width spaces) that could cause hidden issues.
+System API Manager can generate credentials without problematic Unicode whitespace characters.
 
 ## Preconditions
 
@@ -2778,7 +2778,7 @@ Verify that credentials are generated without problematic Unicode whitespace typ
 
 ## Title
 
-Verify that a customer can complete the full Workday middleware onboarding workflow, including customer account setup, integration client creation, scope assignment, and middleware configuration.
+Customer Integration Manager can complete full Workday middleware onboarding workflow end to end.
 
 ## Preconditions
 
@@ -2838,7 +2838,7 @@ Verify that a customer can complete the full Workday middleware onboarding workf
 
 ## Title
 
-Verify that requests are correctly routed to multiple backend services with proper product metadata headers.
+API Consumer can send requests routed to multiple backend services with metadata headers.
 
 ## Preconditions
 
@@ -2894,7 +2894,7 @@ Verify that requests are correctly routed to multiple backend services with prop
 
 ## Title
 
-Verify that the system fetches and caches scope lists from Auth Service with TTL, and updates cache when new scopes are published.
+System API Manager can cache scope lists from Auth Service and refresh on updates.
 
 ## Preconditions
 
@@ -2949,7 +2949,7 @@ Verify that the system fetches and caches scope lists from Auth Service with TTL
 
 ## Title
 
-Verify that when a new API product is published, it becomes available for assignment to integration clients.
+Customer Integration Manager can assign newly published API products to integration clients.
 
 ## Preconditions
 
@@ -3002,7 +3002,7 @@ Verify that when a new API product is published, it becomes available for assign
 
 ## Title
 
-Verify that when a customer upgrades subscription tier, subsequent API requests are routed to the new tier's backend URL.
+API Consumer can route requests to new tier backend after subscription tier upgrade.
 
 ## Preconditions
 
@@ -3057,7 +3057,7 @@ Verify that when a customer upgrades subscription tier, subsequent API requests 
 
 ## Title
 
-Verify that rate limits are correctly enforced per subscription tier, with Free tier at 100 req/sec and Premium at 1000 req/sec.
+System API Manager can enforce tier-specific rate limits correctly.
 
 ## Preconditions
 
@@ -3109,7 +3109,7 @@ Verify that rate limits are correctly enforced per subscription tier, with Free 
 
 ## Title
 
-Verify that backend services receive complete customer context including customer ID, subscription tier, and scopes in forwarded requests.
+System API Manager can forward complete customer context to backend services.
 
 ## Preconditions
 
@@ -3163,7 +3163,7 @@ Verify that backend services receive complete customer context including custome
 
 ## Title
 
-Verify that all integration client events are logged to central audit system with complete event details.
+System Security Manager can log all integration client events to central audit system.
 
 ## Preconditions
 
@@ -3221,7 +3221,7 @@ Email delivery verification requires access to email system or mailbox. Manual v
 
 ## Title
 
-Verify that customer receives email notification when integration client credentials are rotated.
+Customer Integration Manager can receive email notification on credential rotation.
 
 ## Preconditions
 
@@ -3278,7 +3278,7 @@ Email delivery and content verification requires email system access. Manual ver
 
 ## Title
 
-Verify that new customers receive onboarding email with setup instructions when integration client is created.
+Customer Integration Manager can receive onboarding email with setup instructions.
 
 ## Preconditions
 
@@ -3331,7 +3331,7 @@ Verify that new customers receive onboarding email with setup instructions when 
 
 ## Title
 
-Verify that admin dashboard displays metrics about integration clients and their usage.
+Admin System Administrator can view integration client metrics on dashboard.
 
 ## Preconditions
 
@@ -3384,7 +3384,7 @@ Verify that admin dashboard displays metrics about integration clients and their
 
 ## Title
 
-Verify that billing system receives accurate metrics about customer tier usage for billing purposes.
+System API Manager can send accurate customer tier usage metrics to billing system.
 
 ## Preconditions
 
@@ -3437,7 +3437,7 @@ Verify that billing system receives accurate metrics about customer tier usage f
 
 ## Title
 
-Verify that support team can rotate (reset) credentials for customer's integration client upon customer request.
+Support Lead can rotate customer credentials on customer request.
 
 ## Preconditions
 
@@ -3491,7 +3491,7 @@ Verify that support team can rotate (reset) credentials for customer's integrati
 
 ## Title
 
-Verify that third-party monitoring systems can collect health and performance metrics from the integration system.
+System API Manager can provide health and performance metrics to monitoring systems.
 
 ## Preconditions
 
@@ -3547,7 +3547,7 @@ Verify that third-party monitoring systems can collect health and performance me
 
 ## Title
 
-Verify that API request latency meets the SLA requirement with 99th percentile latency under 200ms.
+System API Manager can maintain API request latency SLA below 200ms at p99.
 
 ## Preconditions
 
@@ -3600,7 +3600,7 @@ Verify that API request latency meets the SLA requirement with 99th percentile l
 
 ## Title
 
-Verify that scope validation adds minimal overhead, with validation latency under 5ms.
+System API Manager can validate scopes with latency under 5ms.
 
 ## Preconditions
 
@@ -3652,7 +3652,7 @@ Verify that scope validation adds minimal overhead, with validation latency unde
 
 ## Title
 
-Verify that credential validation (key lookup, signature verification) adds minimal overhead under 10ms.
+System API Manager can validate credentials with latency under 10ms.
 
 ## Preconditions
 
@@ -3704,7 +3704,7 @@ Verify that credential validation (key lookup, signature verification) adds mini
 
 ## Title
 
-Verify that the system can handle 100 concurrent clients making simultaneous requests without errors or performance degradation.
+System API Manager can handle 100 concurrent clients making simultaneous requests.
 
 ## Preconditions
 
@@ -3761,7 +3761,7 @@ Requires database setup with scaled test data (100k customers, 1M clients, 5M cr
 
 ## Title
 
-Verify that database query performance remains acceptable with large datasets: 100,000 customers, 1,000,000 clients, 5,000,000 credentials.
+System API Manager can maintain acceptable query performance with large datasets.
 
 ## Preconditions
 
@@ -3813,7 +3813,7 @@ Verify that database query performance remains acceptable with large datasets: 1
 
 ## Title
 
-Verify that memory usage remains stable under sustained load of 1000 requests/second for 1 hour, without memory leaks.
+System API Manager can maintain stable memory under sustained 1000 req/sec load.
 
 ## Preconditions
 
@@ -3866,7 +3866,7 @@ Verify that memory usage remains stable under sustained load of 1000 requests/se
 
 ## Title
 
-Verify that the system handles concurrent credential rotation requests from multiple clients without conflicts or errors.
+System API Manager can handle concurrent credential rotation from multiple clients.
 
 ## Preconditions
 
@@ -3917,7 +3917,7 @@ Verify that the system handles concurrent credential rotation requests from mult
 
 ## Title
 
-Verify that pagination performance remains acceptable when listing 10,000 clients, with each page loading in under 1 second.
+Admin System Administrator can paginate through 10000 clients quickly.
 
 ## Preconditions
 
