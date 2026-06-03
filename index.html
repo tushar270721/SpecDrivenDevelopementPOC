@@ -829,7 +829,8 @@
     <div class="header">
         <h1>📊 Test Case Review Portal</h1>
         <div class="header-actions">
-            <button id="downloadBtn" class="btn btn-primary" disabled>⬇️ Export Markdown</button>
+            <button id="downloadApprovedBtn" class="btn btn-success" disabled>✓ Export Approved (MD)</button>
+            <button id="downloadBtn" class="btn btn-primary" disabled>⬇️ Export All (MD)</button>
         </div>
     </div>
 
@@ -1013,6 +1014,38 @@
         </div>
     </div>
 
+    <!-- MODAL FOR EXPORT REVIEWER INFO -->
+    <div id="exportReviewerModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Export Approved Test Cases</h2>
+                <button class="modal-close" onclick="closeExportModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-field">
+                    <label>Number of Approved Test Cases</label>
+                    <input type="text" id="approvedCountDisplay" disabled style="font-weight: bold; font-size: 1.2rem; text-align: center;" />
+                </div>
+                <div class="detail-field">
+                    <label>Reviewer Name *</label>
+                    <input type="text" id="exportReviewerName" placeholder="e.g., John Doe" />
+                </div>
+                <div class="detail-field">
+                    <label>Review Date</label>
+                    <input type="date" id="exportReviewDate" />
+                </div>
+                <div class="detail-field">
+                    <label>File Name (Optional)</label>
+                    <input type="text" id="exportFileName" placeholder="e.g., FE735316-approved-testcases" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeExportModal()">Cancel</button>
+                <button class="btn btn-success" onclick="confirmExportApproved()">✓ Export Approved Test Cases</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let testCases = [];
         let currentEditingId = null;
@@ -1026,6 +1059,7 @@
         document.getElementById('parseBtn').addEventListener('click', parseAndLoad);
         document.getElementById('clearBtn').addEventListener('click', clearAll);
         document.getElementById('downloadBtn').addEventListener('click', downloadMarkdown);
+        document.getElementById('downloadApprovedBtn').addEventListener('click', openExportReviewerModal);
         document.getElementById('searchInput').addEventListener('input', renderTable);
         document.getElementById('bulkApproveBtn').addEventListener('click', () => bulkUpdateSelected('Approved'));
         document.getElementById('bulkRejectBtn').addEventListener('click', () => bulkUpdateSelected('Rejected'));
@@ -1052,7 +1086,9 @@
                 alert('Please paste markdown content');
                 return;
             }
+            console.log('Starting parseAndLoad...');
             testCases = parseMarkdown(markdown);
+            console.log(`parseAndLoad: Loaded ${testCases.length} test cases`);
             if (testCases.length === 0) {
                 alert('No test cases found');
                 return;
@@ -1064,12 +1100,15 @@
         }
 
         function parseMarkdown(markdown) {
+            console.log('parseMarkdown called with markdown length:', markdown.length);
             const lines = markdown.split('\n');
+            console.log('Total lines:', lines.length);
             const cases = [];
             let current = null;
             let section = null;
             let content = [];
             let currentCategory = 'Functional';
+            let testCaseCount = 0;
 
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
@@ -1078,6 +1117,7 @@
                 const categoryMatch = line.match(/^# (FUNCTIONAL|ROLE-BASED|EDGE CASE|INTEGRATION|PERFORMANCE|SECURITY|END-TO-END).+TEST CASES/i);
                 if (categoryMatch) {
                     const categoryType = categoryMatch[1].toUpperCase();
+                    console.log('Found category:', categoryType);
                     if (categoryType.includes('FUNCTIONAL')) currentCategory = 'Functional';
                     else if (categoryType.includes('ROLE-BASED')) currentCategory = 'Role-Based';
                     else if (categoryType.includes('EDGE')) currentCategory = 'Edge Cases';
@@ -1091,6 +1131,8 @@
                 const match = line.match(/^# (TC-FE\d+-\d+)/);
                 
                 if (match) {
+                    testCaseCount++;
+                    console.log(`Found test case ${testCaseCount}:`, match[1]);
                     if (current) {
                         if (section && content.length > 0) processSectionContent(current, section, content);
                         cases.push(current);
@@ -1136,6 +1178,11 @@
                 cases.push(current);
             }
 
+            console.log(`parseMarkdown completed: Found ${cases.length} test cases`);
+            if (cases.length > 0) {
+                console.log('First test case:', cases[0]);
+                console.log('All test case IDs:', cases.map(tc => tc.id));
+            }
             return cases;
         }
 
@@ -1244,13 +1291,18 @@
         }
 
         function updateStatus(tcId, status) {
+            console.log(`updateStatus called: tcId=${tcId}, status=${status}`);
             const tc = testCases.find(t => t.id === tcId);
+            console.log(`Found test case:`, tc);
             if (tc) {
                 tc.reviewStatus = status;
+                console.log(`Updated ${tcId} to ${status}:`, tc.reviewStatus);
                 tc.reviewDate = new Date().toISOString().split('T')[0];
                 updateStats();
                 renderTable();
                 document.getElementById('downloadBtn').disabled = false;
+            } else {
+                console.error(`Test case ${tcId} not found!`);
             }
         }
 
@@ -1272,9 +1324,17 @@
                 alert('Please enter a User Story number (e.g., FE#735316)');
                 return;
             }
+            
+            // Debug: Log all test cases and their statuses
+            console.log('Total test cases:', testCases.length);
+            console.log('Test cases:', testCases.map(tc => ({ id: tc.id, reviewStatus: tc.reviewStatus })));
+            
             const approved = testCases.filter(tc => tc.reviewStatus === 'Approved');
+            console.log('Approved test cases:', approved.length);
+            console.log('Approved:', approved.map(tc => tc.id));
+            
             if (approved.length === 0) {
-                alert('No approved test cases to push. Please approve at least one test case first.');
+                alert(`No approved test cases to push.\n\nTotal test cases: ${testCases.length}\nStatuses: ${testCases.map(tc => tc.reviewStatus).join(', ')}\n\nPlease click the green "Approve" button on test cases first.`);
                 return;
             }
 
@@ -1287,6 +1347,10 @@
                 automatable: tc.automatable,
                 description: `${tc.title}\n\nPreconditions:\n${tc.preconditions.join('\n')}`
             }));
+            
+            console.log('Test Cases Data to send:', testCasesData);
+            console.log('User Story ID:', userStory);
+            console.log('Request body:', { userStoryId: userStory, testCases: testCasesData });
 
             // Show loading state
             const pushBtn = document.getElementById('pushAzureBtn');
@@ -1340,9 +1404,28 @@
                     document.getElementById('userStoryInput').value = '';
                 } else {
                     // Error response from API
-                    const errorMessage = `❌ Failed to push test cases:\n\n${result.message || result.error}\n\nPlease ensure:\n1. Backend server is running (node server.js)\n2. Azure DevOps credentials are in .env file\n3. User Story ID is valid`;
+                    let errorMessage = `❌ Failed to push test cases:\n\n${result.message || result.error}`;
+                    
+                    // Show details about what failed
+                    if (result.results) {
+                        errorMessage += `\n\nDetails:\n`;
+                        errorMessage += `✅ Successful: ${result.results.successful.length}\n`;
+                        errorMessage += `❌ Failed: ${result.results.failed.length}\n`;
+                        errorMessage += `🔗 Linked: ${result.results.linked.length}\n`;
+                        
+                        if (result.results.failed.length > 0) {
+                            errorMessage += `\nFailed test cases:\n`;
+                            result.results.failed.forEach(item => {
+                                errorMessage += `• ${item.testCaseId}: ${item.error}\n`;
+                            });
+                        }
+                    }
+                    
+                    errorMessage += `\n\nPlease ensure:\n1. Backend server is running (node server.js)\n2. Azure DevOps credentials are in .env file\n3. User Story ID is valid\n4. Check server terminal for detailed error messages`;
+                    
                     alert(errorMessage);
                     console.error('Push Error:', result);
+                    console.error('Failed Results:', result.results?.failed);
                 }
             } catch (error) {
                 let errorMessage = `❌ Error pushing test cases:\n\n${error.message}`;
@@ -1501,6 +1584,10 @@
             document.getElementById('bulkRejectBtn').disabled = !hasSelected;
             document.getElementById('bulkApproveBtn').textContent = `✓ Approve Selected (${selected})`;
             document.getElementById('bulkRejectBtn').textContent = `✗ Reject Selected (${selected})`;
+            
+            // Enable export buttons
+            document.getElementById('downloadBtn').disabled = total === 0;
+            document.getElementById('downloadApprovedBtn').disabled = accepted === 0;
         }
 
         function downloadMarkdown() {
@@ -1562,12 +1649,209 @@
             document.getElementById('markdownInput').value = '';
             document.getElementById('dashboardContent').style.display = 'none';
             document.getElementById('downloadBtn').disabled = true;
+            document.getElementById('downloadApprovedBtn').disabled = true;
             document.getElementById('priorityFilter').value = '';
             document.getElementById('statusFilter').value = '';
             document.getElementById('categoryFilter').value = '';
         }
 
-        // Make updateStatus global
+        function openExportReviewerModal() {
+            const approved = testCases.filter(tc => tc.reviewStatus === 'Approved');
+            if (approved.length === 0) {
+                alert('No approved test cases to export.\n\nPlease approve test cases first using the "Approve" button.');
+                return;
+            }
+            
+            // Set default values
+            document.getElementById('approvedCountDisplay').value = `${approved.length} Test Cases Ready to Export`;
+            document.getElementById('exportReviewerName').value = '';
+            document.getElementById('exportReviewDate').valueAsDate = new Date();
+            document.getElementById('exportFileName').value = `FE735316-approved-testcases`;
+            
+            document.getElementById('exportReviewerModal').classList.add('active');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportReviewerModal').classList.remove('active');
+        }
+
+        function confirmExportApproved() {
+            const reviewerName = document.getElementById('exportReviewerName').value.trim();
+            const reviewDate = document.getElementById('exportReviewDate').value;
+            const fileName = document.getElementById('exportFileName').value.trim();
+
+            if (!reviewerName) {
+                alert('Please enter the Reviewer name.');
+                document.getElementById('exportReviewerName').focus();
+                return;
+            }
+
+            if (!reviewDate) {
+                alert('Please select a Review Date.');
+                return;
+            }
+
+            // Close modal and proceed with export
+            closeExportModal();
+            
+            // Export approved test cases with reviewer info
+            downloadApprovedMarkdown(reviewerName, reviewDate, fileName);
+        }
+
+        function downloadApprovedMarkdown(reviewerName, reviewDate, fileName) {
+            const approved = testCases.filter(tc => tc.reviewStatus === 'Approved');
+            
+            if (approved.length === 0) {
+                alert('No approved test cases to export.');
+                return;
+            }
+
+            // Update reviewer and review date for approved test cases
+            approved.forEach(tc => {
+                tc.reviewer = reviewerName;
+                tc.reviewDate = reviewDate;
+            });
+
+            // Generate markdown with only approved test cases
+            let markdown = '# Test Cases: FE#735316 - API Consumer and Scope Management\n\n';
+            markdown += `**Feature:** [APIm] 6 API Consumer and Scope Management\n`;
+            markdown += `**Feature ID:** FE#735316\n`;
+            markdown += `**Total Test Cases:** ${approved.length}\n`;
+            markdown += `**Created:** ${new Date().toISOString().split('T')[0]}\n`;
+            markdown += `**Status:** APPROVED - Ready for Project Integration\n`;
+            markdown += `**Reviewed By:** ${reviewerName}\n`;
+            markdown += `**Review Date:** ${reviewDate}\n\n`;
+            markdown += `---\n\n`;
+
+            // Group test cases by category
+            const categories = {};
+            approved.forEach(tc => {
+                if (!categories[tc.category]) {
+                    categories[tc.category] = [];
+                }
+                categories[tc.category].push(tc);
+            });
+
+            // Calculate category statistics
+            const categoryStats = {};
+            Object.keys(categories).forEach(category => {
+                const priorityCounts = { 'High': 0, 'Medium': 0, 'Low': 0 };
+                categories[category].forEach(tc => {
+                    priorityCounts[tc.priority]++;
+                });
+                categoryStats[category] = {
+                    total: categories[category].length,
+                    high: priorityCounts['High'],
+                    medium: priorityCounts['Medium'],
+                    low: priorityCounts['Low']
+                };
+            });
+
+            // Add Summary Statistics Section
+            markdown += `# Summary Statistics\n\n`;
+            markdown += `## Overall Statistics\n\n| Metric | Count |\n| --- | --- |\n`;
+            markdown += `| Total Approved Test Cases | ${approved.length} |\n`;
+            markdown += `| Total Categories | ${Object.keys(categories).length} |\n`;
+            
+            const highPriorityCount = approved.filter(tc => tc.priority === 'High').length;
+            const mediumPriorityCount = approved.filter(tc => tc.priority === 'Medium').length;
+            const lowPriorityCount = approved.filter(tc => tc.priority === 'Low').length;
+            
+            markdown += `| High Priority | ${highPriorityCount} |\n`;
+            markdown += `| Medium Priority | ${mediumPriorityCount} |\n`;
+            markdown += `| Low Priority | ${lowPriorityCount} |\n\n`;
+
+            // Category-wise breakdown
+            markdown += `## Category-wise Breakdown\n\n| Category | Total | High | Medium | Low |\n| --- | --- | --- | --- | --- |\n`;
+            Object.keys(categories).sort().forEach(category => {
+                const stats = categoryStats[category];
+                markdown += `| ${category} | ${stats.total} | ${stats.high} | ${stats.medium} | ${stats.low} |\n`;
+            });
+
+            markdown += `\n---\n\n`;
+
+            // Generate markdown for each category with sequential numbering
+            let sequentialNumber = 1;
+            Object.keys(categories).sort().forEach(category => {
+                const categoryMap = {
+                    'Functional': 'FUNCTIONAL TEST CASES',
+                    'Role-Based': 'ROLE-BASED & ACCESS CONTROL TEST CASES',
+                    'Edge Cases': 'EDGE CASES & EXPLORATORY TEST CASES',
+                    'Integration': 'INTEGRATION TEST CASES',
+                    'Performance': 'PERFORMANCE TEST CASES',
+                    'Security': 'SECURITY TEST CASES',
+                    'E2E': 'END-TO-END TEST CASES'
+                };
+
+                markdown += `# ${categoryMap[category] || category.toUpperCase() + ' TEST CASES'}\n\n`;
+                markdown += `---\n\n`;
+
+                categories[category].forEach((tc, index) => {
+                    markdown += `# ${tc.id}\n\n`;
+                    markdown += `## Metadata\n\n| Field | Value |\n| --- | --- |\n`;
+                    markdown += `| Test Case # | ${sequentialNumber} |\n`;
+                    markdown += `| Test Case ID | ${tc.id} |\n`;
+                    markdown += `| Priority | ${tc.priority} |\n`;
+                    markdown += `| Automatable | ${tc.automatable} |\n`;
+                    markdown += `| Status | ${tc.status} |\n`;
+                    markdown += `| Review Status | ${tc.reviewStatus} |\n`;
+                    markdown += `| Reviewer | ${tc.reviewer} |\n`;
+                    markdown += `| Review Date | ${tc.reviewDate} |\n\n`;
+
+                    markdown += `## Title\n\n${tc.title}\n\n`;
+                    
+                    if (tc.preconditions.length > 0) {
+                        markdown += `## Preconditions\n\n${tc.preconditions.map((p, i) => `${i + 1}. ${p}`).join('\n')}\n\n`;
+                    }
+
+                    if (tc.testData.rows.length > 0) {
+                        markdown += `## Test Data\n\n| ${tc.testData.headers.join(' | ')} |\n| ${tc.testData.headers.map(() => '---').join(' | ')} |\n`;
+                        tc.testData.rows.forEach(row => {
+                            markdown += `| ${row.join(' | ')} |\n`;
+                        });
+                        markdown += `\n`;
+                    }
+
+                    if (tc.testSteps.rows.length > 0) {
+                        markdown += `## Test Steps\n\n| ${tc.testSteps.headers.join(' | ')} |\n| ${tc.testSteps.headers.map(() => '---').join(' | ')} |\n`;
+                        tc.testSteps.rows.forEach(row => {
+                            markdown += `| ${row.join(' | ')} |\n`;
+                        });
+                        markdown += `\n`;
+                    }
+
+                    markdown += `## Reviewer Comments\n\n${tc.reviewerComments}\n\n`;
+                    markdown += `---\n\n`;
+                    
+                    sequentialNumber++;
+                });
+            });
+
+            // Generate download
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const timestamp = new Date().toISOString().split('T')[0];
+            const finalFileName = fileName || 'FE735316-approved-testcases';
+            a.download = `${finalFileName}-${timestamp}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Show success message
+            alert(`✅ Successfully exported ${approved.length} approved test cases!\n\nFile: ${a.download}\nReviewer: ${reviewerName}\nReview Date: ${reviewDate}\n\nYou can now replace the old testcases.md file with this new file in your project.`);
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'exportReviewerModal') {
+                closeExportModal();
+            }
+        });
+
+        // Make functions global
         window.updateStatus = updateStatus;
     </script>
 </body>

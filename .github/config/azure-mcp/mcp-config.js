@@ -381,7 +381,13 @@ const config = {
    */
   async createTestCaseWorkItem(testCase) {
     try {
-      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${"Test Case"}?api-version=${this.azureDevOps.apiVersion}`;
+      const encodedWorkItemType = encodeURIComponent('Test Case');
+      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/$${encodedWorkItemType}?api-version=${this.azureDevOps.apiVersion}`;
+
+      console.log(`📝 [createTestCaseWorkItem] Creating for: ${testCase.id}`);
+      console.log(`   URL: ${url}`);
+      console.log(`   Priority: ${testCase.priority} (mapped to ${testCase.priority === 'High' ? 1 : testCase.priority === 'Medium' ? 2 : 3})`);
+      console.log(`   Automatable: ${testCase.automatable}`);
 
       const body = [
         {
@@ -425,6 +431,8 @@ const config = {
         });
       }
 
+      console.log(`   Sending patch body with ${body.length} operations`);
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -436,13 +444,16 @@ const config = {
 
       if (!response.ok) {
         const errorText = await response.text();
+        console.error(`   ❌ API Error ${response.status}:`);
+        console.error(`   Response: ${errorText.substring(0, 500)}`);
         throw new Error(`Failed to create work item: ${response.status} ${errorText}`);
       }
 
       const workItem = await response.json();
+      console.log(`   ✅ Created work item #${workItem.id}`);
       return workItem;
     } catch (error) {
-      console.error(`❌ Error creating test case work item: ${error.message}`);
+      console.error(`❌ Error creating test case work item for ${testCase.id}: ${error.message}`);
       throw error;
     }
   },

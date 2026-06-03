@@ -126,7 +126,7 @@ From Specification:
 ### PHASE 4: GENERATE TEST CASES
 **Goal:** Create detailed, testable test cases for each category
 
-#### Test Case Template (Enterprise Format)
+#### Test Case Template 
 
 ```markdown
 # TC-FE735316-001
