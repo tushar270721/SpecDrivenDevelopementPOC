@@ -225,74 +225,18 @@ function parseDescription(text) {
 }
 
 /**
- * Parse and structure acceptance criteria into sections with bullet points
+ * Parse and structure acceptance criteria - Return EXACT text from Azure
+ * Do not modify, parse, or restructure - keep verbatim
  */
 function parseAcceptanceCriteria(text) {
   if (!text) return '';
   
-  const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-  const sections = [];
-  let currentSection = null;
-  let currentItems = [];
+  // Return acceptance criteria exactly as received from Azure DevOps
+  // No parsing, no modification, no restructuring
+  const cleaned = text.trim();
   
-  for (const line of lines) {
-    // Check if this is a section header
-    const isSectionHeader = 
-      line.match(/^(###|##)\s+/) ||  // Markdown headers
-      (line.match(/^[A-Z][\w\s&/-]*$/) && line.length < 80 && !line.includes('.'));  // Single line, all caps or title case
-    
-    if (isSectionHeader && currentSection) {
-      // Save previous section
-      sections.push({
-        title: currentSection,
-        items: currentItems
-      });
-      currentSection = line.replace(/^#+\s+/, '');
-      currentItems = [];
-    } else if (isSectionHeader && !currentSection) {
-      currentSection = line.replace(/^#+\s+/, '');
-      currentItems = [];
-    } else if (currentSection) {
-      // This is content under the current section
-      if (line.startsWith('-') || line.startsWith('•')) {
-        currentItems.push(line.replace(/^[-•]\s*/, ''));
-      } else if (line.length > 0) {
-        currentItems.push(line);
-      }
-    }
-  }
-  
-  // Add last section
-  if (currentSection && currentItems.length > 0) {
-    sections.push({
-      title: currentSection,
-      items: currentItems
-    });
-  }
-  
-  // Format as markdown
-  const markdown = sections.map(section => {
-    let output = `### ${section.title.trim()}\n\n`;
-    
-    output += section.items
-      .map(item => {
-        const cleaned = item.trim();
-        if (cleaned.length === 0) return '';
-        
-        // Bold key phrases in items
-        let formatted = cleaned
-          .replace(/\*\*(.+?)\*\*/g, '**$1**')  // Keep existing bold
-          .replace(/\b(Only|enabled|disabled|display|visible|hidden)\b/gi, '**$1**');
-        
-        return `- ${formatted}`;
-      })
-      .filter(item => item.length > 2)
-      .join('\n');
-    
-    return output;
-  }).filter(s => s.length > 10).join('\n\n');
-  
-  return markdown || formatContent(text);
+  // Just return as formatted markdown block with the exact text
+  return `\`\`\`\n${cleaned}\n\`\`\``;
 }
 
 /**
@@ -300,12 +244,14 @@ function parseAcceptanceCriteria(text) {
  */
 function saveFeatureMarkdown(featureId, feature, comments) {
   try {
-    const analyticsDir = path.join(__dirname, '../../analysis');
-    if (!fs.existsSync(analyticsDir)) {
-      fs.mkdirSync(analyticsDir, { recursive: true });
+    // Save under specs/feature-<id>/FE<id>-feature-report.md
+    const numericFeatureId = (featureId.split('#')[1] || featureId).trim();
+    const specsFeatureDir = path.resolve(__dirname, `../../../specs/feature-${numericFeatureId}`);
+    if (!fs.existsSync(specsFeatureDir)) {
+      fs.mkdirSync(specsFeatureDir, { recursive: true });
     }
-    
-    const filename = path.join(analyticsDir, `${featureId.replace('#', '')}-feature-report.md`);
+
+    const filename = path.join(specsFeatureDir, `FE${numericFeatureId}-feature-report.md`);
     
     let markdown = `# Feature Report: ${featureId}\n\n`;
     markdown += `**Generated:** ${new Date().toLocaleString()}\n\n`;

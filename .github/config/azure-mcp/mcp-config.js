@@ -379,6 +379,94 @@ const config = {
    * @param {object} testCase - Test case object with id, title, priority, category, automatable
    * @returns {object} Created work item
    */
+  /**
+   * Format test steps into Azure DevOps XML format
+   * @param {array} testSteps - Array of [stepNumber, action, expectedResult]
+   * @returns {string} XML formatted test steps
+   */
+  formatTestStepsToXml(testSteps) {
+    if (!testSteps || testSteps.length === 0) {
+      return '';
+    }
+
+    // Build XML steps in proper Azure DevOps format (matching working test cases)
+    // Format: <parameterizedString isformatted="true"> elements (not parameterizedStep/parameterizedExpectedResult)
+    let stepsXml = '<steps id="0" last="' + testSteps.length + '">';
+    
+    testSteps.forEach((step, index) => {
+      const stepNum = index + 1;
+      // Handle different step formats - could be [stepNum, action, result] or just [action, result]
+      const action = (step[1] || step[0] || '').trim().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+      const expectedResult = (step[2] || '').trim().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+      
+      // Determine step type: First step is ActionStep, others are ValidateStep (matching Azure DevOps format)
+      const stepType = stepNum === 1 ? 'ActionStep' : 'ValidateStep';
+      
+      stepsXml += `<step id="${stepNum}" type="${stepType}">`;
+      // Use parameterizedString elements (this is what Azure DevOps UI expects!)
+      stepsXml += `<parameterizedString isformatted="true">${action}</parameterizedString>`;
+      stepsXml += `<parameterizedString isformatted="true">${expectedResult}</parameterizedString>`;
+      stepsXml += `<description/>`;
+      stepsXml += `</step>`;
+    });
+    
+    stepsXml += '</steps>';
+    console.log(`   📋 Generated XML for ${testSteps.length} steps (CORRECT FORMAT): ${stepsXml.substring(0, 100)}...`);
+    return stepsXml;
+  },
+
+  /**
+   * Update test steps on an existing work item
+   * @param {number} workItemId - Work item ID
+   * @param {array} testSteps - Array of test steps
+   */
+  async updateTestSteps(workItemId, testSteps) {
+    try {
+      if (!testSteps || testSteps.length === 0) {
+        console.log(`   ℹ️  No test steps to add`);
+        return;
+      }
+
+      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${workItemId}?api-version=${this.azureDevOps.apiVersion}`;
+      
+      const stepsXml = this.formatTestStepsToXml(testSteps);
+      
+      const body = [
+        {
+          op: "add",
+          path: "/fields/Microsoft.VSTS.TCM.Steps",
+          value: stepsXml
+        }
+      ];
+
+      console.log(`   📡 Updating test steps for work item #${workItemId}...`);
+      
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          ...this.getAuthHeader(),
+          'Content-Type': 'application/json-patch+json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`   ⚠️  Could not update test steps: ${response.status}`);
+        console.error(`   Response: ${errorText.substring(0, 300)}`);
+        // Don't throw - test steps update is non-critical
+        return false;
+      }
+
+      console.log(`   ✅ Test steps updated successfully`);
+      return true;
+
+    } catch (error) {
+      console.error(`   ⚠️  Error updating test steps: ${error.message}`);
+      return false;
+    }
+  },
+
   async createTestCaseWorkItem(testCase) {
     try {
       const encodedWorkItemType = encodeURIComponent('Test Case');
@@ -388,7 +476,9 @@ const config = {
       console.log(`   URL: ${url}`);
       console.log(`   Priority: ${testCase.priority} (mapped to ${testCase.priority === 'High' ? 1 : testCase.priority === 'Medium' ? 2 : 3})`);
       console.log(`   Automatable: ${testCase.automatable}`);
+      console.log(`   Test Steps: ${testCase.testSteps ? testCase.testSteps.length : 0}`);
 
+      // Build minimal fields that don't conflict with required/limited-to-values
       const body = [
         {
           op: "add",
@@ -405,20 +495,27 @@ const config = {
           path: "/fields/Microsoft.VSTS.Common.Priority",
           value: testCase.priority === 'High' ? 1 : testCase.priority === 'Medium' ? 2 : 3
         },
-        {
-          op: "add",
-          path: "/fields/System.State",
-          value: "Ready"
-        },
+        // ✅ FIXED: Don't set System.State - Let Azure DevOps use default "Design"
+        // System.State is auto-set to Design on work item creation
+        
         {
           op: "add",
           path: "/fields/Microsoft.VSTS.TCM.AutomatedTestName",
           value: testCase.id
         },
+        // ✅ FIXED: Use "Not Automated" as the automation status value
+        // This is a valid value for Microsoft.VSTS.TCM.AutomationStatus
         {
           op: "add",
           path: "/fields/Microsoft.VSTS.TCM.AutomationStatus",
-          value: testCase.automatable === 'Yes' ? 'Automated' : 'Manual'
+          value: 'Not Automated'
+        },
+        // ✅ FIXED: Use "Performance" as the value for Custom.TestLevel
+        // This is a required field and "Performance" is the valid value
+        {
+          op: "add",
+          path: "/fields/Custom.TestLevel",
+          value: "Performance"
         }
       ];
 
@@ -451,6 +548,13 @@ const config = {
 
       const workItem = await response.json();
       console.log(`   ✅ Created work item #${workItem.id}`);
+
+      // ✅ NEW: Update test steps separately after creation
+      if (testCase.testSteps && testCase.testSteps.length > 0) {
+        console.log(`   Adding ${testCase.testSteps.length} test steps...`);
+        await this.updateTestSteps(workItem.id, testCase.testSteps);
+      }
+
       return workItem;
     } catch (error) {
       console.error(`❌ Error creating test case work item for ${testCase.id}: ${error.message}`);
@@ -467,25 +571,83 @@ const config = {
    */
   async linkWorkItems(parentId, childId, linkType = 'System.LinkTypes.Hierarchy-Forward') {
     try {
-      const url = `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${parentId}/relations?api-version=${this.azureDevOps.apiVersion}`;
+      console.log(`\n📝 [linkWorkItems] Attempting to link work items`);
+      console.log(`   Parent (User Story): ${parentId}`);
+      console.log(`   Child (Test Case): ${childId}`);
 
-      const body = {
-        rel: linkType,
-        url: `${this.azureDevOps.orgUrl}/${encodeURIComponent(this.azureDevOps.project)}/_apis/wit/workitems/${childId}`
-      };
+      // Use the project GUID for API calls  
+      const projectId = this.projectId || '7977ed3d-15c4-4782-b1f7-d1f70660ff0c';
+      
+      // Try PATCH the parent work item with a JSON-Patch operation to add relation
+      const url = `${this.azureDevOps.orgUrl}/${projectId}/_apis/wit/workitems/${parentId}?api-version=${this.azureDevOps.apiVersion}`;
+
+      // Construct the relation URL
+      const childUrl = `${this.azureDevOps.orgUrl}/${projectId}/_apis/wit/workitems/${childId}`;
+
+      const patchBody = [
+        {
+          op: "add",
+          path: "/relations/-",
+          value: {
+            rel: linkType,
+            url: childUrl
+          }
+        }
+      ];
+
+      console.log(`   URL: ${url}`);
+      console.log(`   Using PATCH with JSON-Patch format`);
 
       const response = await fetch(url, {
-        method: 'POST',
-        headers: this.getAuthHeader(),
-        body: JSON.stringify(body)
+        method: 'PATCH',
+        headers: {
+          ...this.getAuthHeader(),
+          'Content-Type': 'application/json-patch+json'
+        },
+        body: JSON.stringify(patchBody)
       });
+
+      console.log(`   Response Status: ${response.status}`);
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Failed to link work items: ${response.status} ${errorText}`);
+        console.log(`   ❌ API Error ${response.status}`);
+        
+        // If PATCH fails, try alternative approaches
+        if (response.status === 400 || response.status === 404) {
+          console.log(`\n   ⚠️  PATCH method failed. Trying alternative link type...`);
+          
+          // Try with alternative link type
+          const altLinkType = 'Microsoft.VSTS.Common.Hierarchy-Forward';
+          patchBody[0].value.rel = altLinkType;
+          
+          const altResponse = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+              ...this.getAuthHeader(),
+              'Content-Type': 'application/json-patch+json'
+            },
+            body: JSON.stringify(patchBody)
+          });
+
+          console.log(`   Alternative link type response: ${altResponse.status}`);
+          
+          if (!altResponse.ok) {
+            const altErrorText = await altResponse.text();
+            throw new Error(`Failed to link work items (both attempts failed): ${response.status} and ${altResponse.status}`);
+          }
+          
+          return await altResponse.json();
+        }
+        
+        throw new Error(`Failed to link work items: ${response.status}`);
       }
 
-      return await response.json();
+      const result = await response.json();
+      console.log(`✅ Successfully linked test case to user story`);
+      console.log(`   Test Case #${childId} linked to User Story #${parentId}`);
+      
+      return result;
     } catch (error) {
       console.error(`❌ Error linking work items: ${error.message}`);
       throw error;

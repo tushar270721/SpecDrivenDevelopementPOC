@@ -1,0 +1,18 @@
+{
+  "successful": [
+    {
+      "testCaseId": "TC-FE735316-001",
+      "workItemId": 846375,
+      "title": "System Administrator can register new API consumer with name, contact email, and tier in API consumer management interface"
+    }
+  ],
+  "failed": [],
+  "linked": [
+    {
+      "testCaseId": "TC-FE735316-001",
+      "parentId": 832376,
+      "childId": 846375
+    }
+  ],
+  "linkFailed": []
+}

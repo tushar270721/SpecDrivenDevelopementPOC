@@ -1345,7 +1345,9 @@
                 priority: tc.priority,
                 category: tc.category,
                 automatable: tc.automatable,
-                description: `${tc.title}\n\nPreconditions:\n${tc.preconditions.join('\n')}`
+                preconditions: tc.preconditions,
+                testSteps: tc.testSteps.rows,
+                description: `${tc.title}\n\nPreconditions:\n${tc.preconditions.join('\n')}\n\nTest Steps:\n${tc.testSteps.rows.map(row => `${row[0]}: ${row[1]} | Expected: ${row[2]}`).join('\n')}`
             }));
             
             console.log('Test Cases Data to send:', testCasesData);
@@ -1445,7 +1447,14 @@
         }
 
         function resetAllSelections() {
-            testCases.forEach(tc => tc.selected = false);
+            testCases.forEach(tc => {
+                tc.selected = false;
+                tc.reviewStatus = 'Pending';
+                tc.reviewer = '';
+                tc.reviewDate = '';
+            });
+            document.getElementById('selectAllCheckbox').checked = false;
+            updateStats();
             renderTable();
         }
 
